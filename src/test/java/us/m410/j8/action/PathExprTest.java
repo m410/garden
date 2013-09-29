@@ -4,7 +4,10 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
-import static org.junit.Assert.assertTrue;
+import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
+
+import static org.junit.Assert.*;
 
 /**
  * @author Michael Fortin
@@ -12,33 +15,79 @@ import static org.junit.Assert.assertTrue;
 @RunWith(JUnit4.class)
 public class PathExprTest {
     @Test
-    public void testMatchPlain() {
-        assertTrue("Implement me", false);
+    public void testCompareToEmptyPath() {
+        PathExpr path1 = new PathExpr("/");
+        PathExpr path2 = new PathExpr("/");
+        assertTrue(path1.compareTo(path2) == 0);
+        assertTrue(path1.equals(path2));
+    }
+
+    @Test
+    public void testCompareToLongPath() {
+        PathExpr path1 = new PathExpr("/persons/{id}/address");
+        PathExpr path2 = new PathExpr("/persons/{id}/address");
+        assertTrue(path1.compareTo(path2) == 0);
+        assertTrue(path1.equals(path2));
+    }
+
+    @Test
+    public void testCompareToLongPathNotEqual() {
+        PathExpr path1 = new PathExpr("/persons/{id}/address");
+        PathExpr path2 = new PathExpr("/persons/{id}/addresses");
+        assertFalse(path1.compareTo(path2) == 0);
+        assertFalse(path1.equals(path2));
+    }
+
+    @Test
+    public void testCombinePath() {
+        String[] expected = new String[]{"persons","{id}","address"};
+        PathExpr path = new PathExpr("persons/{id}").append("address");
+        assertTrue(Arrays.equals(path.getTokens(), expected));
+    }
+
+    @Test
+    public void testMatchWithWildcardRegex() {
+        HttpServletRequest request = new MockServletRequest(){
+            @Override public String getRequestURI() {
+                return "/persons/21/address";
+            }
+
+            @Override public String getContextPath() {
+                return ""; // root context
+            }
+        };
+        PathExpr path = new PathExpr("persons/{id}/address");
+        assertTrue(path.doesPathMatch(request));
     }
 
     @Test
     public void testMatchWithRegex() {
-        assertTrue("Implement me", false);
-    }
+        HttpServletRequest request = new MockServletRequest(){
+            @Override public String getRequestURI() {
+                return "/persons/21/address";
+            }
 
-    @Test
-    public void testMatchEmpty() {
-        assertTrue("Implement me", false);
+            @Override public String getContextPath() {
+                return ""; // root context
+            }
+        };
+        PathExpr path = new PathExpr("persons/{id:\\d+}/address");
+        assertTrue(path.doesPathMatch(request));
     }
 
     @Test
     public void testMatchContext() {
-        assertTrue("Implement me", false);
-    }
+        HttpServletRequest request = new MockServletRequest(){
+            @Override public String getRequestURI() {
+                return "/ctx/persons/21/address";
+            }
 
-    @Test
-    public void testMatchContentType() {
-        assertTrue("Implement me", false);
-    }
-
-    @Test
-    public void testMatchHttpMethod() {
-        assertTrue("Implement me", false);
+            @Override public String getContextPath() {
+                return "/ctx"; // root context
+            }
+        };
+        PathExpr path = new PathExpr("persons/{id:\\d+}/address");
+        assertTrue(path.doesPathMatch(request));
     }
 
 }

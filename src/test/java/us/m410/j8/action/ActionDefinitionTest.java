@@ -4,6 +4,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
+import javax.servlet.http.HttpServletRequest;
+
 import static org.junit.Assert.assertTrue;
 
 /**
@@ -11,9 +13,15 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(JUnit4.class)
 public class ActionDefinitionTest {
+
     @Test
     public void testDoesPathMatch() {
-        assertTrue("Implement me", false);
+        HttpServletRequest request = new MockServletRequest() {
+            @Override public String getRequestURI() { return "/"; }
+        };
+        Action a = (args) -> { return null; };
+        ActionDefinition ad = new ActionDefinitionImpl("",a,new PathExpr(""));
+        assertTrue(ad.doesPathMatch(request));
     }
 
     @Test
@@ -28,6 +36,16 @@ public class ActionDefinitionTest {
 
     @Test
     public void actionDefinitionsDontEqual() {
+        assertTrue("Implement me", false);
+    }
+
+    @Test
+    public void testMatchContentType() {
+        assertTrue("Implement me", false);
+    }
+
+    @Test
+    public void testMatchHttpMethod() {
         assertTrue("Implement me", false);
     }
 
