@@ -5,7 +5,7 @@ package us.m410.j8.servlet;
  *
  * @author Michael Fortin
  */
-public final class ServletDefinition  {
+public final class ServletDefinition {
     private String name;
     private String className;
     private String params;

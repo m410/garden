@@ -10,7 +10,10 @@ public class ConfigurationBuilder {
 
     public Configuration configure() {
         return new Configuration() {
-            @Override public ApplicationDescription application() { return null; }
+            @Override
+            public ApplicationDescription application() {
+                return null;
+            }
         };
     }
 

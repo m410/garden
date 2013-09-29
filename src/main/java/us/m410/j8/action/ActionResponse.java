@@ -8,13 +8,13 @@ import java.util.Map;
  */
 public interface ActionResponse {
 
-    Map<String,String> getHeaders();
+    Map<String, String> getHeaders();
 
     Direction getDirection();
 
-    Map<String,Object>  getModel();
+    Map<String, Object> getModel();
 
-    Map<String,Object>  getSession();
+    Map<String, Object> getSession();
 
     Flash getFlash();
 

@@ -9,7 +9,7 @@ public class PathExpr {
         expression = expr;
     }
 
-    public PathExpr(String rootExpr,String subExpr) {
+    public PathExpr(String rootExpr, String subExpr) {
         expression = rootExpr + subExpr;
     }
 

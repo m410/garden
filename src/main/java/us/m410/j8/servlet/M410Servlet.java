@@ -18,7 +18,7 @@ public class M410Servlet extends HttpServlet {
     @Override
     protected void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ((Application)request.getServletContext().getAttribute("application"))
+        ((Application) request.getServletContext().getAttribute("application"))
                 .doRequest(request, response);
     }
 }

@@ -5,7 +5,7 @@ package us.m410.j8.action.direction;
  *
  * @author Michael Fortin
  */
-public class Redirect implements Direction{
+public class Redirect implements Direction {
     private String path;
 
     public Redirect(String path) {

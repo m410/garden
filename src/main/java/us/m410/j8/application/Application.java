@@ -1,13 +1,15 @@
 package us.m410.j8.application;
 
 import com.google.common.collect.ImmutableList;
+import us.m410.j8.action.ActionDefinition;
+import us.m410.j8.configuration.Configuration;
 import us.m410.j8.controller.Controller;
 import us.m410.j8.controller.ControllerComponent;
 import us.m410.j8.orm.*;
 import us.m410.j8.service.ServiceComponent;
-import us.m410.j8.servlet.*;
-import us.m410.j8.action.ActionDefinition;
-import us.m410.j8.configuration.Configuration;
+import us.m410.j8.servlet.FilterDefinition;
+import us.m410.j8.servlet.ListenerDefinition;
+import us.m410.j8.servlet.ServletDefinition;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -28,7 +30,8 @@ abstract public class Application
 
     protected Configuration configuration;
 
-    private Application() {}
+    private Application() {
+    }
 
     protected Application(Configuration config) {
         configuration = config;
@@ -70,6 +73,7 @@ abstract public class Application
 
     /**
      * Only gets called if the action is found by the filter and forwarded to this application.
+     *
      * @param req the http servlet request
      * @param res the http servlet response
      */
@@ -82,17 +86,19 @@ abstract public class Application
         return Optional.ofNullable(null); // todo implement me
     }
 
-    public interface Work { void doWork() throws IOException, ServletException;}
+    public interface Work {
+        void doWork() throws IOException, ServletException;
+    }
 
-    public void doWithThreadLocals(Work work) throws IOException, ServletException{
-        doWithThreadLocal(threadLocalsFactories,work);
+    public void doWithThreadLocals(Work work) throws IOException, ServletException {
+        doWithThreadLocal(threadLocalsFactories, work);
     }
 
     protected void doWithThreadLocal(List<? extends ThreadLocalFactory> tlf, Work block)
             throws IOException, ServletException {
-        if(tlf.size() >= 1) {
-            ThreadLocal tl = tlf.get(tlf.size()-1).make();
-            doWithThreadLocal(tlf.subList(0,tlf.size()-1), block);
+        if (tlf.size() >= 1) {
+            ThreadLocal tl = tlf.get(tlf.size() - 1).make();
+            doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
             tl.remove();
         }
         else {
@@ -105,20 +111,20 @@ abstract public class Application
         threadLocalsFactories = threadLocalFactories(configuration);
         services = makeServices(configuration);
         List<? extends Controller> controllers = makeControllers(configuration);
-        services.stream().forEach(s->{
-            if(s instanceof LifeCycleComponent)
-                ((LifeCycleComponent)s).onStartup();
+        services.stream().forEach(s -> {
+            if (s instanceof LifeCycleComponent)
+                ((LifeCycleComponent) s).onStartup();
         });
         ImmutableList.Builder<ActionDefinition> b = ImmutableList.builder();
-        controllers.stream().forEach((c)->b.addAll(c.actions()));
+        controllers.stream().forEach((c) -> b.addAll(c.actions()));
         actionDefinitions = b.build();
     }
 
     public void onShutdown() {
-        services.stream().forEach(s->{
-            if(s instanceof LifeCycleComponent)
-                ((LifeCycleComponent)s).onShutdown();
+        services.stream().forEach(s -> {
+            if (s instanceof LifeCycleComponent)
+                ((LifeCycleComponent) s).onShutdown();
         });
-        threadLocalsFactories.stream().forEach((tlf)->tlf.shutdown());
+        threadLocalsFactories.stream().forEach((tlf) -> tlf.shutdown());
     }
 }

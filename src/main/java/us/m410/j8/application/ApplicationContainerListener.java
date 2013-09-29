@@ -20,21 +20,21 @@ public class ApplicationContainerListener implements ServletContextListener {
         servletContext.setAttribute("application", app);
         app.onStartup();
 
-        app.listeners().stream().forEach((l)->{
+        app.listeners().stream().forEach((l) -> {
             servletContext.addListener(l.getClassName());
         });
 
-        app.filters().stream().forEach((s)->{
+        app.filters().stream().forEach((s) -> {
             // todo implement me
         });
 
-        app.servlets().stream().forEach((s)->{
+        app.servlets().stream().forEach((s) -> {
             // todo implement me
         });
 
         FilterRegistration.Dynamic filter = servletContext.addFilter("BrzyFilter", "org.brzy.webapp.BrzyFilter");
         EnumSet dispatchTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
-        filter.addMappingForUrlPatterns(dispatchTypes,true,"/*");
+        filter.addMappingForUrlPatterns(dispatchTypes, true, "/*");
 
         ServletRegistration.Dynamic main = servletContext.addServlet("BrzyServlet", "org.brzy.webapp.BrzyServlet");
         main.addMapping("*.brzy");
@@ -47,9 +47,9 @@ public class ApplicationContainerListener implements ServletContextListener {
 
     @Override
     public void contextDestroyed(ServletContextEvent servletContextEvent) {
-        Application a = (Application)servletContextEvent.getServletContext().getAttribute("application");
+        Application a = (Application) servletContextEvent.getServletContext().getAttribute("application");
 
-        if(a != null)
+        if (a != null)
             a.onShutdown();
 
     }

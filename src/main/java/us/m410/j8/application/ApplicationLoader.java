@@ -12,7 +12,7 @@ import java.lang.reflect.Constructor;
  */
 public class ApplicationLoader {
 
-    public Application load()  {
+    public Application load() {
         ClassLoader applicationLoader = getClass().getClassLoader();
 //        LoggerFactory.getLogger(getClass).debug("app loader classloader={}",applicationLoader)
 
@@ -22,9 +22,9 @@ public class ApplicationLoader {
 
             Class appClass = applicationLoader.loadClass(projectApplicationClass);
             Constructor constructor = appClass.getConstructor(Configuration.class);
-            return (Application)constructor.newInstance(config);
+            return (Application) constructor.newInstance(config);
         }
-        catch(Throwable e) {
+        catch (Throwable e) {
 //          log.error("Could not load application because: " + e.getMessage, e)
             throw new LoadFailureException(e);
             // will become a reflection error above, but logging here anyway to get better
