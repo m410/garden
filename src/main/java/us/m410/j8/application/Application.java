@@ -40,15 +40,15 @@ abstract public class Application
 
     public List<? extends FilterDefinition> filters() {
         return ImmutableList.of(
-                new FilterDefinitionDefault("m410", "us.m410.j8.servlet.Filter", "", "/*")
+                new FilterDefinition("m410", "us.m410.j8.servlet.Filter", "", "/*")
         );
     }
 
     public List<? extends ServletDefinition> servlets() {
         return ImmutableList.of(
-                new ServletDefinitionDefault("std", "us.m410.j8.servlet.StandardServlet", "", ".j8std"),
-                new ServletDefinitionDefault("async", "us.m410.j8.servlet.AsyncServlet", "", ".j8async"),
-                new ServletDefinitionDefault("ws", "us.m410.j8.servlet.WebSocketServlet", "", ".j8ws")
+                new ServletDefinition("std", "us.m410.j8.servlet.StandardServlet", "", ".j8std"),
+                new ServletDefinition("async", "us.m410.j8.servlet.AsyncServlet", "", ".j8async"),
+                new ServletDefinition("ws", "us.m410.j8.servlet.WebSocketServlet", "", ".j8ws")
         );
     }
 

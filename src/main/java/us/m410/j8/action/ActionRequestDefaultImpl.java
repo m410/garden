@@ -1,55 +1,68 @@
-package us.m410.j8.servlet;
+package us.m410.j8.action;
 
-import javax.websocket.Decoder;
-import javax.websocket.Encoder;
-import javax.websocket.Extension;
-import javax.websocket.server.ServerEndpointConfig;
-import java.util.List;
+import javax.servlet.http.HttpServletRequest;
+import java.io.InputStream;
 import java.util.Map;
+
 
 /**
  * Document Me..
  *
  * @author Michael Fortin
  */
-public class ExampleServerEndpointConfig implements ServerEndpointConfig {
+public class ActionRequestDefaultImpl implements ActionRequest {
+
+    private HttpServletRequest servletRequest;
+
+    private ActionRequestDefaultImpl() {
+    }
+
+    public ActionRequestDefaultImpl(HttpServletRequest servletRequest) {
+        this.servletRequest = servletRequest;
+    }
+
     @Override
-    public Class<?> getEndpointClass() {
+    public boolean isActiveSession() {
+        return servletRequest.getSession(false) == null;
+    }
+
+    @Override
+    public UserPrincipal userPrincipal() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public String getPath() {
+    public Map<String, Object> session() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<String> getSubprotocols() {
+    public Map<String, String> requestProperties() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Extension> getExtensions() {
+    public Map<String, String> requestHeaders() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public Configurator getConfigurator() {
+    public Map<String, String> urlParameters() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Class<? extends Encoder>> getEncoders() {
+    public Map<String, String[]> requestParameters() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public List<Class<? extends Decoder>> getDecoders() {
+    public InputStream postBodyAsStream() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 
     @Override
-    public Map<String, Object> getUserProperties() {
+    public String postBodyAsString() {
         return null;  //To change body of implemented methods use File | Settings | File Templates.
     }
 }

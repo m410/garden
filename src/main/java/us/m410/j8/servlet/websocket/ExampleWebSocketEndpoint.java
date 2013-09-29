@@ -1,4 +1,4 @@
-package us.m410.j8.servlet;
+package us.m410.j8.servlet.websocket;
 
 import javax.websocket.Endpoint;
 import javax.websocket.EndpointConfig;

@@ -5,11 +5,12 @@ import com.google.common.collect.ImmutableList;
 import us.m410.j8.action.Action;
 import us.m410.j8.action.ActionDefinition;
 import us.m410.j8.action.PathExpr;
-import static us.m410.j8.action.Response.*;
-import static us.m410.j8.action.direction.Directions.*;
 import us.m410.j8.controller.Controller;
 
 import java.util.List;
+
+import static us.m410.j8.action.Response.response;
+import static us.m410.j8.action.direction.Directions.view;
 
 
 /**

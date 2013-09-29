@@ -7,19 +7,23 @@ import us.m410.j8.application.Application;
 import us.m410.j8.sample.MyWebApp;
 
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 /**
- * Document Me..
- *
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
 public class ConfigurationTest {
 
     @Test
-    public void applicationLoad() {
+    public void applicationLoadInWebapp() {
         Configuration conf = new ConfigurationBuilder(null, "").configure();
         Application app = new MyWebApp(conf);
         assertNotNull(app);
+    }
+
+    @Test
+    public void applicationLoadInDevMode() {
+        assertTrue("Implement me", false);
     }
 }

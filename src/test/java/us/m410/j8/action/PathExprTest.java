@@ -1,4 +1,4 @@
-package us.m410.j8.controller;
+package us.m410.j8.action;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,24 +10,35 @@ import static org.junit.Assert.assertTrue;
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class ControllerJsonTest {
+public class PathExprTest {
     @Test
-    public void testPutJson() {
+    public void testMatchPlain() {
         assertTrue("Implement me", false);
     }
 
     @Test
-    public void testPostJson() {
+    public void testMatchWithRegex() {
         assertTrue("Implement me", false);
     }
 
     @Test
-    public void testGetJson() {
+    public void testMatchEmpty() {
         assertTrue("Implement me", false);
     }
 
     @Test
-    public void testDeleteJson() {
+    public void testMatchContext() {
         assertTrue("Implement me", false);
     }
+
+    @Test
+    public void testMatchContentType() {
+        assertTrue("Implement me", false);
+    }
+
+    @Test
+    public void testMatchHttpMethod() {
+        assertTrue("Implement me", false);
+    }
+
 }

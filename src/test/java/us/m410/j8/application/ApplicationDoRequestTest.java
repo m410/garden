@@ -1,4 +1,4 @@
-package us.m410.j8.controller;
+package us.m410.j8.application;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,9 +10,11 @@ import static org.junit.Assert.assertTrue;
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class ControllerFileUploadTest {
+public class ApplicationDoRequestTest {
+
     @Test
-    public void testUpload() {
+    public void doRequest() {
         assertTrue("Implement me", false);
     }
+
 }

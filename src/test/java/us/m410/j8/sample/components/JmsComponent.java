@@ -1,8 +1,8 @@
 package us.m410.j8.sample.components;
 
 import com.google.common.collect.ImmutableList;
-import us.m410.j8.service.ServiceComponent;
 import us.m410.j8.configuration.Configuration;
+import us.m410.j8.service.ServiceComponent;
 
 import java.util.List;
 
