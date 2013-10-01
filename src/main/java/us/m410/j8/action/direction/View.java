@@ -12,6 +12,11 @@ public class View implements Direction {
         this.path = path;
     }
 
+    @Override
+    public int id() {
+        return VIEW;
+    }
+
     public String getPath() {
         return path;
     }

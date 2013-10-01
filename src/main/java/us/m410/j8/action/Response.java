@@ -4,7 +4,13 @@ import com.google.common.collect.ImmutableSortedMap;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import us.m410.j8.action.direction.Direction;
 import us.m410.j8.action.direction.NoView;
+import us.m410.j8.action.direction.Redirect;
+import us.m410.j8.action.direction.View;
 
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -108,6 +114,44 @@ public class Response implements ActionResponse {
     @Override
     public boolean doInvalidateSession() {
         return invalidateSession;
+    }
+
+    @Override
+    public void handleResponse(HttpServletRequest request, HttpServletResponse response) {
+        if(invalidateSession && request.getSession(false) != null)
+            request.getSession(false).invalidate();
+        else {
+            model.forEach(request::setAttribute);
+            session.forEach(request.getSession()::setAttribute);
+            headers.forEach(response::addHeader);
+
+            if(flash != null)
+                request.getSession().setAttribute("flash", flash.forSession(request.getSession()));
+
+            switch(direction.id()) {
+                case Direction.VIEW:
+                    try {
+                        request.getRequestDispatcher(((View)direction).getPath()).forward(request,response);
+                    }
+                    catch (ServletException e) {
+                        throw new RuntimeServletException(e);
+                    }
+                    catch (IOException e) {
+                        throw new RuntimeIOException(e);
+                    }
+                    break;
+                case Direction.REDIRECT:
+                    try {
+                        response.sendRedirect(((Redirect)direction).getPath());
+                    }
+                    catch (IOException e) {
+                        throw new RuntimeIOException(e);
+                    }
+                case Direction.NO_VIEW:
+                    break;
+            }
+        }
+
     }
 
 

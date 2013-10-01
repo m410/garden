@@ -78,7 +78,7 @@ abstract public class Application
      * @param res the http servlet response
      */
     public void doRequest(HttpServletRequest req, HttpServletResponse res) {
-        actionDefinitions.stream().filter((a) -> a.doesPathMatch(req))
+        actionDefinitions.stream().filter((a) -> a.doesRequestMatchAction(req))
                 .findFirst().get().apply(req, res);
     }
 

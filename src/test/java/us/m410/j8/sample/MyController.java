@@ -25,11 +25,29 @@ public final class MyController extends Controller {
 
     public List<ActionDefinition> actions() {
         return ImmutableList.of(
-                get("path", myAction, view("/home"))// todo add content-type, roles, ssl
+                get("path", httpGetAction, view("/home")),
+                post("path", httpPostAction, view("/home")),
+                put("path", httpPutAction, view("/home")),
+                delete("path", httpDeleteAction, view("/home"))
         );
     }
 
-    public final Action myAction = (call) -> {
+    public final Action httpGetAction = (call) -> {
+        final String myEntity = myService.get(call.urlParameters().get("id"));
+        return response().withModel("name", myEntity);
+    };
+
+    public final Action httpPostAction = (call) -> {
+        final String myEntity = myService.get(call.urlParameters().get("id"));
+        return response().withModel("name", myEntity);
+    };
+
+    public final Action httpPutAction = (call) -> {
+        final String myEntity = myService.get(call.urlParameters().get("id"));
+        return response().withModel("name", myEntity);
+    };
+
+    public final Action httpDeleteAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
         return response().withModel("name", myEntity);
     };

@@ -25,57 +25,23 @@ import static org.junit.Assert.*;
 public class ControllerCrudTest {
 
     ActionRequest mockRequest = new ActionRequest() {
-        @Override
-        public boolean isActiveSession() {
-            return false;
-        }
-
-        @Override
-        public UserPrincipal userPrincipal() {
-            return null;
-        }
-
-        @Override
-        public Map<String, Object> session() {
-            return null;
-        }
-
-        @Override
-        public RequestProperties requestProperties() {
-            return null;
-        }
-
-        @Override
-        public Map<String, String> requestHeaders() {
-            return null;
-        }
-
-        @Override
-        public Map<String, String> urlParameters() {
-            return ImmutableSortedMap.of("id", "10");
-        }
-
-        @Override
-        public Map<String, String[]> requestParameters() {
-            return null;
-        }
-
-        @Override
-        public InputStream postBodyAsStream() {
-            return null;
-        }
-
-        @Override
-        public String postBodyAsString() {
-            return null;
-        }
+        @Override public boolean isActiveSession() { return false; }
+        @Override public UserPrincipal userPrincipal() { return null; }
+        @Override public Map<String, Object> session() { return null; }
+        @Override public RequestProperties requestProperties() { return null; }
+        @Override public Map<String, String> requestHeaders() { return null; }
+        @Override public Map<String, String> urlParameters() { return ImmutableSortedMap.of("id", "10"); }
+        @Override public Map<String, String[]> requestParameters() { return null; }
+        @Override public InputStream postBodyAsStream() { return null; }
+        @Override public String postBodyAsString() { return null; }
     };
+
 
     @Test
     public void testGetByUrlParameter() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
-        ActionResponse response = controller.myAction.action(mockRequest);
+        ActionResponse response = controller.httpGetAction.action(mockRequest);
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -83,21 +49,41 @@ public class ControllerCrudTest {
 
     @Test
     public void testList() {
-        assertTrue("Implement me", false);
+        MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
+        MyController controller = new MyController(myService);
+        ActionResponse response = controller.httpGetAction.action(mockRequest);
+        assertNotNull(response);
+        assertNotNull(response.getModel());
+        assertEquals("got id: 10", response.getModel().get("name"));
     }
 
     @Test
     public void testCreate() {
-        assertTrue("Implement me", false);
+        MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
+        MyController controller = new MyController(myService);
+        ActionResponse response = controller.httpPostAction.action(mockRequest);
+        assertNotNull(response);
+        assertNotNull(response.getModel());
+        assertEquals("got id: 10", response.getModel().get("name"));
     }
 
     @Test
     public void testUpdate() {
-        assertTrue("Implement me", false);
+        MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
+        MyController controller = new MyController(myService);
+        ActionResponse response = controller.httpPutAction.action(mockRequest);
+        assertNotNull(response);
+        assertNotNull(response.getModel());
+        assertEquals("got id: 10", response.getModel().get("name"));
     }
 
     @Test
     public void testDelete() {
-        assertTrue("Implement me", false);
+        MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
+        MyController controller = new MyController(myService);
+        ActionResponse response = controller.httpDeleteAction.action(mockRequest);
+        assertNotNull(response);
+        assertNotNull(response.getModel());
+        assertEquals("got id: 10", response.getModel().get("name"));
     }
 }

@@ -7,7 +7,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public interface ActionDefinition {
 
-    boolean doesPathMatch(HttpServletRequest req);
+    boolean doesRequestMatchAction(HttpServletRequest req);
 
     void apply(HttpServletRequest request, HttpServletResponse response);
 

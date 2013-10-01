@@ -2,6 +2,8 @@ package us.m410.j8.action;
 
 import us.m410.j8.action.direction.Direction;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
 
 /**
@@ -19,4 +21,6 @@ public interface ActionResponse {
     Flash getFlash();
 
     boolean doInvalidateSession();
+
+    void handleResponse(HttpServletRequest request, HttpServletResponse response);
 }
