@@ -1,7 +1,14 @@
 package us.m410.j8.action;
 
+import com.google.common.collect.ImmutableMap;
+import org.apache.commons.io.IOUtils;
+
 import javax.servlet.http.HttpServletRequest;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.StringWriter;
+import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.Map;
 
 
@@ -13,56 +20,92 @@ import java.util.Map;
 public class ActionRequestDefaultImpl implements ActionRequest {
 
     private HttpServletRequest servletRequest;
+    private PathExpr pathExpr;
 
     private ActionRequestDefaultImpl() {
     }
 
-    public ActionRequestDefaultImpl(HttpServletRequest servletRequest) {
+    public ActionRequestDefaultImpl(HttpServletRequest servletRequest, PathExpr pathExpr) {
         this.servletRequest = servletRequest;
+        this.pathExpr = pathExpr;
     }
 
     @Override
     public boolean isActiveSession() {
-        return servletRequest.getSession(false) == null;
+        return servletRequest.getSession(false) != null;
     }
 
     @Override
     public UserPrincipal userPrincipal() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return new UserPrincipal(servletRequest);
     }
 
     @Override
     public Map<String, Object> session() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+
+        if(isActiveSession()) {
+            HashMap<String,Object> map = new HashMap();
+            Enumeration<String> attributeNames = servletRequest.getSession(false).getAttributeNames();
+
+            while (attributeNames.hasMoreElements()) {
+                String name = attributeNames.nextElement();
+                map.put(name,servletRequest.getSession(false).getAttribute(name));
+            }
+
+            return ImmutableMap.copyOf(map);
+        }
+        else {
+            return ImmutableMap.of();
+        }
     }
 
     @Override
-    public Map<String, String> requestProperties() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+    public RequestProperties requestProperties() {
+        return new RequestProperties(servletRequest);
     }
 
     @Override
     public Map<String, String> requestHeaders() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        HashMap<String,String> map = new HashMap();
+        Enumeration<String> headerNames = servletRequest.getHeaderNames();
+
+        while (headerNames.hasMoreElements()) {
+            String name = headerNames.nextElement();
+            map.put(name, servletRequest.getHeader(name));
+        }
+
+        return ImmutableMap.copyOf(map);
     }
 
     @Override
     public Map<String, String> urlParameters() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return pathExpr.parametersForRequest(servletRequest);
     }
 
     @Override
     public Map<String, String[]> requestParameters() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return ImmutableMap.copyOf(servletRequest.getParameterMap());
     }
 
     @Override
     public InputStream postBodyAsStream() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        try {
+            return servletRequest.getInputStream();
+        }
+        catch (IOException e) {
+            throw new RuntimeIOException(e);
+        }
     }
 
     @Override
     public String postBodyAsString() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        StringWriter writer = new StringWriter();
+        try {
+            IOUtils.copy(servletRequest.getInputStream(), writer, "UTF-8");
+        }
+        catch (IOException e) {
+            throw new RuntimeIOException(e);
+        }
+        return writer.toString();
     }
 }

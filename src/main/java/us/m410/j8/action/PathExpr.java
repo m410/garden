@@ -1,5 +1,6 @@
 package us.m410.j8.action;
 
+import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.ArrayUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -7,6 +8,8 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -35,22 +38,37 @@ public final class PathExpr implements Comparable<PathExpr> {
         return tokens;
     }
 
-    public boolean doesPathMatch(final HttpServletRequest request) {
-        final String context = request.getContextPath();
-        final String[] uri;
+    public Map<String, String> parametersForRequest(final HttpServletRequest servletRequest) {
+        final String[] uri = uriTokens(servletRequest);
+        Map<String, String> params = new HashMap();
 
-        if(context.compareTo("") != 0)
-            uri = toArray(request.getRequestURI().replace(context,""));
+        for (int i = 0; i < uri.length; i++) {
+            if(isUriParam(tokens[i]))
+                params.put(uriParamName(tokens[i]), uri[i]);
+        }
+
+        return ImmutableMap.copyOf(params);
+    }
+
+    private String uriParamName(String token) {
+        String innerStr = token.substring(1,token.length() -1);
+
+        if(innerStr.contains(":"))
+            return innerStr.substring(0, innerStr.indexOf(":"));
         else
-            uri = toArray(request.getRequestURI());
+            return innerStr;
+    }
+
+    public boolean doesPathMatch(final HttpServletRequest request) {
+        final String[] uri = uriTokens(request);
 
         if(tokens.length == uri.length) {
             for (int i = 0; i < uri.length; i++) {
                 String s = uri[i];
 
-                if(isRegex(tokens[i]) && !isRegexEqual(tokens[i], s))
+                if(isUriParam(tokens[i]) && !isRegexEqual(tokens[i], s))
                     return false;
-                else if(!isRegex(tokens[i]) && s.compareTo(tokens[i]) != 0)
+                else if(!isUriParam(tokens[i]) && s.compareTo(tokens[i]) != 0)
                     return false;
             }
             return true;
@@ -60,6 +78,17 @@ public final class PathExpr implements Comparable<PathExpr> {
         }
     }
 
+    protected String[] uriTokens(HttpServletRequest request) {
+        final String context = request.getContextPath();
+
+        String[] uri;
+        if(context.compareTo("") != 0)
+            uri = toArray(request.getRequestURI().replace(context,""));
+        else
+            uri = toArray(request.getRequestURI());
+        return uri;
+    }
+
     String[] toArray(final String in) {
         if(in.startsWith("/"))
             return in.substring(1).split("/");
@@ -67,7 +96,7 @@ public final class PathExpr implements Comparable<PathExpr> {
             return in.split("/");
 
     }
-    boolean isRegex(final String i) {
+    boolean isUriParam(final String i) {
         return i.startsWith("{") && i.endsWith("}");
     }
 

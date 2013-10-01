@@ -6,6 +6,7 @@ import org.junit.runners.JUnit4;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -90,4 +91,20 @@ public class PathExprTest {
         assertTrue(path.doesPathMatch(request));
     }
 
+    @Test
+    public void testPullParamsFromURI() {
+        HttpServletRequest request = new MockServletRequest(){
+            @Override public String getRequestURI() {
+                return "/ctx/persons/21/address";
+            }
+
+            @Override public String getContextPath() {
+                return "/ctx"; // root context
+            }
+        };
+        PathExpr path = new PathExpr("persons/{id:\\d+}/address");
+        Map<String,String> params = path.parametersForRequest(request);
+        assertEquals(1, params.size());
+        assertEquals("21", params.get("id"));
+    }
 }

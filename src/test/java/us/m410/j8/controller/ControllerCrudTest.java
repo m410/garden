@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import us.m410.j8.action.ActionRequest;
 import us.m410.j8.action.ActionResponse;
+import us.m410.j8.action.RequestProperties;
 import us.m410.j8.action.UserPrincipal;
 import us.m410.j8.sample.MyController;
 import us.m410.j8.sample.MyService;
@@ -40,7 +41,7 @@ public class ControllerCrudTest {
         }
 
         @Override
-        public Map<String, String> requestProperties() {
+        public RequestProperties requestProperties() {
             return null;
         }
 

@@ -13,7 +13,7 @@ public interface ActionRequest {
 
     Map<String, Object> session();
 
-    Map<String, String> requestProperties();
+    RequestProperties requestProperties();
 
     Map<String, String> requestHeaders();
 
