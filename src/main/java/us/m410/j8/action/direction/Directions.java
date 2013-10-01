@@ -6,8 +6,10 @@ package us.m410.j8.action.direction;
  * @author Michael Fortin
  */
 final public class Directions {
+    static private NoView defaultNoView = new NoView();
+
     public static NoView noView() {
-        return new NoView();
+        return defaultNoView;
     }
 
     public static View view(String s) {

@@ -79,7 +79,7 @@ abstract public class Application
      */
     public void doRequest(HttpServletRequest req, HttpServletResponse res) {
         actionDefinitions.stream().filter((a) -> a.doesRequestMatchAction(req))
-                .findFirst().get().apply(req, res);
+                .findFirst().ifPresent((action)->action.apply(req, res));
     }
 
     public Optional<ActionDefinition> actionForRequest(HttpServletRequest request) {

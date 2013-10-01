@@ -5,7 +5,7 @@ package us.m410.j8.action.direction;
  *
  * @author Michael Fortin
  */
-public class Redirect implements Direction {
+public final class Redirect implements Direction {
     private String path;
 
     @Override
@@ -13,7 +13,8 @@ public class Redirect implements Direction {
         return REDIRECT;
     }
 
-    public Redirect(String path) {
+    Redirect(String path) {
+        assert(path != null);
         this.path = path;
     }
 

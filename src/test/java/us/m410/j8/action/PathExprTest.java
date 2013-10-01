@@ -3,6 +3,7 @@ package us.m410.j8.action;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import us.m410.j8.mock.MockServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;

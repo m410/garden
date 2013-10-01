@@ -1,4 +1,4 @@
-package us.m410.j8.action;
+package us.m410.j8.mock;
 
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpSession;
@@ -15,7 +15,7 @@ public class MockSession implements HttpSession {
     Map<String, Object> attributes = new HashMap();
 
     public MockSession() {
-        attributes.put("name","value");
+        attributes.put("name", "value");
     }
 
     @Override

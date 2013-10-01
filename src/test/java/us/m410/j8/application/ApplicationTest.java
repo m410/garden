@@ -18,7 +18,7 @@ public class ApplicationTest {
 
     @Test
     public void applicationLoad() {
-        Configuration conf = new ConfigurationBuilder(null, "").configure();
+        Configuration conf = ConfigurationBuilder.buildtime("development");
         Application app = new MyWebApp(conf);
         assertNotNull(app);
     }

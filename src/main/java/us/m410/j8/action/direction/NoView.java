@@ -5,7 +5,11 @@ package us.m410.j8.action.direction;
  *
  * @author Michael Fortin
  */
-public class NoView implements Direction {
+public final class NoView implements Direction {
+
+    NoView() {
+    }
+
     @Override
     public int id() {
         return NO_VIEW;

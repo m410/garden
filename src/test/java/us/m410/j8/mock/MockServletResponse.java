@@ -1,4 +1,4 @@
-package us.m410.j8.action;
+package us.m410.j8.mock;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.Cookie;

@@ -18,7 +18,7 @@ public class ApplicationLoader {
 
         try {
             Configuration config = ConfigurationBuilder.runtime("development");
-            String projectApplicationClass = config.application().applicationClass();
+            String projectApplicationClass = config.getApplication().getApplicationClass();
 
             Class appClass = applicationLoader.loadClass(projectApplicationClass);
             Constructor constructor = appClass.getConstructor(Configuration.class);

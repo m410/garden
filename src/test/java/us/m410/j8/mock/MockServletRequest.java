@@ -1,4 +1,4 @@
-package us.m410.j8.action;
+package us.m410.j8.mock;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
