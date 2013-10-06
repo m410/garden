@@ -1,7 +1,7 @@
 package us.m410.j8.application;
 
 import us.m410.j8.configuration.Configuration;
-import us.m410.j8.configuration.ConfigurationBuilder;
+import us.m410.j8.configuration.ConfigurationFactory;
 
 import java.lang.reflect.Constructor;
 
@@ -17,7 +17,7 @@ public class ApplicationLoader {
 //        LoggerFactory.getLogger(getClass).debug("app loader classloader={}",applicationLoader)
 
         try {
-            Configuration config = ConfigurationBuilder.runtime("development");
+            Configuration config = ConfigurationFactory.runtime("development");
             String projectApplicationClass = config.getApplication().getApplicationClass();
 
             Class appClass = applicationLoader.loadClass(projectApplicationClass);

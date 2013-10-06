@@ -1,5 +1,7 @@
 package us.m410.j8.configuration;
 
+import java.util.Map;
+
 /**
  * Document Me..
  *
@@ -7,9 +9,36 @@ package us.m410.j8.configuration;
  */
 public class ApplicationDefinition {
     private String name;
+    private String organization;
     private String version;
     private String packageName;
     private String applicationClass;
+    private String author;
+    private String description;
+
+    public String getAuthor() {
+        return author;
+    }
+
+    public void setAuthor(String author) {
+        this.author = author;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public String getOrganization() {
+        return organization;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
 
     public String getApplicationClass() {
         return applicationClass;
@@ -41,5 +70,9 @@ public class ApplicationDefinition {
 
     public void setPackageName(String packageName) {
         this.packageName = packageName;
+    }
+
+    public static ApplicationDefinition fromMap(Map<String, Object> map) {
+        return null;
     }
 }

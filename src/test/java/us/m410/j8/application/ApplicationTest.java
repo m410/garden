@@ -4,7 +4,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import us.m410.j8.configuration.Configuration;
-import us.m410.j8.configuration.ConfigurationBuilder;
+import us.m410.j8.configuration.ConfigurationFactory;
 import us.m410.j8.sample.MyWebApp;
 
 import static org.junit.Assert.assertNotNull;
@@ -18,7 +18,7 @@ public class ApplicationTest {
 
     @Test
     public void applicationLoad() {
-        Configuration conf = ConfigurationBuilder.buildtime("development");
+        Configuration conf = ConfigurationFactory.buildtime("development");
         Application app = new MyWebApp(conf);
         assertNotNull(app);
     }
