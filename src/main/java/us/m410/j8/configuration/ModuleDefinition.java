@@ -38,6 +38,7 @@ public class ModuleDefinition {
 
 
     public static ModuleDefinition fromMap(Map<String, Object> val) {
-        return null;
+        ModuleDefinition md = new ModuleDefinition();
+        return md;
     }
 }

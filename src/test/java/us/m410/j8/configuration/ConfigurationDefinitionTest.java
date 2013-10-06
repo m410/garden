@@ -5,6 +5,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 
 import java.io.InputStream;
+import java.util.HashMap;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -17,6 +19,9 @@ public class ConfigurationDefinitionTest {
 
     @Test
     public void testFromMap() {
-        assertTrue("Implement me", false);
+        Map<String,Object> map = new HashMap<>();
+        map.put("version","0.1.1");
+        Configuration ad = Configuration.fromMap(map);
+        assertNotNull(ad);
     }
 }

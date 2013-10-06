@@ -19,10 +19,16 @@ public class ConfigurationFactoryTest {
 
 
     @Test
-    public void readSampleConfiguration() {
+    public void readSampleConfigurationInDevelopment() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration configuration = ConfigurationFactory.fromInputStream(in, "development");
         assertNotNull(configuration);
     }
 
+    @Test
+    public void readSampleConfigurationInProduction() {
+        InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
+        Configuration configuration = ConfigurationFactory.fromInputStream(in, "production");
+        assertNotNull(configuration);
+    }
 }

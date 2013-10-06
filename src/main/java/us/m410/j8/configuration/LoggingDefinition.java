@@ -10,6 +10,7 @@ import java.util.Map;
  */
 public class LoggingDefinition {
     public static LoggingDefinition fromMap(Map<String, Object> appDef) {
-        return null;  //To change body of created methods use File | Settings | File Templates.
+        LoggingDefinition ld = new LoggingDefinition();
+        return ld;
     }
 }

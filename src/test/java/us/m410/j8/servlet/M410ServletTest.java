@@ -4,7 +4,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import us.m410.j8.configuration.ApplicationDefinition;
-import us.m410.j8.configuration.ApplicationDescription;
 import us.m410.j8.configuration.Configuration;
 import us.m410.j8.mock.MockServletContext;
 import us.m410.j8.mock.MockServletRequest;

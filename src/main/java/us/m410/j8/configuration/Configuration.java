@@ -56,7 +56,7 @@ public class Configuration {
     }
 
     public static Configuration fromMap(Map<String, Object> c) {
-        final Configuration configuration = new Configuration();
+        Configuration configuration = new Configuration();
         configuration.version = (String)c.getOrDefault("version","UNKNOWN");
 
         configuration.application = ApplicationDefinition.fromMap(

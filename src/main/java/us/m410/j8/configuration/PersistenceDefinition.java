@@ -37,6 +37,7 @@ public class PersistenceDefinition {
     }
 
     public static PersistenceDefinition fromMap(Map<String, Object> val) {
-        return null;
+        PersistenceDefinition pd = new PersistenceDefinition();
+        return pd;
     }
 }

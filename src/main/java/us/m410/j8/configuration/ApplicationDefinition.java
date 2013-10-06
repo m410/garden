@@ -7,7 +7,7 @@ import java.util.Map;
  *
  * @author Michael Fortin
  */
-public class ApplicationDefinition {
+public class ApplicationDefinition  {
     private String name;
     private String organization;
     private String version;
@@ -73,6 +73,7 @@ public class ApplicationDefinition {
     }
 
     public static ApplicationDefinition fromMap(Map<String, Object> map) {
-        return null;
+        ApplicationDefinition ad = new ApplicationDefinition();
+        return ad;
     }
 }
