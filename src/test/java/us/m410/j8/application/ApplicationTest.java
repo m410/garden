@@ -7,6 +7,8 @@ import us.m410.j8.configuration.Configuration;
 import us.m410.j8.configuration.ConfigurationFactory;
 import us.m410.j8.sample.MyWebApp;
 
+import java.io.InputStream;
+
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
@@ -15,21 +17,33 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(JUnit4.class)
 public class ApplicationTest {
+    final String configFile = "configuration.m410.yml";
 
     @Test
     public void applicationLoad() {
-        Configuration conf = ConfigurationFactory.buildtime("development");
+        InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
+        Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
         Application app = new MyWebApp(conf);
         assertNotNull(app);
     }
 
     @Test
     public void applicationStartup() {
-        assertTrue("Implement me", false);
+        InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
+        Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
+        Application app = new MyWebApp(conf);
+        app.onStartup();
+        assertNotNull(app);
+        assertNotNull(app.actionDefinitions.size() == 0);
     }
 
     @Test
     public void applicationShutdown() {
-        assertTrue("Implement me", false);
+        InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
+        Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
+        Application app = new MyWebApp(conf);
+        app.onStartup();
+        app.onShutdown();
+        assertNotNull(app);
     }
 }

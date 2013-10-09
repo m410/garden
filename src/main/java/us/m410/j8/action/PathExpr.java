@@ -8,6 +8,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.regex.Matcher;
@@ -90,12 +91,17 @@ public final class PathExpr implements Comparable<PathExpr> {
     }
 
     String[] toArray(final String in) {
-        if(in.startsWith("/"))
-            return in.substring(1).split("/");
-        else
-            return in.split("/");
+        return Arrays.asList(in.split("/"))
+                .stream()
+                .filter((s)->{return !s.equals("");})
+                .toArray(String[]::new);
 
+//        if(in.startsWith("/"))
+//            return in.substring(1).split("/");
+//        else
+//            return in.split("/");
     }
+
     boolean isUriParam(final String i) {
         return i.startsWith("{") && i.endsWith("}");
     }

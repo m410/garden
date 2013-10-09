@@ -7,7 +7,7 @@ import us.m410.j8.configuration.Configuration;
  *
  * @author Michael Fortin
  */
-public class EntityManagerFactoryFactory implements ThreadLocalFactory {
+public class EntityManagerFactoryFactory implements ThreadLocalFactory<JpaThreadLocal> {
     private Configuration configuration;
 
     public EntityManagerFactoryFactory(Configuration configuration) {
@@ -15,7 +15,7 @@ public class EntityManagerFactoryFactory implements ThreadLocalFactory {
     }
 
     @Override
-    public ThreadLocal make() {
+    public JpaThreadLocal make() {
         return null;
     }
 

@@ -26,7 +26,7 @@ abstract public class Application
 
     private List<? extends ThreadLocalFactory> threadLocalsFactories;
     private List<?> services;
-    private List<ActionDefinition> actionDefinitions;
+    List<ActionDefinition> actionDefinitions;
 
     protected Configuration configuration;
 
@@ -83,7 +83,12 @@ abstract public class Application
     }
 
     public Optional<ActionDefinition> actionForRequest(HttpServletRequest request) {
-        return Optional.ofNullable(null); // todo implement me
+        final Optional<ActionDefinition> optional = actionDefinitions.stream()
+                .filter((ad) -> {
+                    return ad.doesRequestMatchAction(request);
+                })
+                .findFirst();
+        return optional;
     }
 
     public interface Work {
@@ -97,9 +102,10 @@ abstract public class Application
     protected void doWithThreadLocal(List<? extends ThreadLocalFactory> tlf, Work block)
             throws IOException, ServletException {
         if (tlf.size() >= 1) {
-            ThreadLocal tl = tlf.get(tlf.size() - 1).make();
+            SessionStartStop session = tlf.get(tlf.size() - 1).make();
+            session.start();
             doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
-            tl.remove();
+            session.stop();
         }
         else {
             block.doWork();

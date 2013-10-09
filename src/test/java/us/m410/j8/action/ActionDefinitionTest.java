@@ -1,5 +1,6 @@
 package us.m410.j8.action;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -23,6 +24,7 @@ public class ActionDefinitionTest {
     public void testDoesPathMatch() {
         HttpServletRequest request = new MockServletRequest() {
             @Override public String getRequestURI() { return "/"; }
+            @Override public String getMethod() { return "GET"; }
         };
         Action a = (args) -> { return Response.response(); };
         ActionDefinition ad = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.GET, Directions.noView());
@@ -49,7 +51,6 @@ public class ActionDefinitionTest {
         catch (Exception e) {
             assertNotNull(e);
         }
-
     }
 
     @Test
@@ -62,17 +63,31 @@ public class ActionDefinitionTest {
 
     @Test
     public void actionDefinitionsDontEqual() {
-        assertTrue("Implement me", false);
+        Action action = (args) -> { return null; };
+        ActionDefinition ad1 = new ActionDefinitionImpl(action,new PathExpr(""), HttpMethod.GET, Directions.noView());
+        ActionDefinition ad2 = new ActionDefinitionImpl(action,new PathExpr("persons"), HttpMethod.GET, Directions.noView());
+        assertNotEquals(ad1, ad2);
     }
 
-    @Test
+    @Test @Ignore
     public void testMatchContentType() {
         assertTrue("Implement me", false);
     }
 
     @Test
     public void testMatchHttpMethod() {
-        assertTrue("Implement me", false);
+        HttpServletRequest request = new MockServletRequest() {
+            @Override public String getRequestURI() { return "/"; }
+            @Override public String getMethod() { return "PUT"; }
+        };
+
+        HttpServletResponse response = new MockServletResponse();
+        Action a = (args) -> { return Response.response(); };
+        ActionDefinition ad1 = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.GET, Directions.noView());
+        ActionDefinition ad2 = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.PUT, Directions.noView());
+
+        assertTrue(ad2.doesRequestMatchAction(request));
+        assertFalse(ad1.doesRequestMatchAction(request));
     }
 
 }

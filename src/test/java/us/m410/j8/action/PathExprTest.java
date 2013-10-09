@@ -3,6 +3,7 @@ package us.m410.j8.action;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import us.m410.j8.application.MockController;
 import us.m410.j8.mock.MockServletRequest;
 
 import javax.servlet.http.HttpServletRequest;
@@ -107,5 +108,15 @@ public class PathExprTest {
         Map<String,String> params = path.parametersForRequest(request);
         assertEquals(1, params.size());
         assertEquals("21", params.get("id"));
+    }
+
+    @Test public void doesMockPathMatch() {
+        HttpServletRequest request = new MockServletRequest() {
+            @Override public String getRequestURI() { return "/mock"; }
+            @Override public String getMethod() { return "GET"; }
+        };
+        final MockController controller = new MockController();
+        final ActionDefinition action = controller.actions().get(0);
+        assertTrue(action.doesRequestMatchAction(request));
     }
 }

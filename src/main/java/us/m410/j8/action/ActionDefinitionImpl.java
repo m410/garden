@@ -14,7 +14,7 @@ import javax.servlet.http.HttpServletResponse;
  */
 public class ActionDefinitionImpl implements ActionDefinition, Comparable<ActionDefinition> {
     private Action action;
-    private PathExpr pathExpr;
+    PathExpr pathExpr;
     private HttpMethod httpMethod;
     private Direction direction;
     private boolean useSsl;
@@ -49,7 +49,7 @@ public class ActionDefinitionImpl implements ActionDefinition, Comparable<Action
 
     @Override
     public boolean doesRequestMatchAction(HttpServletRequest req) {
-        return pathExpr.doesPathMatch(req);
+        return pathExpr.doesPathMatch(req) && httpMethod.toString().equalsIgnoreCase(req.getMethod());
     }
 
     @Override
