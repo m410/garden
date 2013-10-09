@@ -39,8 +39,11 @@ public class M410FilterTest {
                         }
                     });
 
+
                     @Override
                     public Object getAttribute(String s) {
+                        myWebApp.onStartup();
+
                         if("application".equals(s)) {
                             return myWebApp;
                         }
@@ -52,8 +55,10 @@ public class M410FilterTest {
         };
         MockServletResponse response = new MockServletResponse();
         MockFilterChain chain = new MockFilterChain();
+        MockFilterConfig filterConfig = new MockFilterConfig();
 
         try {
+            filter.init(filterConfig);
             filter.doFilter(request,response,chain);
         }
         catch (IOException | ServletException e) {
