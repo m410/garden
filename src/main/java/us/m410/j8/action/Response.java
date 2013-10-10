@@ -18,20 +18,52 @@ import java.util.Map;
  * @author Michael Fortin
  */
 public class Response implements ActionResponse {
+    public static final String XML_CONTENT_TYPE = "application/xml";
+    public static final String JSON_CONTENT_TYPE = "application/json";
+    public static final String HTML_CONTENT_TYPE = "text/html";
+    public static final String PLAIN_CONTENT_TYPE = "text/plain";
+
     protected Map<String, String> headers = ImmutableSortedMap.of();
     protected Map<String, Object> model = ImmutableSortedMap.of();
     protected Map<String, Object> session = ImmutableSortedMap.of();
     protected Flash flash = null;
     protected Direction direction = Directions.noView();
     protected boolean invalidateSession = false;
+    protected String contentType = HTML_CONTENT_TYPE;
 
-    Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session, Flash flash, Direction viewPath, boolean invalidateSession) {
+    protected ResponseStream responseStream;
+
+    Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
+            Flash flash, Direction viewPath, boolean invalidateSession) {
         this.headers = headers;
         this.model = model;
         this.session = session;
         this.flash = flash;
         this.direction = viewPath;
         this.invalidateSession = invalidateSession;
+    }
+
+    Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
+            Flash flash, Direction viewPath, boolean invalidateSession, String contentType) {
+        this.headers = headers;
+        this.model = model;
+        this.session = session;
+        this.flash = flash;
+        this.direction = viewPath;
+        this.invalidateSession = invalidateSession;
+        this.contentType = contentType;
+    }
+
+    Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
+            Flash flash, Direction viewPath, boolean invalidateSession, String contentType, ResponseStream r) {
+        this.headers = headers;
+        this.model = model;
+        this.session = session;
+        this.flash = flash;
+        this.direction = viewPath;
+        this.invalidateSession = invalidateSession;
+        this.contentType = contentType;
+        this.responseStream = r;
     }
 
     public Response() {
@@ -91,18 +123,26 @@ public class Response implements ActionResponse {
     }
 
     public Response asText(String v) {
-        Map<String, String> headers = ImmutableSortedMap.of("content-type", "text/plain");
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession);
+        Map<String, String> headers = ImmutableSortedMap.of("content-type", PLAIN_CONTENT_TYPE);
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, PLAIN_CONTENT_TYPE);
     }
 
     public Response asJson(String v) {
-        Map<String, String> headers = ImmutableSortedMap.of("content-type", "text/json");
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession);
+        Map<String, String> headers = ImmutableSortedMap.of("content-type", JSON_CONTENT_TYPE);
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession,JSON_CONTENT_TYPE);
     }
 
     public Response asXml(String v) {
-        Map<String, String> headers = ImmutableSortedMap.of("content-type", "text/xml");
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession);
+        Map<String, String> headers = ImmutableSortedMap.of("content-type", XML_CONTENT_TYPE);
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, XML_CONTENT_TYPE);
+    }
+
+    public Response contentType(String s) {
+        return new Response(headers, model, session, flash, direction, invalidateSession, s);
+    }
+
+    public Response stream(ResponseStream s) {
+        return new Response(headers, model, session, flash, direction, invalidateSession, contentType,s);
     }
 
     @Override
@@ -136,9 +176,24 @@ public class Response implements ActionResponse {
     }
 
     @Override
+    public String getContentType() {
+        return contentType;
+    }
+
+    @Override
     public void handleResponse(HttpServletRequest request, HttpServletResponse response) {
-        if(invalidateSession && request.getSession(false) != null)
+        if(responseStream != null) {
+            try {
+                response.setContentType(contentType);
+                responseStream.stream(response.getOutputStream());
+            }
+            catch (IOException e) {
+                throw new RuntimeIOException(e);
+            }
+        }
+        else if(invalidateSession && request.getSession(false) != null) {
             request.getSession(false).invalidate();
+        }
         else {
             model.forEach(request::setAttribute);
             session.forEach(request.getSession()::setAttribute);
@@ -152,10 +207,7 @@ public class Response implements ActionResponse {
                     try {
                         request.getRequestDispatcher(((View)direction).getPath()).forward(request,response);
                     }
-                    catch (ServletException e) {
-                        throw new RuntimeServletException(e);
-                    }
-                    catch (IOException e) {
+                    catch (ServletException|IOException e) {
                         throw new RuntimeIOException(e);
                     }
                     break;
@@ -185,5 +237,4 @@ public class Response implements ActionResponse {
                 .append("invalidateSession", invalidateSession)
                 .toString();
     }
-
 }

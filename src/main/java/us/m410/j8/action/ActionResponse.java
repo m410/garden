@@ -10,6 +10,8 @@ import java.util.Map;
  */
 public interface ActionResponse {
 
+    String getContentType();
+
     Map<String, String> getHeaders();
 
     Direction getDirection();
