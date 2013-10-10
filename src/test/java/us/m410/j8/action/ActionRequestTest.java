@@ -6,8 +6,13 @@ import org.junit.runners.JUnit4;
 import us.m410.j8.mock.MockServletRequest;
 import us.m410.j8.mock.MockSession;
 
+import javax.servlet.ReadListener;
+import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
+
+import java.io.IOException;
+import java.io.StringReader;
 
 import static org.junit.Assert.*;
 
@@ -95,11 +100,49 @@ public class ActionRequestTest {
 
     @Test
     public void postBodyAsStream() {
-        assertTrue("Implement me", false);
+        HttpServletRequest request = new MockServletRequest() {
+            @Override public ServletInputStream getInputStream() throws IOException {
+                StringReader sr = new StringReader("hello");
+                return new ServletInputStream() {
+                    @Override public boolean isFinished() { return true; }
+                    @Override public boolean isReady()  {
+                        try { return sr.ready(); }
+                        catch (IOException e) { throw new RuntimeIOException(e); }
+                    }
+                    @Override public void setReadListener(ReadListener readListener) { }
+                    @Override public int read() throws IOException {
+                        return sr.read();
+                    }
+                };
+            }
+        };
+        PathExpr path = new PathExpr("/persons/12/children");
+        ActionRequest ar = new ActionRequestDefaultImpl(request, path);
+        assertNotNull(ar);
+        assertNotNull(ar.postBodyAsStream());
     }
 
     @Test
     public void postBodyAsString() {
-        assertTrue("Implement me", false);
+        HttpServletRequest request = new MockServletRequest() {
+            @Override public ServletInputStream getInputStream() throws IOException {
+                StringReader sr = new StringReader("hello");
+                return new ServletInputStream() {
+                    @Override public boolean isFinished() { return true; }
+                    @Override public boolean isReady()  {
+                        try { return sr.ready(); }
+                        catch (IOException e) { throw new RuntimeIOException(e); }
+                    }
+                    @Override public void setReadListener(ReadListener readListener) { }
+                    @Override public int read() throws IOException {
+                        return sr.read();
+                    }
+                };
+            }
+        };
+        PathExpr path = new PathExpr("/persons/12/children");
+        ActionRequest ar = new ActionRequestDefaultImpl(request, path);
+        assertNotNull(ar);
+        assertNotNull(ar.postBodyAsString());
     }
 }

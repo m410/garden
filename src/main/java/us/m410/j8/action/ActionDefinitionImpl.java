@@ -5,6 +5,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import us.m410.j8.action.direction.Direction;
+import us.m410.j8.action.status.*;
 import us.m410.j8.controller.HttpMethod;
 
 import javax.servlet.http.HttpServletRequest;
@@ -54,7 +55,19 @@ public class ActionDefinitionImpl implements ActionDefinition, Comparable<Action
 
     @Override
     public ActionStatus status(HttpServletRequest req) {
-        return null;
+        final boolean path = pathExpr.doesPathMatch(req);
+        final boolean auth = useAuthentication;
+
+        if(path) {
+            if(useSsl && !req.isSecure())
+                return new RedirectToSecure(req.getRequestURI());
+            else if(auth && req.getUserPrincipal() == null)
+                return new RedirectToAuth("/auth",req.getRequestURI());
+            else
+                return ActOn.getInstance();
+        }
+        else
+            return NotAnAction.getInstance();
     }
 
     @Override

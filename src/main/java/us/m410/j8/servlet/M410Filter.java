@@ -3,6 +3,10 @@ package us.m410.j8.servlet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import us.m410.j8.action.*;
+import us.m410.j8.action.status.ActionStatus;
+import us.m410.j8.action.status.DispatchTo;
+import us.m410.j8.action.status.RedirectToSecure;
+import us.m410.j8.action.status.RedirectToAuth;
 import us.m410.j8.application.Application;
 
 import javax.servlet.*;
@@ -50,18 +54,18 @@ public class M410Filter implements Filter {
                     chain.doFilter(req, res);
                     break;
                 case ActionStatus.REDIRECT_TO_SECURE:
-                    final String path1 = ((ActionStatusRedirect) status).getPath();
+                    final String path1 = ((RedirectToSecure) status).getPath();
                     log.debug("RedirectToSecure({})", path1);
                     response.sendRedirect(path1);
                     break;
                 case ActionStatus.REDIRECT_TO_AUTH:
-                    ActionStatusRedirectAuth redirectAuth = (ActionStatusRedirectAuth) status;
+                    RedirectToAuth redirectAuth = (RedirectToAuth) status;
                     log.debug("RedirectToAuthenticate({},{})", redirectAuth.getPath(), redirectAuth.getLastView());
                     request.getSession().setAttribute("last_view", redirectAuth.getLastView());
                     response.sendRedirect(redirectAuth.getPath());
                     break;
                 case ActionStatus.DISPATCH_TO:
-                    final String path2 = ((ActionStatusDispatchTo) status).getPath();
+                    final String path2 = ((DispatchTo) status).getPath();
                     log.debug("DispatchTo({})", path2);
                     req.getRequestDispatcher(path2).forward(req, res);
                     break;

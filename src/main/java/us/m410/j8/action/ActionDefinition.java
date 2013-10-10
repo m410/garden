@@ -1,5 +1,7 @@
 package us.m410.j8.action;
 
+import us.m410.j8.action.status.ActionStatus;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 

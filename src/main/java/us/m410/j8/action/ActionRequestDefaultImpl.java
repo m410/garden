@@ -99,13 +99,13 @@ public class ActionRequestDefaultImpl implements ActionRequest {
 
     @Override
     public String postBodyAsString() {
-        StringWriter writer = new StringWriter();
         try {
+            StringWriter writer = new StringWriter();
             IOUtils.copy(servletRequest.getInputStream(), writer, "UTF-8");
+            return writer.toString();
         }
         catch (IOException e) {
             throw new RuntimeIOException(e);
         }
-        return writer.toString();
     }
 }

@@ -1,4 +1,4 @@
-package us.m410.j8.action;
+package us.m410.j8.action.status;
 
 /**
  * Document Me..
@@ -15,4 +15,6 @@ public interface ActionStatus {
     public static final int FORBIDDEN = 7;
 
     int id();
+
+
 }

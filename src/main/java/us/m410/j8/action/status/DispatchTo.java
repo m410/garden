@@ -1,14 +1,14 @@
-package us.m410.j8.action;
+package us.m410.j8.action.status;
 
 /**
  * Document Me..
  *
  * @author Michael Fortin
  */
-public final class ActionStatusDispatchTo implements ActionStatus {
+public final class DispatchTo implements ActionStatus {
     private String path;
 
-    ActionStatusDispatchTo(String path) {
+    DispatchTo(String path) {
         this.path = path;
     }
 
