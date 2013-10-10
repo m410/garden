@@ -14,6 +14,10 @@ import us.m410.j8.action.status.*;
 import us.m410.j8.controller.HttpMethod;
 import us.m410.j8.mock.MockServletRequest;
 
+import javax.security.auth.Subject;
+import java.nio.file.attribute.UserPrincipal;
+import java.security.Principal;
+
 import static org.junit.Assert.*;
 
 
@@ -112,9 +116,9 @@ public class ActionStatusTest {
         final NoView view = Directions.noView();
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinitionImpl(action, path, get, view);
+        ActionDefinition ad = new ActionDefinitionImpl(action, path, get, view, false, false, true, new String[]{});
         MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/otherpath"; }
+            @Override public String getRequestURI() { return "/path"; }
             @Override public String getMethod() { return "GET"; }
         };
         final Forbidden expected = Forbidden.getInstance();

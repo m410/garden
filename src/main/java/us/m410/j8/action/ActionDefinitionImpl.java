@@ -56,13 +56,14 @@ public class ActionDefinitionImpl implements ActionDefinition, Comparable<Action
     @Override
     public ActionStatus status(HttpServletRequest req) {
         final boolean path = pathExpr.doesPathMatch(req);
-        final boolean auth = useAuthentication;
 
         if(path) {
             if(useSsl && !req.isSecure())
                 return new RedirectToSecure(req.getRequestURI());
-            else if(auth && req.getUserPrincipal() == null)
+            else if(useAuthentication && req.getUserPrincipal() == null)
                 return new RedirectToAuth("/auth",req.getRequestURI());
+            else if(useAuthorization && (req.getUserPrincipal() == null))
+                return Forbidden.getInstance();
             else
                 return ActOn.getInstance();
         }
