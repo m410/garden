@@ -30,7 +30,6 @@ public final class JsonController extends Controller {
     }
 
     public final Action httpGetAction = (call) -> {
-        System.out.println("HTTP GET ACTION");
         final String msg = "<message id=" + call.urlParameters().get("id") + "></message>";
         return response().asJson(msg);
     };
@@ -41,12 +40,10 @@ public final class JsonController extends Controller {
     };
 
     public final Action httpPutAction = (call) -> {
-        System.out.println("HTTP PUT ACTION");
         return response().asJson(call.postBodyAsString());
     };
 
     public final Action httpDeleteAction = (call) -> {
-        System.out.println("HTTP DELETE ACTION");
         return response().withView(Redirect.to("/xml"));
     };
 }
