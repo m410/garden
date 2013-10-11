@@ -30,8 +30,7 @@ public class ControllerFileDownloadTest {
     @Test
     public void testDownload() {
         HttpServletResponse response = new MockServletResponse() {
-            @Override
-            public ServletOutputStream getOutputStream() throws IOException {
+            @Override public ServletOutputStream getOutputStream() throws IOException {
                 return new ServletOutputStream(){
                     @Override public boolean isReady() { return false; }
                     @Override public void setWriteListener(WriteListener writeListener) { }

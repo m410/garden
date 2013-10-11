@@ -124,17 +124,41 @@ public class Response implements ActionResponse {
 
     public Response asText(String v) {
         Map<String, String> headers = ImmutableSortedMap.of("content-type", PLAIN_CONTENT_TYPE);
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, PLAIN_CONTENT_TYPE);
+        ResponseStream s = (outputStream)->{
+            try {
+                outputStream.write(v.getBytes());
+            }
+            catch (IOException e) {
+                throw new RuntimeIOException(e);
+            }
+        };
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, PLAIN_CONTENT_TYPE,s);
     }
 
     public Response asJson(String v) {
         Map<String, String> headers = ImmutableSortedMap.of("content-type", JSON_CONTENT_TYPE);
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession,JSON_CONTENT_TYPE);
+        ResponseStream s = (outputStream)->{
+            try {
+                outputStream.write(v.getBytes());
+            }
+            catch (IOException e) {
+                throw new RuntimeIOException(e);
+            }
+        };
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession,JSON_CONTENT_TYPE,s);
     }
 
     public Response asXml(String v) {
         Map<String, String> headers = ImmutableSortedMap.of("content-type", XML_CONTENT_TYPE);
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, XML_CONTENT_TYPE);
+        ResponseStream s = (outputStream)->{
+            try {
+                outputStream.write(v.getBytes());
+            }
+            catch (IOException e) {
+                throw new RuntimeIOException(e);
+            }
+        };
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, XML_CONTENT_TYPE,s);
     }
 
     public Response contentType(String s) {

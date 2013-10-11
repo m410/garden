@@ -18,6 +18,10 @@ public final class Redirect implements Direction {
         this.path = path;
     }
 
+    public static Redirect to(String to) {
+        return new Redirect(to);
+    }
+
     public String getPath() {
         return path;
     }

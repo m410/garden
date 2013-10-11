@@ -14,6 +14,7 @@ import java.util.Locale;
 public class MockServletResponse implements HttpServletResponse {
 
 
+    private String contentType;
 
     @Override
     public void addCookie(Cookie cookie) {
@@ -127,7 +128,7 @@ public class MockServletResponse implements HttpServletResponse {
 
     @Override
     public String getContentType() {
-        return null;  //To change body of implemented methods use File | Settings | File Templates.
+        return contentType;
     }
 
     @Override
@@ -157,7 +158,7 @@ public class MockServletResponse implements HttpServletResponse {
 
     @Override
     public void setContentType(String s) {
-        //To change body of implemented methods use File | Settings | File Templates.
+        this.contentType = s;
     }
 
     @Override
