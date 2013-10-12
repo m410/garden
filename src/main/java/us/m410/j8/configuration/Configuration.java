@@ -1,5 +1,9 @@
 package us.m410.j8.configuration;
 
+import us.m410.j8.servlet.FilterDefinition;
+import us.m410.j8.servlet.ListenerDefinition;
+import us.m410.j8.servlet.ServletDefinition;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +18,11 @@ public class Configuration {
     private List<PersistenceDefinition> persistence;
     private List<ModuleDefinition> modules;
     private LoggingDefinition logging;
+    private Build build;
+
+    private List<FilterDefinition> filterDefinitions;
+    private List<ServletDefinition> servletDefinitions;
+    private List<ListenerDefinition> listenerDefinitions;
 
     public String getVersion() {
         return version;
@@ -53,6 +62,38 @@ public class Configuration {
 
     public void setLogging(LoggingDefinition logging) {
         this.logging = logging;
+    }
+
+    public Build getBuild() {
+        return build;
+    }
+
+    public void setBuild(Build build) {
+        this.build = build;
+    }
+
+    public List<FilterDefinition> getFilterDefinitions() {
+        return filterDefinitions;
+    }
+
+    public void setFilterDefinitions(List<FilterDefinition> filterDefinitions) {
+        this.filterDefinitions = filterDefinitions;
+    }
+
+    public List<ServletDefinition> getServletDefinitions() {
+        return servletDefinitions;
+    }
+
+    public void setServletDefinitions(List<ServletDefinition> servletDefinitions) {
+        this.servletDefinitions = servletDefinitions;
+    }
+
+    public List<ListenerDefinition> getListenerDefinitions() {
+        return listenerDefinitions;
+    }
+
+    public void setListenerDefinitions(List<ListenerDefinition> listenerDefinitions) {
+        this.listenerDefinitions = listenerDefinitions;
     }
 
     public static Configuration fromMap(Map<String, Object> c) {

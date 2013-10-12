@@ -10,7 +10,7 @@ import java.util.EnumSet;
  *
  * @author Michael Fortin
  */
-public class ApplicationContainerListener implements ServletContextListener {
+public class ApplicationContextListener implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -18,31 +18,23 @@ public class ApplicationContainerListener implements ServletContextListener {
         String env = servletContext.getInitParameter("m410-env");
         Application app = ServletContextAppFactory.forEnvironment(env);
         servletContext.setAttribute("application", app);
-        app.onStartup();
 
         app.listeners().stream().forEach((l) -> {
+            // need to know what type of listener so it can be proxied
             servletContext.addListener(l.getClassName());
         });
 
         app.filters().stream().forEach((s) -> {
-            // todo implement me
+            FilterRegistration.Dynamic d = servletContext.addFilter(s.getName(), s.getClassName());
+            d.addMappingForUrlPatterns(s.dispatchTypes(), s.matchAfter(), s.urlPatterns());
         });
 
         app.servlets().stream().forEach((s) -> {
-            // todo implement me
+            ServletRegistration.Dynamic d = servletContext.addServlet(s.getName(), s.getClassName());
+            d.addMapping(s.mappings());
         });
 
-        FilterRegistration.Dynamic filter = servletContext.addFilter("BrzyFilter", "org.brzy.webapp.BrzyFilter");
-        EnumSet dispatchTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
-        filter.addMappingForUrlPatterns(dispatchTypes, true, "/*");
-
-        ServletRegistration.Dynamic main = servletContext.addServlet("BrzyServlet", "org.brzy.webapp.BrzyServlet");
-        main.addMapping("*.brzy");
-
-        ServletRegistration.Dynamic async = servletContext.addServlet("BrzyAsyncServlet", "org.brzy.webapp.BrzyAsyncServlet");
-        async.setAsyncSupported(true);
-        async.addMapping("*.brzy_async");
-
+        app.onStartup();
     }
 
     @Override

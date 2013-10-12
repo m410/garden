@@ -1,5 +1,8 @@
 package us.m410.j8.servlet;
 
+import javax.servlet.DispatcherType;
+import java.util.EnumSet;
+
 /**
  * Document Me..
  *
@@ -8,14 +11,14 @@ package us.m410.j8.servlet;
 public final class FilterDefinition {
     private String name;
     private String className;
-    private String params;
-    private String mapping;
+    private String[] urlPatterns;
+    private boolean matchAfter = true;
+    private EnumSet<DispatcherType> dispatchTypes = EnumSet.of(DispatcherType.REQUEST);
 
-    public FilterDefinition(String name, String className, String params, String mapping) {
+    public FilterDefinition(String name, String className, String... urlPatterns) {
         this.name = name;
         this.className = className;
-        this.params = params;
-        this.mapping = mapping;
+        this.urlPatterns = urlPatterns;
     }
 
     public String getName() {
@@ -26,12 +29,15 @@ public final class FilterDefinition {
         return className;
     }
 
-    public String getParams() {
-        return params;
+    public boolean matchAfter() {
+        return matchAfter;
     }
 
+    public EnumSet<DispatcherType> dispatchTypes() {
+        return dispatchTypes;
+    }
 
-    public String getMapping() {
-        return mapping;
+    public String[] urlPatterns() {
+        return urlPatterns;
     }
 }

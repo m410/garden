@@ -1,22 +1,25 @@
 package us.m410.j8.application;
 
-import com.google.common.collect.ImmutableList;
 import us.m410.j8.action.ActionDefinition;
 import us.m410.j8.configuration.Configuration;
 import us.m410.j8.controller.Controller;
 import us.m410.j8.controller.ControllerComponent;
 import us.m410.j8.orm.*;
 import us.m410.j8.service.ServiceComponent;
-import us.m410.j8.servlet.FilterDefinition;
-import us.m410.j8.servlet.ListenerDefinition;
-import us.m410.j8.servlet.ServletDefinition;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+
+import com.google.common.collect.ImmutableList;
+import us.m410.j8.servlet.FilterDefinition;
+import us.m410.j8.servlet.ListenerDefinition;
+import us.m410.j8.servlet.ServletDefinition;
+
 
 /**
  */
@@ -43,18 +46,15 @@ abstract public class Application
 
     public List<? extends FilterDefinition> filters() {
         return ImmutableList.of(
-                new FilterDefinition("m410", "us.m410.j8.servlet.Filter", "", "/*")
+                new FilterDefinition("M410Filter", "us.m410.j8.servlet.m410Filter", "/*")
         );
     }
 
     public List<? extends ServletDefinition> servlets() {
         return ImmutableList.of(
-                new ServletDefinition("std", "us.m410.j8.servlet.StandardServlet", "", ".j8std"),
-                new ServletDefinition("async", "us.m410.j8.servlet.AsyncServlet", "", ".j8async"),
-                new ServletDefinition("ws", "us.m410.j8.servlet.WebSocketServlet", "", ".j8ws")
+                new ServletDefinition("M410Servlet", "us.m410.j8.servlet.M410Servlet", "", ".m410")
         );
     }
-
 
     @Override
     public List<? extends OrmGenerator> ormGenerators() {
