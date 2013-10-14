@@ -10,6 +10,7 @@ import us.m410.j8.service.ServiceComponent;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.ServerEndpointConfig;
 
 import java.io.IOException;
 import java.util.List;
@@ -70,6 +71,10 @@ abstract public class Application
     public List<? extends ThreadLocalFactory> threadLocalFactories(Configuration c) {
         return ImmutableList.of();
     }
+
+//    public void addEndPoint() {
+//        ServerEndpointConfig.Builder.create(getClass(),"").build();
+//    }
 
     /**
      * Only gets called if the action is found by the filter and forwarded to this application.
