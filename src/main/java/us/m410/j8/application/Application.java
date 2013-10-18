@@ -47,13 +47,13 @@ abstract public class Application
 
     public List<? extends FilterDefinition> filters() {
         return ImmutableList.of(
-                new FilterDefinition("M410Filter", "us.m410.j8.servlet.m410Filter", "/*")
+                new FilterDefinition("M410Filter", "us.m410.j8.servlet.M410Filter", "/*")
         );
     }
 
     public List<? extends ServletDefinition> servlets() {
         return ImmutableList.of(
-                new ServletDefinition("M410Servlet", "us.m410.j8.servlet.M410Servlet", "", ".m410")
+                new ServletDefinition("M410Servlet", "us.m410.j8.servlet.M410Servlet", "", "*.m410")
         );
     }
 
