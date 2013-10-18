@@ -29,7 +29,8 @@ public class ConfigurationFactory {
 
     public static Configuration fromInputStream(InputStream in, String env) {
         try (InputStream stream = in) {
-            return Configuration.fromMap((Map<String, Object>)new Yaml().load(stream));
+            final Map<String, Object> map = (Map<String, Object>) new Yaml().load(stream);
+            return Configuration.fromMap(map);
         }
         catch (IOException e) {
             throw new RuntimeIOException(e);

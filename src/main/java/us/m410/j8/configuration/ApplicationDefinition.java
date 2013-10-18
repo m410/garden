@@ -73,7 +73,15 @@ public class ApplicationDefinition  {
     }
 
     public static ApplicationDefinition fromMap(Map<String, Object> map) {
+        System.out.println("applicationDefinition map:"+map);
         ApplicationDefinition ad = new ApplicationDefinition();
+        ad.setApplicationClass((String)map.getOrDefault("applicationClass","UNKNOWN"));
+        ad.setName((String) map.getOrDefault("name","UNKNOWN"));
+        ad.setPackageName((String) map.getOrDefault("packageName","UNKNOWN"));
+        ad.setVersion((String) map.getOrDefault("version","UNKNOWN"));
+        ad.setAuthor((String) map.getOrDefault("author","UNKNOWN"));
+        ad.setDescription((String) map.getOrDefault("description","UNKNOWN"));
+        // todo finish me
         return ad;
     }
 }

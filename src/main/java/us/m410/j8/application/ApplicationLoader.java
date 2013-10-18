@@ -27,13 +27,17 @@ public class ApplicationLoader {
 
         try {
             Configuration config = ConfigurationFactory.runtime("development");
+            System.out.println("application"+config.getApplication());
             String projectApplicationClass = config.getApplication().getApplicationClass();
+
+            System.out.println("projectApplicationClass="+projectApplicationClass);
 
             Class appClass = appClassLoader.loadClass(projectApplicationClass);
             Constructor constructor = appClass.getConstructor(Configuration.class);
             return (Application) constructor.newInstance(config);
         }
         catch (Throwable e) {
+            e.printStackTrace();
 //          log.error("Could not load application because: " + e.getMessage, e)
             throw new LoadFailureException(e);
             // will become a reflection error above, but logging here anyway to get better
