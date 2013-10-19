@@ -1,6 +1,6 @@
 package us.m410.j8.application;
 
-import us.m410.j8.orm.ThreadLocalFactory;
+import us.m410.j8.persistence.ThreadLocalFactory;
 
 /**
  * Document Me..

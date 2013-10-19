@@ -5,10 +5,10 @@ import com.google.common.collect.ImmutableList;
 import us.m410.j8.application.Application;
 import us.m410.j8.configuration.Configuration;
 import us.m410.j8.controller.Controller;
-import us.m410.j8.orm.JpaComponent;
-import us.m410.j8.orm.MigrationComponent;
-import us.m410.j8.orm.OrmBuilderComponent;
-import us.m410.j8.orm.OrmGenerator;
+import us.m410.j8.persistence.JpaComponent;
+import us.m410.j8.persistence.MigrationComponent;
+import us.m410.j8.persistence.OrmBuilderComponent;
+import us.m410.j8.persistence.OrmGenerator;
 import us.m410.j8.sample.components.JmsComponent;
 import us.m410.j8.sample.components.MailComponent;
 

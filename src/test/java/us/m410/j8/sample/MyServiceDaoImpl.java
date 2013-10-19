@@ -1,6 +1,8 @@
 package us.m410.j8.sample;
 
-import us.m410.j8.orm.OrmBuilder;
+import us.m410.j8.persistence.orm.OrmBuilder;
+
+import static us.m410.j8.persistence.orm.ORM.*;
 
 /**
  * Document Me..
@@ -10,6 +12,6 @@ import us.m410.j8.orm.OrmBuilder;
 public class MyServiceDaoImpl implements MyServiceDao {
     @Override
     public OrmBuilder getOrmBuilder() {
-        return new OrmBuilder("us.m410.j8.sample.Person").make();
+        return entity("us.m410.j8.sample.Person", "table");
     }
 }

@@ -1,4 +1,4 @@
-package us.m410.j8.orm;
+package us.m410.j8.persistence;
 
 import com.google.common.collect.ImmutableList;
 import us.m410.j8.configuration.Configuration;

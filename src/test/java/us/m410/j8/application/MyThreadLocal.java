@@ -1,7 +1,5 @@
 package us.m410.j8.application;
 
-import us.m410.j8.orm.ThreadLocalFactory;
-
 /**
  * Document Me..
  *

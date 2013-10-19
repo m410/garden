@@ -1,6 +1,6 @@
 package us.m410.j8.sample;
 
-import us.m410.j8.orm.OrmGenerator;
+import us.m410.j8.persistence.OrmGenerator;
 
 /**
  * Document Me..
