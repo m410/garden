@@ -6,12 +6,10 @@ import us.m410.j8.action.Action;
 import us.m410.j8.action.ActionDefinition;
 import us.m410.j8.action.PathExpr;
 import us.m410.j8.action.direction.Redirect;
-import us.m410.j8.sample.MyService;
 
 import java.util.List;
 
 import static us.m410.j8.action.Response.response;
-import static us.m410.j8.action.direction.Directions.view;
 
 
 /**

@@ -8,7 +8,6 @@ import us.m410.j8.action.Action;
 import static us.m410.j8.action.Response.*;
 
 import us.m410.j8.action.ActionDefinition;
-import us.m410.j8.action.ActionDefinitionImpl;
 import us.m410.j8.action.PathExpr;
 import us.m410.j8.action.direction.Directions;
 import us.m410.j8.mock.MockServletRequest;
@@ -19,8 +18,6 @@ import javax.servlet.WriteListener;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-
-import static org.junit.Assert.*;
 
 /**
  * @author Michael Fortin
@@ -46,7 +43,7 @@ public class ControllerFileDownloadTest {
             return response().contentType("application/json").stream(Assert::assertNotNull);
         };
 
-        ActionDefinition ad = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.GET, Directions.noView());
+        ActionDefinition ad = new ActionDefinition(a,new PathExpr(""), HttpMethod.GET);
         ad.apply(request, response);
     }
 }

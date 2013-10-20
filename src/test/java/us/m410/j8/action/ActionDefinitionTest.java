@@ -27,7 +27,7 @@ public class ActionDefinitionTest {
             @Override public String getMethod() { return "GET"; }
         };
         Action a = (args) -> { return Response.response(); };
-        ActionDefinition ad = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.GET, Directions.noView());
+        ActionDefinition ad = new ActionDefinition(a,new PathExpr(""), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
     }
 
@@ -44,7 +44,7 @@ public class ActionDefinitionTest {
         };
 
         try {
-            ActionDefinition ad = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.GET, Directions.noView());
+            ActionDefinition ad = new ActionDefinition(a,new PathExpr(""), HttpMethod.GET);
             ad.apply(request, response);
             fail("exception was not thrown");
         }
@@ -56,16 +56,16 @@ public class ActionDefinitionTest {
     @Test
     public void actionDefinitionsEqual() {
         Action action = (args) -> { return null; };
-        ActionDefinition ad1 = new ActionDefinitionImpl(action,new PathExpr(""), HttpMethod.GET, Directions.noView());
-        ActionDefinition ad2 = new ActionDefinitionImpl(action,new PathExpr(""), HttpMethod.GET, Directions.noView());
+        ActionDefinition ad1 = new ActionDefinition(action,new PathExpr(""), HttpMethod.GET);
+        ActionDefinition ad2 = new ActionDefinition(action,new PathExpr(""), HttpMethod.GET);
         assertEquals(ad1,ad2);
     }
 
     @Test
     public void actionDefinitionsDontEqual() {
         Action action = (args) -> { return null; };
-        ActionDefinition ad1 = new ActionDefinitionImpl(action,new PathExpr(""), HttpMethod.GET, Directions.noView());
-        ActionDefinition ad2 = new ActionDefinitionImpl(action,new PathExpr("persons"), HttpMethod.GET, Directions.noView());
+        ActionDefinition ad1 = new ActionDefinition(action,new PathExpr(""), HttpMethod.GET);
+        ActionDefinition ad2 = new ActionDefinition(action,new PathExpr("persons"), HttpMethod.GET);
         assertNotEquals(ad1, ad2);
     }
 
@@ -83,8 +83,8 @@ public class ActionDefinitionTest {
 
         HttpServletResponse response = new MockServletResponse();
         Action a = (args) -> { return Response.response(); };
-        ActionDefinition ad1 = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.GET, Directions.noView());
-        ActionDefinition ad2 = new ActionDefinitionImpl(a,new PathExpr(""), HttpMethod.PUT, Directions.noView());
+        ActionDefinition ad1 = new ActionDefinition(a,new PathExpr(""), HttpMethod.GET);
+        ActionDefinition ad2 = new ActionDefinition(a,new PathExpr(""), HttpMethod.PUT);
 
         assertTrue(ad2.doesRequestMatchAction(request));
         assertFalse(ad1.doesRequestMatchAction(request));

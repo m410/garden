@@ -25,31 +25,31 @@ public final class MyController extends Controller {
 
     public List<ActionDefinition> actions() {
         return ImmutableList.of(
-                get("path", httpGetAction, view("/home")),
-                post("path", httpPostAction, view("/home")),
-                put("path", httpPutAction, view("/home")),
-                delete("path", httpDeleteAction, view("/home"))
+                get("path", httpGetAction),
+                post("path", httpPostAction),
+                put("path", httpPutAction),
+                delete("path", httpDeleteAction)
         );
     }
 
     public final Action httpGetAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity);
+        return response().withModel("name", myEntity).withView(view("/home"));
     };
 
     public final Action httpPostAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity);
+        return response().withModel("name", myEntity).withView(view("/home"));
     };
 
     public final Action httpPutAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity);
+        return response().withModel("name", myEntity).withView(view("/home"));
     };
 
     public final Action httpDeleteAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity);
+        return response().withModel("name", myEntity).withView(view("/home"));
     };
 }
 

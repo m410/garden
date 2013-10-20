@@ -3,10 +3,10 @@ package us.m410.j8.controller;
 import com.google.common.collect.ImmutableList;
 import us.m410.j8.action.Action;
 import static us.m410.j8.action.Response.*;
+
 import us.m410.j8.action.ActionDefinition;
 import us.m410.j8.action.PathExpr;
 
-import java.io.InputStream;
 import java.util.List;
 
 /**
