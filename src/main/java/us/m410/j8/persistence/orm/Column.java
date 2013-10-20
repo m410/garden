@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-final class Column extends Node {
+public final class Column extends Node {
     String name =  "";
     boolean unique =  false;
     boolean nullable =  true;

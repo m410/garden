@@ -29,16 +29,15 @@ public class ApplicationActionForRequestTest {
     public void setup() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in, "development");
-        app = new MyWebApp(conf) {
-            @Override
-            public List<? extends Controller> makeControllers(Configuration c) {
+        app = new MyWebApp() {
+            @Override public List<? extends Controller> makeControllers(Configuration c) {
                 List<Controller> ctrls = new ArrayList<>();
                 final MockController mockController = new MockController();
                 ctrls.add(mockController);
                 return ctrls;
             }
         };
-        app.onStartup();
+        app.init(conf);
     }
 
     @Test

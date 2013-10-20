@@ -8,10 +8,10 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-final class Entity  extends Node {
+public final class Entity  extends Node {
     private String className;
 
-    public Entity(String className) {
+    Entity(String className) {
         this.className = className;
     }
 

@@ -23,7 +23,8 @@ public class ApplicationTest {
     public void applicationLoad() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
-        Application app = new MyWebApp(conf);
+        Application app = new MyWebApp();
+        app.init(conf);
         assertNotNull(app);
     }
 
@@ -31,8 +32,8 @@ public class ApplicationTest {
     public void applicationStartup() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
-        Application app = new MyWebApp(conf);
-        app.onStartup();
+        Application app = new MyWebApp();
+        app.init(conf);
         assertNotNull(app);
         assertNotNull(app.actionDefinitions.size() == 0);
     }
@@ -41,9 +42,9 @@ public class ApplicationTest {
     public void applicationShutdown() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
-        Application app = new MyWebApp(conf);
-        app.onStartup();
-        app.onShutdown();
+        Application app = new MyWebApp();
+        app.init(conf);
+        app.destroy();
         assertNotNull(app);
     }
 }

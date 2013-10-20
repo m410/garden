@@ -32,17 +32,17 @@ public class M410FilterTest {
             @Override
             public ServletContext getServletContext() {
                 return new MockServletContext() {
-                    MyWebApp myWebApp = new MyWebApp(new Configuration() {
-                        @Override
-                        public ApplicationDefinition getApplication() {
-                            return null;
-                        }
-                    });
+                    MyWebApp myWebApp = new MyWebApp();
 
 
                     @Override
                     public Object getAttribute(String s) {
-                        myWebApp.onStartup();
+                        myWebApp.init(new Configuration() {
+                            @Override
+                            public ApplicationDefinition getApplication() {
+                                return null;
+                            }
+                        });
 
                         if("application".equals(s)) {
                             return myWebApp;

@@ -6,8 +6,8 @@ package us.m410.j8.persistence.orm;
  * @author Michael Fortin
  */
 public final class ORM {
-    public static OrmBuilder entity(String className, String tableName) {
-        return new OrmBuilder(className, tableName);
+    public static EntityNodeBuilder entity(String className, String tableName) {
+        return new EntityNodeBuilder(className, tableName);
     }
 
     public static Column column(String name) {

@@ -8,10 +8,10 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-final class Table  extends Node {
+public final class Table  extends Node {
     private String name;
 
-    public Table(String name) {
+    Table(String name) {
         this.name = name;
     }
 

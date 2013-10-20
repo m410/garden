@@ -1,8 +1,8 @@
 package us.m410.j8.sample.components;
 
 import com.google.common.collect.ImmutableList;
+import us.m410.j8.application.ApplicationComponent;
 import us.m410.j8.configuration.Configuration;
-import us.m410.j8.service.ServiceComponent;
 
 import java.util.List;
 
@@ -11,7 +11,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public interface MailComponent extends ServiceComponent {
+public interface MailComponent extends ApplicationComponent {
     default List<?> makeServices(Configuration c) {
         return ImmutableList.of(new MailService());
     }

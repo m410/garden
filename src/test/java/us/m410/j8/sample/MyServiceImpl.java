@@ -1,6 +1,9 @@
 package us.m410.j8.sample;
 
 
+import us.m410.j8.persistence.orm.Entity;
+import static us.m410.j8.persistence.orm.ORM.*;
+
 /**
  */
 public class MyServiceImpl implements MyService {
@@ -13,6 +16,11 @@ public class MyServiceImpl implements MyService {
 
     public String get(String id) {
         return "got id: " + id;
+    }
+
+    @Override
+    public Entity makeEntity() {
+        return entity("us.m410.j8.sample.Person","person").make();
     }
 
     @Override

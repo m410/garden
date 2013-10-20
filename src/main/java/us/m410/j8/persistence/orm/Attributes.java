@@ -8,7 +8,10 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-final class Attributes extends Node {
+public final class Attributes extends Node {
+    Attributes() {
+    }
+
     @Override
     public void appendElement(Document root, Element parent) {
         Element attributes = root.createElement("attributes");

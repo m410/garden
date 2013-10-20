@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-final class JoinColumn extends Node {
+public final class JoinColumn extends Node {
     String name =  "";
     String referencedColumnName =  "";
     boolean unique =  false;

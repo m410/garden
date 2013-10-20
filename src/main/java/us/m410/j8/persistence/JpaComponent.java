@@ -1,8 +1,8 @@
 package us.m410.j8.persistence;
 
 import com.google.common.collect.ImmutableList;
+import us.m410.j8.application.ApplicationComponent;
 import us.m410.j8.configuration.Configuration;
-import us.m410.j8.service.ThreadLocalComponent;
 
 import java.util.List;
 
@@ -11,11 +11,11 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public interface JpaComponent extends ThreadLocalComponent {
+public interface JpaComponent extends ApplicationComponent {
 
-    default List<? extends ThreadLocalFactory> threadLocalFactories(Configuration c) {
+    default List<? extends ThreadLocalFactory> makeThreadLocalFactories(Configuration c) {
         return ImmutableList.of(
-                new EntityManagerFactoryFactory(c)
+                new EntityManagerFactory(c)
         );
     }
 }

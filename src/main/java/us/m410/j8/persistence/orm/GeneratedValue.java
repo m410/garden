@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-final class GeneratedValue extends Node {
+public final class GeneratedValue extends Node {
     String strategy;
     String generator;
 

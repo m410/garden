@@ -9,10 +9,10 @@ import org.w3c.dom.Element;
  * @author Michael Fortin
  */
 
-final class Id  extends Node {
+public final class Id  extends Node {
     private String name;
 
-    public Id(String name) {
+    Id(String name) {
         this.name = name;
     }
 

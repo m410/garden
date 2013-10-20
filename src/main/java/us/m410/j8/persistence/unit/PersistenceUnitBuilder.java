@@ -19,8 +19,9 @@ import java.util.Map;
 /**
  * Document Me..
  *
- * @see http://wiki.eclipse.org/EclipseLink/Examples/JPA/EmployeeXML
- * @see http://stackoverflow.com/questions/2373369/define-named-query-in-orm-xml-with-jpa-and-hibernate
+ * http://wiki.eclipse.org/EclipseLink/Examples/JPA/EmployeeXML
+ * http://stackoverflow.com/questions/2373369/define-named-query-in-orm-xml-with-jpa-and-hibernate
+ *
  * @author Michael Fortin
  */
 public class PersistenceUnitBuilder {
@@ -28,6 +29,7 @@ public class PersistenceUnitBuilder {
     private String transactionType;
     private String description;
     private Map<String, String> map = new HashMap<>();
+    private String mappingFile;
 
     public PersistenceUnitBuilder name(String s) {
         this.name = s;
@@ -45,10 +47,12 @@ public class PersistenceUnitBuilder {
     }
 
     public PersistenceUnitBuilder property(String name, String value) {
+        map.put(name,value);
         return this;
     }
 
     public PersistenceUnitBuilder mappingFile(String name) {
+        this.mappingFile = name.replaceAll("\\.","/") + "/orm.xml";
         return this;
     }
 
@@ -74,9 +78,9 @@ public class PersistenceUnitBuilder {
         desc.setTextContent(description);
         persistenceUnit.appendChild(desc);
 
-        Element mappingFile = doc.createElement("mapping-file");
-        mappingFile.setTextContent("FIX ME");
-        persistenceUnit.appendChild(mappingFile);
+        Element mapping = doc.createElement("mapping-file");
+        mapping.setTextContent(mappingFile);
+        persistenceUnit.appendChild(mapping);
 
         Element properties = doc.createElement("properties");
         map.forEach((n,v)->{
@@ -85,7 +89,7 @@ public class PersistenceUnitBuilder {
             nvp.setAttribute("value",v);
             properties.appendChild(nvp);
         });
-        persistenceUnit.appendChild(mappingFile);
+        persistenceUnit.appendChild(properties);
 
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();

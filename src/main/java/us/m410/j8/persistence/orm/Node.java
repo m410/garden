@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-abstract public class Node {
+abstract class Node {
     List<Node> children = new ArrayList<>();
 
     public void addChild(Node node) {

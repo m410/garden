@@ -7,10 +7,10 @@ import us.m410.j8.configuration.Configuration;
  *
  * @author Michael Fortin
  */
-public class EntityManagerFactoryFactory implements ThreadLocalFactory<JpaThreadLocal> {
+public class EntityManagerFactory implements ThreadLocalFactory<JpaThreadLocal> {
     private Configuration configuration;
 
-    public EntityManagerFactoryFactory(Configuration configuration) {
+    public EntityManagerFactory(Configuration configuration) {
         this.configuration = configuration;
     }
 

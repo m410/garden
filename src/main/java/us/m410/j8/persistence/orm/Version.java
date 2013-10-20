@@ -8,10 +8,10 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-final class Version  extends Node {
+public final class Version  extends Node {
     private String name;
 
-    public Version(String name) {
+    Version(String name) {
         this.name = name;
     }
 

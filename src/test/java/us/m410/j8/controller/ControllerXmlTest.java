@@ -25,12 +25,12 @@ public class ControllerXmlTest {
 
     @Before
     public void setup() {
-        myApp = new MyWebApp(null) {
+        myApp = new MyWebApp() {
             @Override public List<? extends Controller> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
             }
         };
-        myApp.onStartup();
+        myApp.init(null);
     }
 
     @Test

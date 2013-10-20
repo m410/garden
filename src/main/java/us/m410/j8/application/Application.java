@@ -3,9 +3,7 @@ package us.m410.j8.application;
 import us.m410.j8.action.ActionDefinition;
 import us.m410.j8.configuration.Configuration;
 import us.m410.j8.controller.Controller;
-import us.m410.j8.controller.ControllerComponent;
 import us.m410.j8.persistence.*;
-import us.m410.j8.service.ServiceComponent;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -23,51 +21,53 @@ import us.m410.j8.servlet.ServletDefinition;
 
 /**
  */
-abstract public class Application
-        implements LifeCycleComponent, ServiceComponent, ControllerComponent, JpaComponent,
-        MigrationComponent, OrmBuilderComponent {
+abstract public class Application implements ApplicationComponent {
 
     private List<? extends ThreadLocalFactory> threadLocalsFactories;
     private List<?> services;
     List<ActionDefinition> actionDefinitions;
+    private List<ServletDefinition> servletDefinitions;
+    private List<FilterDefinition> filterDefinitions;
+    private List<ListenerDefinition> listenerDefinitions;
 
-    protected Configuration configuration;
-
-    private Application() {
+    @Override
+    public List<ServletDefinition> getServlets() {
+        return servletDefinitions;
     }
 
-    protected Application(Configuration config) {
-        configuration = config;
+    @Override
+    public List<FilterDefinition> getFilters() {
+        return filterDefinitions;
     }
 
-    public List<? extends ListenerDefinition> listeners() {
+    @Override
+    public List<ListenerDefinition> getListeners() {
+        return listenerDefinitions;
+    }
+
+    public List<ListenerDefinition> makeListeners(Configuration c) {
         return ImmutableList.of();
     }
 
-    public List<? extends FilterDefinition> filters() {
+    public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
                 new FilterDefinition("M410Filter", "us.m410.j8.servlet.M410Filter", "/*")
         );
     }
 
-    public List<? extends ServletDefinition> servlets() {
+    public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
                 new ServletDefinition("M410Servlet", "us.m410.j8.servlet.M410Servlet", "", "*.m410")
         );
     }
 
     @Override
-    public List<? extends OrmGenerator> ormGenerators() {
+    public List<? extends ThreadLocalFactory> makeThreadLocalFactories(Configuration c) {
         return ImmutableList.of();
     }
 
     @Override
     public List<?> makeServices(Configuration c) {
-        return ImmutableList.of();
-    }
-
-    @Override
-    public List<? extends ThreadLocalFactory> threadLocalFactories(Configuration c) {
         return ImmutableList.of();
     }
 
@@ -116,25 +116,20 @@ abstract public class Application
         }
     }
 
-    public void onStartup() {
-        doMigration(configuration);
-        threadLocalsFactories = threadLocalFactories(configuration);
+    public void init(Configuration configuration) {
+        threadLocalsFactories = makeThreadLocalFactories(configuration);
+        servletDefinitions = makeServlets(configuration);
+        filterDefinitions = makeFilters(configuration);
+        listenerDefinitions = makeListeners(configuration);
         services = makeServices(configuration);
         List<? extends Controller> controllers = makeControllers(configuration);
-        services.stream().forEach(s -> {
-            if (s instanceof LifeCycleComponent)
-                ((LifeCycleComponent) s).onStartup();
-        });
+
         ImmutableList.Builder<ActionDefinition> b = ImmutableList.builder();
         controllers.stream().forEach((c) -> b.addAll(c.actions()));
         actionDefinitions = b.build();
     }
 
-    public void onShutdown() {
-        services.stream().forEach(s -> {
-            if (s instanceof LifeCycleComponent)
-                ((LifeCycleComponent) s).onShutdown();
-        });
+    public void destroy() {
         threadLocalsFactories.stream().forEach((tlf) -> tlf.shutdown());
     }
 }

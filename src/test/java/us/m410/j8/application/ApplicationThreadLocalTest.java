@@ -31,7 +31,8 @@ public class ApplicationThreadLocalTest {
     public void setup() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in, "development");
-        app = new MyWebApp(conf);
+        app = new MyWebApp();
+        app.init(conf);
     }
 
     @Test

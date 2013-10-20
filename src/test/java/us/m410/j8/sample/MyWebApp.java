@@ -6,9 +6,9 @@ import us.m410.j8.application.Application;
 import us.m410.j8.configuration.Configuration;
 import us.m410.j8.controller.Controller;
 import us.m410.j8.persistence.JpaComponent;
-import us.m410.j8.persistence.MigrationComponent;
+import us.m410.j8.migration.MigrationComponent;
 import us.m410.j8.persistence.OrmBuilderComponent;
-import us.m410.j8.persistence.OrmGenerator;
+import us.m410.j8.persistence.orm.EntityFactory;
 import us.m410.j8.sample.components.JmsComponent;
 import us.m410.j8.sample.components.MailComponent;
 
@@ -17,14 +17,9 @@ import java.util.List;
 
 /**
  */
-public class MyWebApp
-        extends Application
-        implements JpaComponent, MailComponent, JmsComponent,
+public class MyWebApp extends Application implements JpaComponent, MailComponent, JmsComponent,
         OrmBuilderComponent, MigrationComponent {
 
-    public MyWebApp(Configuration c) {
-        super(c);
-    }
 
     MyServiceDao myServiceDao = new MyServiceDaoImpl();
     MyService myService = new MyServiceImpl(myServiceDao);
@@ -46,12 +41,8 @@ public class MyWebApp
     }
 
     @Override
-    public List<? extends OrmGenerator> ormGenerators() {
-        return ImmutableList.of(
-                myServiceDao
-        );
+    public List<? extends EntityFactory> entityBuilders() {
+        return ImmutableList.of(myService);
     }
-
-
 }
 

@@ -20,7 +20,7 @@ import static us.m410.j8.persistence.orm.ORM.*;
  */
 @RunWith(JUnit4.class)
 public class OrmBuilderTest {
-    private static String expected =
+    static String expected =
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
             "<entity-mappings version=\"2.1\" " +
             "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
@@ -46,11 +46,12 @@ public class OrmBuilderTest {
 
     @Test
     public void buildOrmXml() throws ParserConfigurationException, TransformerException, IOException, SAXException {
-        String result = entity("org.m410.demo.Person", "person")
+        Entity entity = entity("org.m410.demo.Person", "person")
                 .id("id", generatedValue("person_seq", "SEQUENCE"))
                 .version("version")
                 .basic("name", column("my_name"))
                 .make();
+        String result = new OrmXmlBuilder().addEntity(entity).make();
         assertEquals(expected, result);
     }
 }

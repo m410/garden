@@ -30,17 +30,17 @@ public class M410ServletTest {
             @Override
             public ServletContext getServletContext() {
                 return new MockServletContext() {
-                    MyWebApp myWebApp = new MyWebApp(new Configuration() {
-                        @Override
-                        public ApplicationDefinition getApplication() {
-                            return null;
-                        }
-                    });
+                    MyWebApp myWebApp = new MyWebApp();
 
                     @Override
                     public Object getAttribute(String s) {
                         if("application".equals(s)) {
-                            myWebApp.onStartup();
+                            myWebApp.init(new Configuration() {
+                                @Override
+                                public ApplicationDefinition getApplication() {
+                                    return null;
+                                }
+                            });
                             return myWebApp;
                         }
                         else
