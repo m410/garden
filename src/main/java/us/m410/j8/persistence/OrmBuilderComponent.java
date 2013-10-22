@@ -24,6 +24,7 @@ public interface OrmBuilderComponent {
     }
 
     default PersistenceUnitBuilder configurePersistence(Configuration configuration) {
+        // todo fix hard coded values
         return new PersistenceUnitBuilder()
                 .name("demo")
                 .description("Sample persistence mapping")

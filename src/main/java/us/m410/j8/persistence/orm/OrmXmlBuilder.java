@@ -14,6 +14,9 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -83,5 +86,10 @@ public final class OrmXmlBuilder {
         transformer.transform(source, result);
 
         return s.toString();
+    }
+
+    public void writeToFile(Path path) throws ParserConfigurationException, IOException,
+            SAXException, TransformerException {
+        Files.write(path, make().getBytes());
     }
 }
