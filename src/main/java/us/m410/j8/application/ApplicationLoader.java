@@ -4,6 +4,7 @@ import us.m410.j8.configuration.Configuration;
 import us.m410.j8.configuration.ConfigurationFactory;
 
 import java.lang.reflect.Constructor;
+import java.lang.reflect.Method;
 
 /**
  * This loads the application but with a small caveat.  The application must be loaded
@@ -33,8 +34,10 @@ public class ApplicationLoader {
             System.out.println("projectApplicationClass="+projectApplicationClass);
 
             Class appClass = appClassLoader.loadClass(projectApplicationClass);
-            Constructor constructor = appClass.getConstructor(Configuration.class);
-            return (Application) constructor.newInstance(config);
+            Object instance = appClass.newInstance();
+            Method initMethod = appClass.getMethod("init",Configuration.class);
+            initMethod.invoke(instance, config);
+            return (Application) instance;
         }
         catch (Throwable e) {
             e.printStackTrace();
