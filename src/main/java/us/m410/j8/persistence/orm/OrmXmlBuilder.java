@@ -90,6 +90,7 @@ public final class OrmXmlBuilder {
 
     public void writeToFile(Path path) throws ParserConfigurationException, IOException,
             SAXException, TransformerException {
+        System.out.println("writing to:" + path);
         Files.write(path, make().getBytes());
     }
 }
