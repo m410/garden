@@ -13,6 +13,6 @@ public class MyServiceDaoImpl implements MyServiceDao {
 
     @Override
     public Entity makeEntity() {
-        return entity("us.m410.demo.Person", "person").make();
+        return entity("org.m410.demo.Person", "person").make();
     }
 }

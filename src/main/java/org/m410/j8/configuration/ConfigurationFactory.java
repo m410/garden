@@ -11,9 +11,16 @@ import java.util.Map;
  */
 public class ConfigurationFactory {
     public static final String  configFile = "configuration.m410.yml";
+    public static final String  altConfigFile = "/configuration.m410.yml";
 
     public static Configuration runtime(String env) {
         InputStream in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(configFile);
+
+        if (in == null)
+            in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(altConfigFile);
+
+        System.out.println("input streams: " + in);
+
         return fromInputStream(in, env);
     }
 

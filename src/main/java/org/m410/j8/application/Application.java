@@ -51,13 +51,13 @@ abstract public class Application implements ApplicationComponent {
 
     public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
-                new FilterDefinition("M410Filter", "us.m410.j8.servlet.M410Filter", "/*")
+                new FilterDefinition("M410Filter", "org.m410.j8.servlet.M410Filter", "/*")
         );
     }
 
     public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
-                new ServletDefinition("M410Servlet", "us.m410.j8.servlet.M410Servlet", "", "*.m410")
+                new ServletDefinition("M410Servlet", "org.m410.j8.servlet.M410Servlet", "", "*.m410")
         );
     }
 
