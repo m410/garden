@@ -6,7 +6,7 @@ package org.m410.j8.persistence.help;
  * @author Michael Fortin
  */
 abstract public class PessimisticPrimaryKey<T> implements Id<T>{
-    private T id;
+    protected T id;
 
     public T getId() {
         return id;

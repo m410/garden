@@ -8,7 +8,7 @@ package org.m410.j8.persistence.help;
  * @author Michael Fortin
  */
 abstract public class OptimisticPrimaryKey<T> extends PessimisticPrimaryKey<T> {
-    private Integer version;
+    protected Integer version;
 
     public Integer getVersion() {
         return version;
