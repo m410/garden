@@ -22,15 +22,26 @@ public class EntityNodeBuilder {
         return append(node, nodes);
     }
 
+    public EntityNodeBuilder id(String id) {
+        return append(new Id(id), new Node[0]);
+    }
 
     public EntityNodeBuilder basic(String id, Node... nodes) {
         final Basic node = new Basic(id);
         return append(node, nodes);
     }
 
+    public EntityNodeBuilder basic(String id) {
+        return append(new Basic(id), new Node[0]);
+    }
+
     public EntityNodeBuilder version(String id, Node... nodes) {
         final Version node = new Version(id);
         return append(node, nodes);
+    }
+
+    public EntityNodeBuilder version(String id) {
+        return append(new Version(id), new Node[0]);
     }
 
     public EntityNodeBuilder manyToOne(String id, Node... nodes) {

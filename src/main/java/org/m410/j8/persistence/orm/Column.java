@@ -9,13 +9,13 @@ import org.w3c.dom.Element;
  * @author Michael Fortin
  */
 public final class Column extends Node {
-    String name =  "";
+    String name =  null;
     boolean unique =  false;
     boolean nullable =  true;
     boolean insertable =  true;
     boolean updatable =  true;
-    String columnDefinition =  "";
-    String table =  "";
+    String columnDefinition = null;
+    String table =  null;
     int length =  255;
     int precision =  0; // decimal precision
     int scale =  0; // decimal scale
@@ -60,11 +60,20 @@ public final class Column extends Node {
         basic.setAttribute("nullable",String.valueOf(nullable));
         basic.setAttribute("insertable",String.valueOf(insertable));
         basic.setAttribute("updatable",String.valueOf(updatable));
-        basic.setAttribute("column-definition",columnDefinition);
-        basic.setAttribute("table",table);
+
+        if(columnDefinition != null)
+            basic.setAttribute("column-definition",columnDefinition);
+
+        if(table != null)
+            basic.setAttribute("table",table);
+
         basic.setAttribute("length",String.valueOf(length));
-        basic.setAttribute("precision",String.valueOf(precision));
-        basic.setAttribute("scale",String.valueOf(scale));
+
+        if(precision>0 )
+            basic.setAttribute("precision",String.valueOf(precision));
+        if(scale>0)
+            basic.setAttribute("scale",String.valueOf(scale));
+
         children.stream().forEach(n->n.appendElement(root,basic));
         parent.appendChild(basic);
     }

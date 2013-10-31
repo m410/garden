@@ -1,11 +1,20 @@
 package org.m410.j8.persistence.orm;
 
+import org.m410.j8.configuration.Configuration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -14,10 +23,10 @@ import java.util.Map;
  *
  * @author Michael Fortin
  */
-public class PersistenceXmlBuilder {
+public class PersistenceXmlBuilder implements ConfigFileBuilder {
     private Map<String,String> properties = new HashMap<>();
 
-    public void make() throws ParserConfigurationException {
+    public String make() throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -52,6 +61,24 @@ public class PersistenceXmlBuilder {
         });
         persistUnit.appendChild(propertiesElem);
 
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        StringWriter s = new StringWriter();
+        StreamResult result = new StreamResult(s); // new File("orm.xml")
+        transformer.transform(source, result);
+
         root.appendChild(persistUnit);
+        return s.toString();
+    }
+
+
+    public void writeToFile(Path path, Configuration configuration) {
+        try {
+            Files.write(path, make().getBytes());
+        } catch (Exception e) {
+            throw new RuntimeException("Could not write to path: " + path, e);
+        }
     }
 }

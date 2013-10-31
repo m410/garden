@@ -1,5 +1,6 @@
 package org.m410.j8.persistence.orm;
 
+import org.m410.j8.configuration.Configuration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -24,7 +25,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public final class OrmXmlBuilder {
+public final class OrmXmlBuilder implements ConfigFileBuilder{
 
     private List<Entity> entities = new ArrayList<>();
 
@@ -86,8 +87,13 @@ public final class OrmXmlBuilder {
         return s.toString();
     }
 
-    public void writeToFile(Path path) throws ParserConfigurationException, IOException,
-            SAXException, TransformerException {
-        Files.write(path, make().getBytes());
+    @Override
+    public void writeToFile(Path path, Configuration configuration) {
+        try {
+            Files.write(path, make().getBytes());
+        } catch (Exception e) {
+            throw new RuntimeException("Couldn't write to path: " + path, e);
+        }
     }
+
 }

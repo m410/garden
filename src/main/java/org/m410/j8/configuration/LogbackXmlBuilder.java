@@ -1,0 +1,75 @@
+package org.m410.j8.configuration;
+
+import org.m410.j8.persistence.orm.ConfigFileBuilder;
+import org.w3c.dom.Document;
+import org.w3c.dom.Element;
+
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.Transformer;
+import javax.xml.transform.TransformerException;
+import javax.xml.transform.TransformerFactory;
+import javax.xml.transform.dom.DOMSource;
+import javax.xml.transform.stream.StreamResult;
+import java.io.StringWriter;
+import java.nio.file.Files;
+import java.nio.file.Path;
+
+/**
+ * Created with IntelliJ IDEA.
+ */
+public class LogbackXmlBuilder implements ConfigFileBuilder {
+
+    String make(Configuration configuration) throws ParserConfigurationException, TransformerException {
+        DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
+        DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+        Document doc = docBuilder.newDocument();
+        Element root = doc.createElement("configuration");
+        doc.appendChild(root);
+
+
+        TransformerFactory transformerFactory = TransformerFactory.newInstance();
+        Transformer transformer = transformerFactory.newTransformer();
+        DOMSource source = new DOMSource(doc);
+
+        StringWriter s = new StringWriter();
+        StreamResult result = new StreamResult(s);
+        transformer.transform(source, result);
+
+        Element appender = doc.createElement("appender");
+        appender.setAttribute("name","STDOUT");
+        appender.setAttribute("class","ch.qos.logback.core.ConsoleAppender");
+        Element layout = doc.createElement("layout");
+        layout.setAttribute("class","ch.qos.logback.classic.PatternLayout");
+        Element pattern = doc.createElement("pattern");
+        pattern.setTextContent("%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n");
+        layout.appendChild(pattern);
+        appender.appendChild(layout);
+        root.appendChild(appender);
+
+        Element logger = doc.createElement("logger");
+        logger.setAttribute("name","org.m410");
+        logger.setAttribute("level","debug");
+        root.appendChild(logger);
+
+        Element rootLog = doc.createElement("root");
+        Element appenderRef = doc.createElement("appender-ref");
+        appenderRef.setAttribute("ref","STDOUT");
+        rootLog.appendChild(appenderRef);
+        rootLog.setAttribute("level","INFO");
+        root.appendChild(rootLog);
+
+        return s.toString();
+    }
+
+    @Override
+    public void writeToFile(Path path, Configuration configuration) {
+        try {
+            Files.write(path, make(configuration).getBytes());
+        } catch (Exception e) {
+            throw new RuntimeException("Could not write to path: " + path, e);
+        }
+    }
+}
