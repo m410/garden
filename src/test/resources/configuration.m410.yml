@@ -1,17 +1,16 @@
-m410 version: 0.1.0-SNAPSHOT
+version: 0.1.0-SNAPSHOT
 application:
   name: &name demo-jpa
-  organization: "org.brzy.demo"
-  version: "1.0"
+  organization: org.m410.j8.demo
+  version: "1.0-SNAPSHOT"
   author: Michael Fortin
   description: &desc A simple  JPA Scala demo  based website.
+build:
+  packageSource: true
 persistence:
-  - name: brzy-jpa
-    organization: "org.brzy.mod"
-    version: 0.11.0
-    entities:
-      - org.brzy.demo.person.Person
-      - org.brzy.demo.address.Address
+  - name: m410-jpa
+    organization: org.m410.j8.module
+    version: 0.1.0
     properties:
       hibernate.dialect: org.hibernate.dialect.H2Dialect
       hibernate.connection.driver_class: org.h2.Driver
@@ -20,8 +19,8 @@ persistence:
       hibernate.connection.url: "jdbc:h2:demo"
       hibernate.hbm2ddl.auto: update
 modules:
-  - name: brzy-jetty8
-    organization: org.brzy.mod
+  - name: m410-jetty8
+    organization: org.m410.j8.module
     version: 0.2.0
 logging:
   appenders:

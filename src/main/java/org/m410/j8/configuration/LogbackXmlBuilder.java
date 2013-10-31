@@ -34,9 +34,6 @@ public class LogbackXmlBuilder implements ConfigFileBuilder {
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 
-        StringWriter s = new StringWriter();
-        StreamResult result = new StreamResult(s);
-        transformer.transform(source, result);
 
         Element appender = doc.createElement("appender");
         appender.setAttribute("name","STDOUT");
@@ -61,12 +58,17 @@ public class LogbackXmlBuilder implements ConfigFileBuilder {
         rootLog.setAttribute("level","INFO");
         root.appendChild(rootLog);
 
+        StringWriter s = new StringWriter();
+        StreamResult result = new StreamResult(s);
+        transformer.transform(source, result);
+
         return s.toString();
     }
 
     @Override
     public void writeToFile(Path path, Configuration configuration) {
         try {
+            path.getParent().toFile().mkdirs();
             Files.write(path, make(configuration).getBytes());
         } catch (Exception e) {
             throw new RuntimeException("Could not write to path: " + path, e);

@@ -10,13 +10,13 @@ import java.util.stream.Collectors;
 
 /**
  */
-public class Configuration {
+public class BuildConfiguration {
     private String version;
     private ApplicationDefinition application;
     private List<PersistenceDefinition> persistence;
     private List<ModuleDefinition> modules;
     private LoggingDefinition logging;
-    private Build build;
+    private BuildDefinition build;
 
     private List<FilterDefinition> filterDefinitions;
     private List<ServletDefinition> servletDefinitions;
@@ -62,11 +62,11 @@ public class Configuration {
         this.logging = logging;
     }
 
-    public Build getBuild() {
+    public BuildDefinition getBuild() {
         return build;
     }
 
-    public void setBuild(Build build) {
+    public void setBuild(BuildDefinition build) {
         this.build = build;
     }
 
@@ -94,8 +94,8 @@ public class Configuration {
         this.listenerDefinitions = listenerDefinitions;
     }
 
-    public static Configuration fromMap(Map<String, Object> c) {
-        Configuration configuration = new Configuration();
+    public static BuildConfiguration fromMap(Map<String, Object> c) {
+        BuildConfiguration configuration = new BuildConfiguration();
         configuration.version = (String)c.getOrDefault("version","UNKNOWN");
 
         configuration.application = ApplicationDefinition.fromMap(

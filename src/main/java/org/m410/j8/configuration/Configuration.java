@@ -19,7 +19,7 @@ public class Configuration {
     private List<PersistenceDefinition> persistence;
     private List<ModuleDefinition> modules;
     private LoggingDefinition logging;
-    private Build build;
+    private BuildDefinition build;
 
     private List<FilterDefinition> filterDefinitions;
     private List<ServletDefinition> servletDefinitions;
@@ -65,11 +65,11 @@ public class Configuration {
         this.logging = logging;
     }
 
-    public Build getBuild() {
+    public BuildDefinition getBuild() {
         return build;
     }
 
-    public void setBuild(Build build) {
+    public void setBuild(BuildDefinition build) {
         this.build = build;
     }
 
@@ -103,6 +103,10 @@ public class Configuration {
 
         configuration.application = ApplicationDefinition.fromMap(
                 (Map<String, Object>)c.getOrDefault("application", new HashMap<String, Object>())
+        );
+
+        configuration.build = BuildDefinition.fromMap(
+                (Map<String, Object>)c.getOrDefault("build", new HashMap<String, Object>())
         );
 
         configuration.persistence = ((List<?>)c.getOrDefault("persistence",new ArrayList()))

@@ -1,6 +1,7 @@
 package org.m410.j8.persistence.orm;
 
 import org.m410.j8.configuration.Configuration;
+import org.m410.j8.configuration.PersistenceDefinition;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -24,11 +25,14 @@ import java.util.Map;
  * @author Michael Fortin
  */
 public class PersistenceXmlBuilder implements ConfigFileBuilder {
-    private Map<String,String> properties = new HashMap<>();
 
-    public String make() throws ParserConfigurationException, TransformerException {
+    public String make(Configuration configuration) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
+
+        PersistenceDefinition definition = configuration.getPersistence().stream().filter((d)->{
+            return d.getName().equalsIgnoreCase("m410-jpa");
+        }).findAny().orElseThrow(() -> new RuntimeException("JPA persistence definition not found"));
 
         Document doc = docBuilder.newDocument();
         final String nsUrl = "http://xmlns.jcp.org/xml/ns/persistence";
@@ -41,7 +45,7 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         doc.appendChild(root);
 
         Element persistUnit = doc.createElement("persistence-unit");
-        persistUnit.setAttribute("name","FIX_ME");
+        persistUnit.setAttribute("name",definition.getName());
         persistUnit.setAttribute("transaction-type","RESOURCE_LOCAL");
 
         Element provider = doc.createElement("provider");
@@ -53,30 +57,30 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         persistUnit.appendChild(mappingFile);
 
         Element propertiesElem = doc.createElement("properties");
-        properties.forEach((k,v)->{
+        definition.getProperties().forEach((k,v)->{
             Element propElem = doc.createElement("property");
             propElem.setAttribute("name",k);
             propElem.setAttribute("value",v);
             propertiesElem.appendChild(propElem);
         });
         persistUnit.appendChild(propertiesElem);
+        root.appendChild(persistUnit);
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 
         StringWriter s = new StringWriter();
-        StreamResult result = new StreamResult(s); // new File("orm.xml")
+        StreamResult result = new StreamResult(s);
         transformer.transform(source, result);
 
-        root.appendChild(persistUnit);
         return s.toString();
     }
 
 
     public void writeToFile(Path path, Configuration configuration) {
         try {
-            Files.write(path, make().getBytes());
+            Files.write(path, make(configuration).getBytes());
         } catch (Exception e) {
             throw new RuntimeException("Could not write to path: " + path, e);
         }
