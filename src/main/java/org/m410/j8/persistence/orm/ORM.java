@@ -29,4 +29,8 @@ public final class ORM {
     public static GeneratedValue generatedValue(String strategy, String generator) {
         return new GeneratedValue(strategy,generator);
     }
+
+    public static SequenceGenerator sequenceGenerator(String name, String sequenceName ) {
+        return new SequenceGenerator(name,sequenceName);
+    }
 }

@@ -1,5 +1,7 @@
 package org.m410.j8.persistence.orm;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -21,17 +23,18 @@ public final class Column extends Node {
     int scale =  0; // decimal scale
 
     Column(String name) {
+        super(0);
         this.name = name;
     }
 
     Column(String name, int length, boolean nullable) {
-        this.name = name;
+        this(name);
         this.length = length;
         this.nullable = nullable;
     }
 
     Column(String name, int length, boolean nullable, boolean unique) {
-        this.name = name;
+        this(name);
         this.length = length;
         this.nullable = nullable;
         this.unique= unique;
@@ -39,7 +42,7 @@ public final class Column extends Node {
 
     Column(String name, boolean unique, boolean nullable, boolean insertable, boolean updatable,
             String columnDefinition, String table, int length, int precision, int scale) {
-        this.name = name;
+        this(name);
         this.unique = unique;
         this.nullable = nullable;
         this.insertable = insertable;
@@ -76,5 +79,26 @@ public final class Column extends Node {
 
         children.stream().forEach(n->n.appendElement(root,basic));
         parent.appendChild(basic);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(3,11)
+                .append(name)
+                .hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof Column)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        Column rhs = (Column) obj;
+        return new EqualsBuilder()
+                .append(this.name, rhs.name)
+                .isEquals();
     }
 }

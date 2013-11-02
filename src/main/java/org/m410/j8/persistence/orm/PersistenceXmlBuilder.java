@@ -35,13 +35,11 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         }).findAny().orElseThrow(() -> new RuntimeException("JPA persistence definition not found"));
 
         Document doc = docBuilder.newDocument();
-        final String nsUrl = "http://xmlns.jcp.org/xml/ns/persistence";
-        Element root = doc.createElementNS(nsUrl, "entity-mappings");
-        root.setAttribute("version", "2.1");
-        root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance",
-                "xsi:schemaLocation",
-                "http://java.sun.com/xml/ns/persistence " +
-                        "http://java.sun.com/xml/ns/persistence/persistence_2_1.xsd");
+        Element root = doc.createElementNS("http://java.sun.com/xml/ns/persistence", "persistence");
+        root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation",
+                "http://java.sun.com/xml/ns/persistence" +
+                        " http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd");
+        root.setAttribute("version", "1.0");
         doc.appendChild(root);
 
         Element persistUnit = doc.createElement("persistence-unit");
@@ -53,7 +51,7 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         persistUnit.appendChild(provider);
 
         Element mappingFile = doc.createElement("mapping-file");
-        provider.setTextContent("/META-INF/orm.xml");
+        mappingFile.setTextContent("/META-INF/orm.xml");
         persistUnit.appendChild(mappingFile);
 
         Element propertiesElem = doc.createElement("properties");

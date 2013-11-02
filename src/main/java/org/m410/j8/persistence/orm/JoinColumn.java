@@ -1,5 +1,7 @@
 package org.m410.j8.persistence.orm;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -19,28 +21,25 @@ public final class JoinColumn extends Node {
     String table =  "";
 
     JoinColumn(String name, String referencedColumnName, String table) {
+        super(0);
         this.name = name;
         this.referencedColumnName = referencedColumnName;
         this.table = table;
     }
 
     JoinColumn(String name, String referencedColumnName, boolean unique, String table) {
-        this.name = name;
-        this.referencedColumnName = referencedColumnName;
+        this(name,referencedColumnName,table);
         this.unique = unique;
-        this.table = table;
     }
 
     JoinColumn(String name, String referencedColumnName, boolean unique, boolean nullable,
             boolean insertable, boolean updatable, String columnDefinition, String table) {
-        this.name = name;
-        this.referencedColumnName = referencedColumnName;
+        this(name,referencedColumnName,table);
         this.unique = unique;
         this.nullable = nullable;
         this.insertable = insertable;
         this.updatable = updatable;
         this.columnDefinition = columnDefinition;
-        this.table = table;
     }
 
     @Override
@@ -56,5 +55,28 @@ public final class JoinColumn extends Node {
         basic.setAttribute("table",table);
         children.stream().forEach(n->n.appendElement(root,basic));
         parent.appendChild(basic);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(1,3)
+                .append(name)
+                .append(table)
+                .hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof JoinColumn)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        JoinColumn rhs = (JoinColumn) obj;
+        return new EqualsBuilder()
+                .append(this.name, rhs.name)
+                .append(this.table, rhs.table)
+                .isEquals();
     }
 }

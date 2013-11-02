@@ -62,12 +62,15 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
                         "http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd");
         doc.appendChild(root);
 
+        Element description = doc.createElement("description");
+        description.setTextContent("Description goes here");
+        root.appendChild(description);
+
         Element meta = doc.createElement("persistence-unit-metadata");
         meta.appendChild(doc.createElement("xml-mapping-metadata-complete"));
-        meta.appendChild(doc.createElement("exclude-default-mappings"));
         root.appendChild(meta);
 
-        entities.stream().forEach(e->e.appendElement(doc,root));
+        entities.stream().sorted().forEach(e->e.appendElement(doc,root));
 
         TransformerFactory transformerFactory = TransformerFactory.newInstance();
         Transformer transformer = transformerFactory.newTransformer();

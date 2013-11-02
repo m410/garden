@@ -17,63 +17,99 @@ import com.google.common.collect.ImmutableList;
 import org.m410.j8.servlet.FilterDefinition;
 import org.m410.j8.servlet.ListenerDefinition;
 import org.m410.j8.servlet.ServletDefinition;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 
 /**
  */
 abstract public class Application implements ApplicationComponent {
+    private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-    private List<? extends ThreadLocalFactory> threadLocalsFactories;
+    private List<? extends ThreadLocalSessionFactory> threadLocalsFactories;
     private List<?> services;
     List<ActionDefinition> actionDefinitions;
     private List<ServletDefinition> servletDefinitions;
     private List<FilterDefinition> filterDefinitions;
     private List<ListenerDefinition> listenerDefinitions;
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<ServletDefinition> getServlets() {
         return servletDefinitions;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<FilterDefinition> getFilters() {
         return filterDefinitions;
     }
 
+    /**
+     *
+     * @return
+     */
     @Override
     public List<ListenerDefinition> getListeners() {
         return listenerDefinitions;
     }
 
+    /**
+     *
+     * @param c
+     * @return
+     */
     public List<ListenerDefinition> makeListeners(Configuration c) {
         return ImmutableList.of();
     }
 
+    /**
+     *
+     * @param c
+     * @return
+     */
     public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
                 new FilterDefinition("M410Filter", "org.m410.j8.servlet.M410Filter", "/*")
         );
     }
 
+    /**
+     *
+     * @param c
+     * @return
+     */
     public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
                 new ServletDefinition("M410Servlet", "org.m410.j8.servlet.M410Servlet", "", "*.m410")
         );
     }
 
+    /**
+     *
+     * @param c
+     * @return
+     */
     @Override
-    public List<? extends ThreadLocalFactory> makeThreadLocalFactories(Configuration c) {
+    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
         return ImmutableList.of();
     }
 
+    /**
+     *
+     * @param c
+     * @return
+     */
     @Override
     public List<?> makeServices(Configuration c) {
         return ImmutableList.of();
     }
-
-//    public void addEndPoint() {
-//        ServerEndpointConfig.Builder.create(getClass(),"").build();
-//    }
 
     /**
      * Only gets called if the action is found by the filter and forwarded to this application.
@@ -102,10 +138,10 @@ abstract public class Application implements ApplicationComponent {
         doWithThreadLocal(threadLocalsFactories, work);
     }
 
-    protected void doWithThreadLocal(List<? extends ThreadLocalFactory> tlf, Work block)
+    protected void doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block)
             throws IOException, ServletException {
         if (tlf.size() >= 1) {
-            SessionStartStop session = tlf.get(tlf.size() - 1).make();
+            ThreadLocalSession session = tlf.get(tlf.size() - 1).make();
             session.start();
             doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
             session.stop();
@@ -115,17 +151,34 @@ abstract public class Application implements ApplicationComponent {
         }
     }
 
+    /**
+     *
+     * @param configuration
+     */
     public void init(Configuration configuration) {
         threadLocalsFactories = makeThreadLocalFactories(configuration);
+        log.debug("threadLocalsFactories: {}", threadLocalsFactories);
+
         servletDefinitions = makeServlets(configuration);
+        log.debug("servletDefinitions: {}", servletDefinitions);
+
         filterDefinitions = makeFilters(configuration);
+        log.debug("filterDefinitions: {}", filterDefinitions);
+
         listenerDefinitions = makeListeners(configuration);
+        log.debug("listenerDefinitions: {}", listenerDefinitions);
+
         services = makeServices(configuration);
+        log.debug("services: {}", services);
+
         List<? extends Controller> controllers = makeControllers(configuration);
+        log.debug("controllers: {}", controllers);
 
         ImmutableList.Builder<ActionDefinition> b = ImmutableList.builder();
         controllers.stream().forEach((c) -> b.addAll(c.actions()));
         actionDefinitions = b.build();
+        log.debug("actionDefinitions: {}", actionDefinitions);
+
     }
 
     public void destroy() {

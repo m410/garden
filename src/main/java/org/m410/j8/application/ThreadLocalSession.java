@@ -5,7 +5,7 @@ package org.m410.j8.application;
  *
  * @author Michael Fortin
  */
-public interface SessionStartStop<T> {
+public interface ThreadLocalSession<T> {
     void start();
     void stop();
 }

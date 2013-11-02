@@ -1,5 +1,7 @@
 package org.m410.j8.persistence.orm;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
@@ -13,6 +15,7 @@ public final class GeneratedValue extends Node {
     String generator;
 
     GeneratedValue(String strategy, String generator) {
+        super(0);
         this.strategy = strategy;
         this.generator = generator;
     }
@@ -24,5 +27,28 @@ public final class GeneratedValue extends Node {
         basic.setAttribute("generator",generator);
         children.stream().forEach(n->n.appendElement(root,basic));
         parent.appendChild(basic);
+    }
+
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder(3,3)
+                .append(strategy)
+                .append(generator)
+                .hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof GeneratedValue)) {
+            return false;
+        }
+        if (this == obj) {
+            return true;
+        }
+        GeneratedValue rhs = (GeneratedValue) obj;
+        return new EqualsBuilder()
+                .append(this.strategy, rhs.strategy)
+                .append(this.generator, rhs.generator)
+                .isEquals();
     }
 }

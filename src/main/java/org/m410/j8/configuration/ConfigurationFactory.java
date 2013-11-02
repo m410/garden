@@ -19,8 +19,6 @@ public class ConfigurationFactory {
         if (in == null)
             in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(altConfigFile);
 
-        System.out.println("input streams: " + in);
-
         return fromInputStream(in, env);
     }
 

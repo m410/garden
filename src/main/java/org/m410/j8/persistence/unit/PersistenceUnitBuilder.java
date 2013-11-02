@@ -23,6 +23,7 @@ import java.util.Map;
  *
  * @author Michael Fortin
  */
+@Deprecated
 public class PersistenceUnitBuilder {
     private String name;
     private String transactionType;

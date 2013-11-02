@@ -8,7 +8,7 @@ import static org.junit.Assert.*;
 
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
-import org.m410.j8.persistence.ThreadLocalFactory;
+import org.m410.j8.persistence.ThreadLocalSessionFactory;
 import org.m410.j8.sample.MyWebApp;
 
 import javax.servlet.ServletException;
@@ -41,7 +41,7 @@ public class ApplicationThreadLocalTest {
             assertEquals("local", MyThreadLocal.get());
         };
 
-        List<ThreadLocalFactory> factories = new ArrayList<>();
+        List<ThreadLocalSessionFactory> factories = new ArrayList<>();
         factories.add(new MyThreadLocalFactory("local"));
 
         try {
@@ -59,7 +59,7 @@ public class ApplicationThreadLocalTest {
             assertEquals("local3", My2ThreadLocal.get());
         };
 
-        List<ThreadLocalFactory> factories = new ArrayList<>();
+        List<ThreadLocalSessionFactory> factories = new ArrayList<>();
         factories.add(new MyThreadLocalFactory("local2"));
         factories.add(new My2ThreadLocalFactory("local3"));
 

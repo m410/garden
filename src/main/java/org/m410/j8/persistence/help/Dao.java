@@ -1,45 +1,25 @@
 package org.m410.j8.persistence.help;
 
-import org.m410.j8.persistence.EntityManager;
-import org.m410.j8.persistence.JpaThreadLocal;
-
+import java.util.List;
 import java.util.Optional;
-import java.util.Set;
 
 /**
- * If your concerned about tightly cupling your code to this framework don't use this.
- *
- * @author Michael Fortin
+ * Created with IntelliJ IDEA.
+ * User: m410
+ * Date: 10/31/13
+ * Time: 8:12 PM
+ * To change this template use File | Settings | File Templates.
  */
 public interface Dao<T extends Id<K>, K> {
+    public Optional<T> get(K id) ;
 
-    default public Optional<T> get(K id) {
-        EntityManager entityManager = JpaThreadLocal.get();
-        return Optional.empty();//entityManager.find(id);
-    }
+    public List<T> list() ;
 
-    default public Set<T> list() {
-        EntityManager entityManager = JpaThreadLocal.get();
-        return null;//entityManager.find(id);
-    }
+    public List<T> page(int start, int limit);
 
-    default public Set<T> page(int start, int limit) {
-        EntityManager entityManager = JpaThreadLocal.get();
-        return null;//entityManager.find(id);
-    }
+    public Number count() ;
 
-    default public long count() {
-        EntityManager entityManager = JpaThreadLocal.get();
-        return 0;//entityManager.find(id);
-    }
+    public T insert(T t) ;
 
-    default public T insert(T t) {
-        EntityManager entityManager = JpaThreadLocal.get();
-        return null;//entityManager.find(id);
-    }
-
-    default public T update(T t) {
-        EntityManager entityManager = JpaThreadLocal.get();
-        return null;//entityManager.find(id);
-    }
+    public T update(T t) ;
 }

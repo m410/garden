@@ -1,13 +1,13 @@
 package org.m410.j8.application;
 
-import org.m410.j8.persistence.ThreadLocalFactory;
+import org.m410.j8.persistence.ThreadLocalSessionFactory;
 
 /**
  * Document Me..
  *
  * @author Michael Fortin
  */
-class MyThreadLocalFactory implements ThreadLocalFactory<MyThreadLocal> {
+class MyThreadLocalFactory implements ThreadLocalSessionFactory<MyThreadLocal> {
     private String value;
 
     MyThreadLocalFactory(String value) {

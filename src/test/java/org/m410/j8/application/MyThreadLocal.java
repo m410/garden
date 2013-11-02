@@ -5,7 +5,7 @@ package org.m410.j8.application;
  *
  * @author Michael Fortin
  */
-final class MyThreadLocal implements SessionStartStop {
+final class MyThreadLocal implements ThreadLocalSession {
     private String value;
 
     MyThreadLocal(String value) {

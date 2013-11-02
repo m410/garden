@@ -22,13 +22,13 @@ public interface OrmBuilderComponent {
         return builder;
     }
 
-    default PersistenceUnitBuilder configurePersistence(Configuration configuration) {
-        // todo fix hard coded values
-        return new PersistenceUnitBuilder()
-                .name("demo")
-                .description("Sample persistence mapping")
-                .mappingFile("org.m410.demo")
-                .transactionType("RESOURCE_LOCAL")
-                .property("sampleName","sampleValue");
-    }
+//    default PersistenceUnitBuilder configurePersistence(Configuration configuration) {
+//        // todo fix hard coded values
+//        return new PersistenceUnitBuilder()
+//                .name("demo")
+//                .description("Sample persistence mapping")
+//                .mappingFile("org.m410.demo")
+//                .transactionType("RESOURCE_LOCAL")
+//                .property("sampleName","sampleValue");
+//    }
 }

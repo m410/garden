@@ -1,13 +1,13 @@
 package org.m410.j8.persistence;
 
-import org.m410.j8.application.SessionStartStop;
+import org.m410.j8.application.ThreadLocalSession;
 
 /**
  * Document Me..
  *
  * @author Michael Fortin
  */
-public interface ThreadLocalFactory<T extends SessionStartStop> {
+public interface ThreadLocalSessionFactory<T extends ThreadLocalSession> {
     T make();
 
     /**

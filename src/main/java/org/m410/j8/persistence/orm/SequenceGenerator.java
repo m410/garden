@@ -2,59 +2,53 @@ package org.m410.j8.persistence.orm;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * Document Me..
+ * TABLE, SEQUENCE, IDENTITY, AUTO
  *
  * @author Michael Fortin
  */
-public final class Version  extends Node {
-    protected int listOrder = 120;
-    private String name;
+public final class SequenceGenerator extends Node {
+    String name;
+    String sequenceName;
 
-    Version(String name) {
+    SequenceGenerator(String name, String sequenceName) {
         super(3);
         this.name = name;
+        this.sequenceName = sequenceName;
     }
 
     @Override
     public void appendElement(Document root, Element parent) {
-        Element version = root.createElement("version");
-        version.setAttribute("name", name);
-        children.stream().forEach(n->n.appendElement(root,version));
-        parent.appendChild(version);
+        Element basic = root.createElement("sequence-generator");
+        basic.setAttribute("name", name);
+        basic.setAttribute("sequence-name", sequenceName);
+        children.stream().forEach(n->n.appendElement(root,basic));
+        parent.appendChild(basic);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(13,13)
+        return new HashCodeBuilder(3,3)
                 .append(name)
+                .append(sequenceName)
                 .hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Version)) {
+        if (!(obj instanceof SequenceGenerator)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        Version rhs = (Version) obj;
+        SequenceGenerator rhs = (SequenceGenerator) obj;
         return new EqualsBuilder()
                 .append(this.name, rhs.name)
+                .append(this.sequenceName, rhs.sequenceName)
                 .isEquals();
-    }
-
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("name",name)
-                .append("ord",listOrder)
-                .toString();
     }
 }
