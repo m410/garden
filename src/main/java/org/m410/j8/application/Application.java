@@ -60,6 +60,8 @@ abstract public class Application implements ApplicationComponent {
         return listenerDefinitions;
     }
 
+    // todo add other web.xml attributes to mvn build, like the orm config.
+
     /**
      *
      * @param c
