@@ -6,6 +6,10 @@ import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.Persistence;
+import java.sql.Driver;
+import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.util.Enumeration;
 
 /**
  * Document Me..
@@ -31,6 +35,20 @@ public class HibernatePersistence implements ThreadLocalSessionFactory<JpaThread
 
     @Override
     public void shutdown() {
-        // todo deregister driver
+        log.debug("shutting down and de-registering jdbc drivers");
+        entityManagerFactory.close();
+        Enumeration<Driver> drivers = DriverManager.getDrivers();
+
+        while (drivers.hasMoreElements()) {
+            Driver driver = drivers.nextElement();
+            log.debug("de-register jdbc driver: {}",driver);
+
+            try {
+                DriverManager.deregisterDriver(driver);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
     }
 }
