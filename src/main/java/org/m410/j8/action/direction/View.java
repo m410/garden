@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 public final class View implements Direction {
     private String path;
 
-    View(String path) {
+    public View(String path) {
         assert(path != null);
         this.path = path;
     }

@@ -114,8 +114,16 @@ public class Response implements ActionResponse {
         return new Response(headers, model, combined, flash, direction, invalidateSession);
     }
 
-    public Response withView(Direction direct) {
-        return new Response(headers, model, session, flash, direct, invalidateSession);
+    public Response withView(String v) {
+        return new Response(headers, model, session, flash, new View(v), invalidateSession);
+    }
+
+    public Response redirect(String v) {
+        return new Response(headers, model, session, flash, new Redirect(v), invalidateSession);
+    }
+
+    public Response forward(String v) {
+        return new Response(headers, model, session, flash, new Forward(v), invalidateSession);
     }
 
     public Response withFlash(String flash) {

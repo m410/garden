@@ -99,7 +99,7 @@ public class ActionDefinition implements  Comparable<ActionDefinition> {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("method",httpMethod)
-                .append("path", pathExpr)
+                .append("path", pathExpr != null ? pathExpr.toText() : null)
                 .toString();
     }
 }

@@ -2,6 +2,7 @@ package org.m410.j8.action;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.lang3.ArrayUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -147,7 +148,11 @@ public final class PathExpr implements Comparable<PathExpr> {
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("path", ArrayUtils.toString(tokens))
+                .append("path", tokens)
                 .toString();
+    }
+
+    public String toText() {
+        return StringUtils.join(tokens, "/");
     }
 }

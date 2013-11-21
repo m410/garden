@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.j8.action.Action;
 import org.m410.j8.action.ActionDefinition;
 import org.m410.j8.action.PathExpr;
+import org.m410.j8.action.Response;
 
 import java.util.List;
 
@@ -21,6 +22,10 @@ public abstract class Controller {
 
     protected Controller(PathExpr pathExpr) {
         this.pathExpr = pathExpr;
+    }
+
+    protected Controller(String pathExpr) {
+        this.pathExpr = new PathExpr(pathExpr);
     }
 
     public abstract List<ActionDefinition> actions();
@@ -45,10 +50,14 @@ public abstract class Controller {
         return new ActionDefinition(a,p,method);
     }
 
+    protected Response response() {
+        return new Response();
+    }
+
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("pathExpr", pathExpr)
+                .append("pathExpr", pathExpr != null ? pathExpr.toText() : null)
                 .toString();
     }
 }

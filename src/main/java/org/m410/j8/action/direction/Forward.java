@@ -5,21 +5,21 @@ package org.m410.j8.action.direction;
  *
  * @author Michael Fortin
  */
-public final class Redirect implements Direction {
+public final class Forward implements Direction {
     private String path;
 
-    public Redirect(String path) {
+    public Forward(String path) {
         assert(path != null);
         this.path = path;
     }
 
     @Override
     public int id() {
-        return REDIRECT;
+        return FORWARD;
     }
 
-    public static Redirect to(String to) {
-        return new Redirect(to);
+    public static Forward to(String to) {
+        return new Forward(to);
     }
 
     public String getPath() {
