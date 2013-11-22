@@ -10,8 +10,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.servlet.FilterDefinition;
@@ -120,15 +122,14 @@ abstract public class Application implements ApplicationComponent {
      * @param res the http servlet response
      */
     public void doRequest(HttpServletRequest req, HttpServletResponse res) {
+        log.debug("method={}, req={}", req.getMethod(), req.getRequestURI());
         actionDefinitions.stream().filter((a) -> a.doesRequestMatchAction(req))
-                .findFirst().ifPresent((action)->action.apply(req, res));
+                .findFirst().ifPresent((action)-> action.apply(req, res));
     }
 
     public Optional<ActionDefinition> actionForRequest(HttpServletRequest request) {
         return actionDefinitions.stream()
-                .filter((ad) -> {
-                    return ad.doesRequestMatchAction(request);
-                })
+                .filter((ad) -> ad.doesRequestMatchAction(request))
                 .findFirst();
     }
 
@@ -142,7 +143,7 @@ abstract public class Application implements ApplicationComponent {
 
     protected void doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block)
             throws IOException, ServletException {
-        if (tlf.size() >= 1) {
+        if (tlf != null && tlf.size() >= 1) {
             ThreadLocalSession session = tlf.get(tlf.size() - 1).make();
             session.start();
             doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);

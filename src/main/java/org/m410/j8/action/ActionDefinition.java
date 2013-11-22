@@ -6,13 +6,18 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.j8.action.status.*;
 import org.m410.j8.controller.HttpMethod;
+import org.m410.j8.servlet.ServletExtension;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
  */
-public class ActionDefinition implements  Comparable<ActionDefinition> {
+public class ActionDefinition implements  Comparable<ActionDefinition>, ServletExtension {
+    private static final Logger log = LoggerFactory.getLogger(ActionDefinition.class);
+
     private Action action;
     PathExpr pathExpr;
     private HttpMethod httpMethod;
@@ -39,6 +44,7 @@ public class ActionDefinition implements  Comparable<ActionDefinition> {
     }
 
     public void apply(HttpServletRequest request, HttpServletResponse response) {
+        log.debug("actDef:{}",this);
         action.action(new ActionRequestDefaultImpl(request, pathExpr))
                 .handleResponse(request, response);
     }
@@ -51,7 +57,9 @@ public class ActionDefinition implements  Comparable<ActionDefinition> {
         final boolean path = pathExpr.doesPathMatch(req);
 
         if(path) {
-            if(useSsl && !req.isSecure())
+            if(!req.getRequestURI().endsWith(SERVLET_EXT))
+                return new Forward(req.getRequestURI());
+            else if(useSsl && !req.isSecure())
                 return new RedirectToSecure(req.getRequestURI());
             else if(useAuthentication && req.getUserPrincipal() == null)
                 return new RedirectToAuth("/auth",req.getRequestURI());

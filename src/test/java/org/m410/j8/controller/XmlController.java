@@ -43,7 +43,7 @@ public final class XmlController extends Controller {
     };
 
     public final Action httpDeleteAction = (call) -> {
-        return response().withView(Redirect.to("/xml"));
+        return response().redirect("/xml");
     };
 }
 

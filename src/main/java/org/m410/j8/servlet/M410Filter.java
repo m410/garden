@@ -1,12 +1,9 @@
 package org.m410.j8.servlet;
 
+import org.m410.j8.action.status.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.m410.j8.action.*;
-import org.m410.j8.action.status.ActionStatus;
-import org.m410.j8.action.status.DispatchTo;
-import org.m410.j8.action.status.RedirectToSecure;
-import org.m410.j8.action.status.RedirectToAuth;
 import org.m410.j8.application.Application;
 
 import javax.servlet.*;
@@ -43,6 +40,11 @@ public class M410Filter implements Filter {
             final ActionStatus status = action.status(request);
 
             switch (status.id()) {
+                case ActionStatus.FORWARD:
+                    log.debug("Forward({})", action);
+                    String path = ((Forward)status).getPath();
+                    request.getRequestDispatcher(path).forward(request,response);
+                    break;
                 case ActionStatus.ACT_ON:
                     log.debug("ActOn({})", action);
                     webapp.doWithThreadLocals(() -> {
@@ -73,10 +75,12 @@ public class M410Filter implements Filter {
                     log.debug("Forbidden({})", request.getRequestURI());
                     response.sendError(403, "Forbidden, Not Authorized to view this resource");
                     break;
+                default:
+                    throw new RuntimeException("Unknown status:" + status);
             }
         }
         else {
-            log.trace("NotAnAction({})", request.getRequestURI());
+            log.debug("NotAnAction({})", request.getRequestURI());
             chain.doFilter(req, res);
         }
     }

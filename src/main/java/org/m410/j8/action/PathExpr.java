@@ -7,6 +7,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.m410.j8.servlet.ServletExtension;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.Arrays;
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
 
 /**
  */
-public final class PathExpr implements Comparable<PathExpr> {
+public final class PathExpr implements Comparable<PathExpr>, ServletExtension {
     private String[] tokens;
 
     public PathExpr(final String expr) {
@@ -82,32 +83,37 @@ public final class PathExpr implements Comparable<PathExpr> {
 
     protected String[] uriTokens(HttpServletRequest request) {
         final String context = request.getContextPath();
+        final String requestURI = withoutExtension(request.getRequestURI());
 
         String[] uri;
+
         if(context.compareTo("") != 0)
-            uri = toArray(request.getRequestURI().replace(context,""));
+            uri = toArray(requestURI.replace(context, ""));
         else
-            uri = toArray(request.getRequestURI());
+            uri = toArray(requestURI);
+
         return uri;
     }
 
-    String[] toArray(final String in) {
+    protected String withoutExtension(String uri) {
+        if(uri.endsWith(SERVLET_EXT))
+            return uri.substring(0,uri.length() -5);
+        else
+            return uri;
+    }
+
+    protected String[] toArray(final String in) {
         return Arrays.asList(in.split("/"))
                 .stream()
                 .filter((s)->{return !s.equals("");})
                 .toArray(String[]::new);
-
-//        if(in.startsWith("/"))
-//            return in.substring(1).split("/");
-//        else
-//            return in.split("/");
     }
 
-    boolean isUriParam(final String i) {
+    protected boolean isUriParam(final String i) {
         return i.startsWith("{") && i.endsWith("}");
     }
 
-    boolean isRegexEqual(final String regex, final String value) {
+    protected boolean isRegexEqual(final String regex, final String value) {
         if(!regex.contains(":")) {
             return true;
         }

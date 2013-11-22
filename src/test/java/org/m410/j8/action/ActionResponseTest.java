@@ -28,7 +28,7 @@ public class ActionResponseTest {
         Response response = Response.response();
         assertNotNull(response);
         assertEquals(Directions.noView(), response.getDirection());
-        Response response1 = response.withView(Directions.view("/path"));
+        Response response1 = response.withView("/path");
         assertNotEquals(Directions.noView(), response1.getDirection());
         assertEquals(Directions.view("/path"), response1.getDirection());
     }

@@ -25,8 +25,30 @@ public class ActionDefinitionTest {
             @Override public String getRequestURI() { return "/"; }
             @Override public String getMethod() { return "GET"; }
         };
-        Action a = (args) -> { return Response.response(); };
+        Action a = (args) -> Response.response();
         ActionDefinition ad = new ActionDefinition(a,new PathExpr(""), HttpMethod.GET);
+        assertTrue(ad.doesRequestMatchAction(request));
+    }
+
+    @Test
+    public void testDoesLongerPathMatch() {
+        HttpServletRequest request = new MockServletRequest() {
+            @Override public String getRequestURI() { return "/a/b/c"; }
+            @Override public String getMethod() { return "GET"; }
+        };
+        Action a = (args) -> Response.response();
+        ActionDefinition ad = new ActionDefinition(a,new PathExpr("a/b/c"), HttpMethod.GET);
+        assertTrue(ad.doesRequestMatchAction(request));
+    }
+
+    @Test
+    public void testDoesLongerPathMatchWithExtension() {
+        HttpServletRequest request = new MockServletRequest() {
+            @Override public String getRequestURI() { return "/a/b/c.m410"; }
+            @Override public String getMethod() { return "GET"; }
+        };
+        Action a = (args) -> Response.response();
+        ActionDefinition ad = new ActionDefinition(a,new PathExpr("a/b/c"), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
     }
 

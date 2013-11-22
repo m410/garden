@@ -13,7 +13,7 @@ public final class FilterDefinition {
     private String className;
     private String[] urlPatterns;
     private boolean matchAfter = true;
-    private EnumSet<DispatcherType> dispatchTypes = EnumSet.of(DispatcherType.REQUEST);
+    private EnumSet<DispatcherType> dispatchTypes = EnumSet.of(DispatcherType.REQUEST, DispatcherType.FORWARD);
 
     public FilterDefinition(String name, String className, String... urlPatterns) {
         this.name = name;

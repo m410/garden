@@ -34,22 +34,22 @@ public final class MyController extends Controller {
 
     public final Action httpGetAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView(view("/home"));
+        return response().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpPostAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView(view("/home"));
+        return response().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpPutAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView(view("/home"));
+        return response().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpDeleteAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView(view("/home"));
+        return response().withModel("name", myEntity).withView("/home");
     };
 }
 
