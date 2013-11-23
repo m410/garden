@@ -1,9 +1,9 @@
 package org.m410.j8.application;
 
-import org.m410.j8.application.ThreadLocalSession;
 
 /**
- * Document Me..
+ * A thread local factory used by the application to create thread local
+ * instances.
  *
  * @author Michael Fortin
  */

@@ -1,4 +1,4 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 /**
  * This is a set of static methods used by the builder to simplify creation of the orm

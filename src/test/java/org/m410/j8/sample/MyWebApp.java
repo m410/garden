@@ -7,8 +7,8 @@ import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Controller;
 import org.m410.j8.module.migration.MigrationModule;
 import org.m410.j8.module.jpa.JpaModule;
-import org.m410.j8.module.ormbuiler.OrmBuilderModule;
-import org.m410.j8.module.ormbuiler.orm.EntityFactory;
+import org.m410.j8.module.ormbuilder.OrmBuilderModule;
+import org.m410.j8.module.ormbuilder.orm.EntityFactory;
 import org.m410.j8.module.jms.JmsModule;
 import org.m410.j8.module.mail.MailModule;
 

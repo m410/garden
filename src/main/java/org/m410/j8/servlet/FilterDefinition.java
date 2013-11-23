@@ -4,7 +4,7 @@ import javax.servlet.DispatcherType;
 import java.util.EnumSet;
 
 /**
- * Document Me..
+ * Used by the application to add filters to the application at runtime.
  *
  * @author Michael Fortin
  */

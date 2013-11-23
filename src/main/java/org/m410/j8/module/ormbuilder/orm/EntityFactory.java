@@ -1,4 +1,4 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 /**
  * Creates an Entity object that will be embedded in the orm.xml.  Typically

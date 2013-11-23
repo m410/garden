@@ -1,59 +1,54 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
-import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 /**
- * An orm.xml node.
+ * TABLE, SEQUENCE, IDENTITY, AUTO
  *
  * @author Michael Fortin
  */
-public final class Basic  extends Node {
-    private String name;
+public final class SequenceGenerator extends Node {
+    String name;
+    String sequenceName;
 
-    Basic(String name) {
-        super(2);
+    SequenceGenerator(String name, String sequenceName) {
+        super(3);
         this.name = name;
+        this.sequenceName = sequenceName;
     }
 
     @Override
     public void appendElement(Document root, Element parent) {
-        Element basic = root.createElement("basic");
-        basic.setAttribute("name",name);
+        Element basic = root.createElement("sequence-generator");
+        basic.setAttribute("name", name);
+        basic.setAttribute("sequence-name", sequenceName);
         children.stream().forEach(n->n.appendElement(root,basic));
         parent.appendChild(basic);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(3,7)
+        return new HashCodeBuilder(3,3)
                 .append(name)
+                .append(sequenceName)
                 .hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Basic)) {
+        if (!(obj instanceof SequenceGenerator)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        Basic rhs = (Basic) obj;
+        SequenceGenerator rhs = (SequenceGenerator) obj;
         return new EqualsBuilder()
                 .append(this.name, rhs.name)
+                .append(this.sequenceName, rhs.sequenceName)
                 .isEquals();
-    }
-
-
-    @Override
-    public String toString() {
-        return new ToStringBuilder(this)
-                .append("name",name)
-                .append("ord",listOrder)
-                .toString();
     }
 }

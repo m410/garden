@@ -1,7 +1,7 @@
 package org.m410.j8.action.direction;
 
 /**
- * Document Me..
+ * A response can return one of several directions.
  *
  * @author Michael Fortin
  */

@@ -1,8 +1,8 @@
 package org.m410.j8.sample;
 
-import org.m410.j8.module.ormbuiler.orm.Entity;
+import org.m410.j8.module.ormbuilder.orm.Entity;
 
-import static org.m410.j8.module.ormbuiler.orm.ORM.*;
+import static org.m410.j8.module.ormbuilder.orm.ORM.*;
 
 /**
  * Document Me..

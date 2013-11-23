@@ -1,8 +1,8 @@
-package org.m410.j8.module.ormbuiler.persistence;
+package org.m410.j8.module.ormbuilder.persistence;
 
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.PersistenceDefinition;
-import org.m410.j8.module.ormbuiler.orm.ConfigFileBuilder;
+import org.m410.j8.module.ormbuilder.orm.ConfigFileBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

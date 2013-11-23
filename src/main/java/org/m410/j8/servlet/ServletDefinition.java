@@ -2,7 +2,8 @@ package org.m410.j8.servlet;
 
 
 /**
- * Document Me..
+ * Servlet definition embedded into the application class the get initialized and
+ * added to the servlet container at runtime.
  *
  * @author Michael Fortin
  */

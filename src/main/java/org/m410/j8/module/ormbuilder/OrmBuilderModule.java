@@ -1,8 +1,8 @@
-package org.m410.j8.module.ormbuiler;
+package org.m410.j8.module.ormbuilder;
 
 import org.m410.j8.configuration.Configuration;
-import org.m410.j8.module.ormbuiler.orm.EntityFactory;
-import org.m410.j8.module.ormbuiler.orm.OrmXmlBuilder;
+import org.m410.j8.module.ormbuilder.orm.EntityFactory;
+import org.m410.j8.module.ormbuilder.orm.OrmXmlBuilder;
 
 import java.util.List;
 

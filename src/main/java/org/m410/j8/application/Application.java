@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 
 
 /**
+ * This is the base implementation of the applicationModule.  It's what uses
+ * of the framework need to extend.
  */
 abstract public class Application implements ApplicationModule {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -32,28 +34,17 @@ abstract public class Application implements ApplicationModule {
     private List<FilterDefinition> filterDefinitions;
     private List<ListenerDefinition> listenerDefinitions;
 
-    /**
-     *
-     * @return
-     */
     @Override
     public List<ServletDefinition> getServlets() {
         return servletDefinitions;
     }
 
-    /**
-     *
-     * @return
-     */
     @Override
     public List<FilterDefinition> getFilters() {
         return filterDefinitions;
     }
 
-    /**
-     *
-     * @return
-     */
+
     @Override
     public List<ListenerDefinition> getListeners() {
         return listenerDefinitions;
@@ -62,18 +53,29 @@ abstract public class Application implements ApplicationModule {
     // todo add other web.xml attributes to mvn build, like the orm config.
 
     /**
+     * A listener implementation of one of the following.
+     * <ul>
+     * <li>javax.servlet.ServletRequestListener           </li>
+     * <li>javax.servlet.ServletRequestAttributeListener  </li>
+     * <li>javax.servlet.ServletContextListener           </li>
+     * <li>javax.servlet.ServletContextAttributeListener  </li>
+     * <li>javax.servlet.http.HttpSessionListener         </li>
+     * <li>javax.servlet.http.HttpSessionAttributeListener</li>
+     * <li>javax.servlet.http.HttpSessionAttributeListener</li>
+     * </ul>
      *
-     * @param c
-     * @return
+     * @param c configuration
+     * @return a list of container listeners.
      */
     public List<ListenerDefinition> makeListeners(Configuration c) {
         return ImmutableList.of();
     }
 
     /**
+     * Creates the filter definitions that are added to the container at startup.
      *
-     * @param c
-     * @return
+     * @param c configuration
+     * @return a list of filter definitions.
      */
     public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
@@ -82,9 +84,10 @@ abstract public class Application implements ApplicationModule {
     }
 
     /**
+     * Creates the servlet definitions that are added to the container at startup.
      *
-     * @param c
-     * @return
+     * @param c configuration
+     * @return a list of servlet definitions
      */
     public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
@@ -93,9 +96,10 @@ abstract public class Application implements ApplicationModule {
     }
 
     /**
+     * Creates the thread local factories that will wrap each action request.
      *
-     * @param c
-     * @return
+     * @param c configuration
+     * @return a list of thread local factories.
      */
     @Override
     public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
@@ -103,9 +107,11 @@ abstract public class Application implements ApplicationModule {
     }
 
     /**
+     * Creates sevrice classes with the available configuration.  Some modules may add
+     * services through this method.
      *
-     * @param c
-     * @return
+     * @param c configuration
+     * @return a list of service classes.
      */
     @Override
     public List<?> makeServices(Configuration c) {
@@ -152,8 +158,13 @@ abstract public class Application implements ApplicationModule {
     }
 
     /**
+     * Initializes the application with the application configuration defined in the
+     * configuration.m410.yml file.
      *
-     * @param configuration
+     * It initialized the thread locals, servlets, servlet filters, container listeners,
+     * services, controllers and actions, in that order.
+     *
+     * @param configuration the configuration.
      */
     public void init(Configuration configuration) {
         threadLocalsFactories = makeThreadLocalFactories(configuration);

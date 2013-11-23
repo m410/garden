@@ -1,4 +1,4 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;

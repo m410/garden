@@ -1,6 +1,6 @@
 package org.m410.j8.configuration;
 
-import org.m410.j8.module.ormbuiler.orm.ConfigFileBuilder;
+import org.m410.j8.module.ormbuilder.orm.ConfigFileBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 

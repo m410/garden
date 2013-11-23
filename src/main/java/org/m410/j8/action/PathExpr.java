@@ -17,22 +17,54 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
+ * A partial path expression for a controller or a full path expression for an
+ * action.
+ *
+ * Path expressions are a restful uri, with variables embedded in it that
+ * can extracted into parameters to be used by the application.
+ *
+ * Path variables are wrapped in curly braces and can have embedded regular expressions.
+ *
+ * For example the path "/clients/{id}" is a path with a dynamic id parameter.
+ *
+ * A path with a regular expression matcher could look like "/clients/{id:\\d+}".  This
+ * would only match urls where tie id is a number.
+ *
+ * If two paths match one url, then the first one found is used.
+ *
+ * @author Michael Fortin
  */
 public final class PathExpr implements Comparable<PathExpr>, ServletExtension {
-    private String[] tokens;
+    private final String[] tokens;
 
+    /**
+     * Creates a path expression from a string.
+     * @param expr a string uri with optional variables.
+     */
     public PathExpr(final String expr) {
         tokens = toArray(expr);
     }
 
-    private PathExpr(final String[] rootExpr, final String[] subExpr) {
+    /**
+     */
+    PathExpr(final String[] rootExpr, final String[] subExpr) {
         tokens = ArrayUtils.addAll(rootExpr, subExpr);
     }
 
+    /**
+     * Controllers will have a base path, and this append the actions path to it.
+     * @param path the action path
+     * @return a new path expression.
+     */
     public PathExpr append(final PathExpr path) {
         return new PathExpr(tokens, path.tokens);
     }
 
+    /**
+     * creates a new Path expression appending on the given string expression.
+     * @param path a partial uri path expression.
+     * @return a new PathExpr.
+     */
     public PathExpr append(final String path) {
         return new PathExpr(tokens, toArray(path));
     }
@@ -41,6 +73,11 @@ public final class PathExpr implements Comparable<PathExpr>, ServletExtension {
         return tokens;
     }
 
+    /**
+     * Uses this path expression to extract the parameters from a uri.
+     * @param servletRequest the servlet request.
+     * @return a map of variables deducted from the url.
+     */
     public Map<String, String> parametersForRequest(final HttpServletRequest servletRequest) {
         final String[] uri = uriTokens(servletRequest);
         Map<String, String> params = new HashMap();
@@ -62,6 +99,11 @@ public final class PathExpr implements Comparable<PathExpr>, ServletExtension {
             return innerStr;
     }
 
+    /**
+     * Checks to see if this path matches the request uri.
+     * @param request the servlet request.
+     * @return true if it's a match
+     */
     public boolean doesPathMatch(final HttpServletRequest request) {
         final String[] uri = uriTokens(request);
 
@@ -158,6 +200,10 @@ public final class PathExpr implements Comparable<PathExpr>, ServletExtension {
                 .toString();
     }
 
+    /**
+     * a shorter toString representation of this path.
+     * @return a string
+     */
     public String toText() {
         return StringUtils.join(tokens, "/");
     }

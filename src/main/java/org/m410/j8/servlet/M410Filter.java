@@ -13,7 +13,7 @@ import java.io.IOException;
 import java.util.Optional;
 
 /**
- * Document Me..
+ * Filter that routes action requests.
  *
  * @author Michael Fortin
  */
@@ -22,7 +22,6 @@ public class M410Filter implements Filter {
 
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
-
     }
 
     @Override
@@ -87,6 +86,5 @@ public class M410Filter implements Filter {
 
     @Override
     public void destroy() {
-
     }
 }

@@ -9,7 +9,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 /**
- * Document Me..
+ * Default servlet for calling actions.
  *
  * @author Michael Fortin
  */

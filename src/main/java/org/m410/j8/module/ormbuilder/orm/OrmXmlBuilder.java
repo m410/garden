@@ -1,4 +1,4 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 import org.m410.j8.configuration.Configuration;
 import org.w3c.dom.Document;

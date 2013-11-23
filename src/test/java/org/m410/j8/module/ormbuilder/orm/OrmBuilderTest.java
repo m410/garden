@@ -1,4 +1,4 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -10,7 +10,7 @@ import javax.xml.transform.TransformerException;
 
 import java.io.IOException;
 
-import static org.m410.j8.module.ormbuiler.orm.ORM.*;
+import static org.m410.j8.module.ormbuilder.orm.ORM.*;
 import static org.junit.Assert.*;
 
 /**

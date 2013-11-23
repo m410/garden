@@ -1,7 +1,7 @@
 package org.m410.j8.servlet;
 
 /**
- * Document Me..
+ * Create a listener class and adds it the the servlet container at runtime.
  *
  * @author Michael Fortin
  */

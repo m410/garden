@@ -1,4 +1,4 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -11,39 +11,38 @@ import org.w3c.dom.Element;
  *
  * @author Michael Fortin
  */
-public final class Version  extends Node {
-    protected int listOrder = 120;
+public final class Basic  extends Node {
     private String name;
 
-    Version(String name) {
-        super(3);
+    Basic(String name) {
+        super(2);
         this.name = name;
     }
 
     @Override
     public void appendElement(Document root, Element parent) {
-        Element version = root.createElement("version");
-        version.setAttribute("name", name);
-        children.stream().forEach(n->n.appendElement(root,version));
-        parent.appendChild(version);
+        Element basic = root.createElement("basic");
+        basic.setAttribute("name",name);
+        children.stream().forEach(n->n.appendElement(root,basic));
+        parent.appendChild(basic);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(13,13)
+        return new HashCodeBuilder(3,7)
                 .append(name)
                 .hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Version)) {
+        if (!(obj instanceof Basic)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        Version rhs = (Version) obj;
+        Basic rhs = (Basic) obj;
         return new EqualsBuilder()
                 .append(this.name, rhs.name)
                 .isEquals();

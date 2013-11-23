@@ -4,4 +4,4 @@
  * at build time.  It generates the orm.xml and persistence.xml files needed
  * at run time.
  */
-package org.m410.j8.module.ormbuiler;
+package org.m410.j8.module.ormbuilder;

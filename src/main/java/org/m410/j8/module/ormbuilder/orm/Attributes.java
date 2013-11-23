@@ -1,4 +1,4 @@
-package org.m410.j8.module.ormbuiler.orm;
+package org.m410.j8.module.ormbuilder.orm;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -7,44 +7,39 @@ import org.w3c.dom.Element;
 
 /**
  * An orm.xml node.
- * A table node on an entity.
  *
  * @author Michael Fortin
  */
-public final class Table  extends Node {
-    private String name;
+public final class Attributes extends Node {
 
-    Table(String name) {
-        super(0);
-        this.name = name;
+
+    Attributes() {
+        super(1);
     }
 
     @Override
     public void appendElement(Document root, Element parent) {
-        Element table = root.createElement("table");
-        table.setAttribute("name", name);
-        children.stream().forEach(n->n.appendElement(root,table));
-        parent.appendChild(table);
+        Element attributes = root.createElement("attributes");
+        children.stream().forEach(n->n.appendElement(root,attributes));
+        parent.appendChild(attributes);
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder(3,13)
-                .append(name)
+        return new HashCodeBuilder(3,5)
                 .hashCode();
     }
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof Table)) {
+        if (!(obj instanceof Id)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        Table rhs = (Table) obj;
+        Id rhs = (Id) obj;
         return new EqualsBuilder()
-                .append(this.name, rhs.name)
                 .isEquals();
     }
 }

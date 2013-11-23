@@ -5,7 +5,7 @@ import org.m410.j8.configuration.ServletContextAppFactory;
 import javax.servlet.*;
 
 /**
- * Document Me..
+ * This listener is setup in the web.xml and initializes the application.
  *
  * @author Michael Fortin
  */
@@ -14,7 +14,10 @@ public class ApplicationContextListener implements ServletContextListener {
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
+
+        // todo needs to be set dynamically
         String env = "development";// servletContext.getInitParameter("m410-env");
+
         ApplicationModule app = ServletContextAppFactory.forEnvironment(env);
         servletContext.setAttribute("application", app);
 
