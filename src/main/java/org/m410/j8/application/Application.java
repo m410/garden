@@ -3,17 +3,14 @@ package org.m410.j8.application;
 import org.m410.j8.action.ActionDefinition;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Controller;
-import org.m410.j8.persistence.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.servlet.FilterDefinition;
@@ -25,7 +22,7 @@ import org.slf4j.LoggerFactory;
 
 /**
  */
-abstract public class Application implements ApplicationComponent {
+abstract public class Application implements ApplicationModule {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
     private List<? extends ThreadLocalSessionFactory> threadLocalsFactories;

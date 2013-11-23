@@ -1,6 +1,6 @@
 package org.m410.j8.configuration;
 
-import org.m410.j8.application.ApplicationComponent;
+import org.m410.j8.application.ApplicationModule;
 
 /**
  * Document Me..
@@ -8,12 +8,12 @@ import org.m410.j8.application.ApplicationComponent;
  * @author Michael Fortin
  */
 public class ServletContextAppFactory {
-    public static ApplicationComponent forEnvironment(String env) {
+    public static ApplicationModule forEnvironment(String env) {
         Configuration config = ConfigurationFactory.runtime(env);
 
         try {
             Class clazz = Class.forName(config.getApplication().getApplicationClass());
-            final ApplicationComponent application = (ApplicationComponent) clazz.newInstance();
+            final ApplicationModule application = (ApplicationModule) clazz.newInstance();
             application.init(config);
             return application;
         }

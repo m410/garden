@@ -15,7 +15,7 @@ public class ApplicationContextListener implements ServletContextListener {
     public void contextInitialized(ServletContextEvent servletContextEvent) {
         ServletContext servletContext = servletContextEvent.getServletContext();
         String env = "development";// servletContext.getInitParameter("m410-env");
-        ApplicationComponent app = ServletContextAppFactory.forEnvironment(env);
+        ApplicationModule app = ServletContextAppFactory.forEnvironment(env);
         servletContext.setAttribute("application", app);
 
         app.getListeners().stream().forEach((l) -> {

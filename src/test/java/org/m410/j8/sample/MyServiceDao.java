@@ -1,6 +1,6 @@
 package org.m410.j8.sample;
 
-import org.m410.j8.persistence.orm.EntityFactory;
+import org.m410.j8.module.ormbuiler.orm.EntityFactory;
 
 /**
  * Document Me..

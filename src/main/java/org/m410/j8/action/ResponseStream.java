@@ -3,7 +3,7 @@ package org.m410.j8.action;
 import java.io.OutputStream;
 
 /**
- * Document Me..
+ * An output stream closure used in the Response object
  *
  * @author Michael Fortin
  */

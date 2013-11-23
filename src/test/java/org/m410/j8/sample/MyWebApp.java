@@ -5,20 +5,20 @@ import com.google.common.collect.ImmutableList;
 import org.m410.j8.application.Application;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Controller;
-import org.m410.j8.persistence.JpaComponent;
-import org.m410.j8.migration.MigrationComponent;
-import org.m410.j8.persistence.OrmBuilderComponent;
-import org.m410.j8.persistence.orm.EntityFactory;
-import org.m410.j8.sample.components.JmsComponent;
-import org.m410.j8.sample.components.MailComponent;
+import org.m410.j8.module.migration.MigrationModule;
+import org.m410.j8.module.jpa.JpaModule;
+import org.m410.j8.module.ormbuiler.OrmBuilderModule;
+import org.m410.j8.module.ormbuiler.orm.EntityFactory;
+import org.m410.j8.module.jms.JmsModule;
+import org.m410.j8.module.mail.MailModule;
 
 import java.util.List;
 
 
 /**
  */
-public class MyWebApp extends Application implements JpaComponent, MailComponent, JmsComponent,
-        OrmBuilderComponent, MigrationComponent {
+public class MyWebApp extends Application implements JpaModule, MailModule, JmsModule,
+        OrmBuilderModule, MigrationModule {
 
 
     MyServiceDao myServiceDao = new MyServiceDaoImpl();
@@ -28,8 +28,8 @@ public class MyWebApp extends Application implements JpaComponent, MailComponent
     public List<?> makeServices(Configuration c) {
         return ImmutableList.builder()
                 .addAll(ImmutableList.of(myService))
-                .addAll(JmsComponent.super.makeServices(c))
-                .addAll(MailComponent.super.makeServices(c))
+                .addAll(JmsModule.super.makeServices(c))
+                .addAll(MailModule.super.makeServices(c))
                 .build();
     }
 

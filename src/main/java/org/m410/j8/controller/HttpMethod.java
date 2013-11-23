@@ -1,7 +1,7 @@
 package org.m410.j8.controller;
 
 /**
- * Document Me..
+ * Allowed http methods in controller actions.
  *
  * @author Michael Fortin
  */

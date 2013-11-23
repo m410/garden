@@ -8,7 +8,6 @@ import static org.junit.Assert.*;
 
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
-import org.m410.j8.persistence.ThreadLocalSessionFactory;
 import org.m410.j8.sample.MyWebApp;
 
 import javax.servlet.ServletException;

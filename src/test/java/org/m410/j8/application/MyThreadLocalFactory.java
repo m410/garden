@@ -1,7 +1,5 @@
 package org.m410.j8.application;
 
-import org.m410.j8.persistence.ThreadLocalSessionFactory;
-
 /**
  * Document Me..
  *
