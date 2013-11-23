@@ -1,6 +1,8 @@
 package org.m410.j8.persistence;
 
 import org.m410.j8.application.ThreadLocalSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -11,10 +13,10 @@ import javax.persistence.EntityManagerFactory;
  * @author Michael Fortin
  */
 public class JpaThreadLocal implements ThreadLocalSession<EntityManager> {
+    static final Logger log = LoggerFactory.getLogger(JpaThreadLocal.class);
+    static final ThreadLocal<EntityManager> threadLocal = new ThreadLocal<>();
 
-    private static ThreadLocal<EntityManager> threadLocal = new ThreadLocal<>();
-
-    private EntityManagerFactory factory;
+    private final EntityManagerFactory factory;
 
 
     public JpaThreadLocal(EntityManagerFactory factory) {
@@ -27,12 +29,15 @@ public class JpaThreadLocal implements ThreadLocalSession<EntityManager> {
 
     @Override
     public void start() {
-        threadLocal.set(factory.createEntityManager());
+        final EntityManager entityManager = factory.createEntityManager();
+        entityManager.getTransaction().begin();
+        threadLocal.set(entityManager);
     }
 
     @Override
     public void stop() {
         EntityManager entityManager = threadLocal.get();
+        log.debug("close entityManager: {}", entityManager);
 
         if(entityManager.getTransaction().isActive())
             entityManager.getTransaction().commit();

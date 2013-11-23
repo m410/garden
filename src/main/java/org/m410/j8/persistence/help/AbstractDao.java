@@ -13,9 +13,9 @@ import java.util.Set;
  * @author Michael Fortin
  */
 public abstract class AbstractDao<T extends Id<K>, K> implements Dao<T,K> {
-    protected String listQuery;
-    protected String countQuery;
-    protected Class<T> tClass;
+    protected final String listQuery;
+    protected final String countQuery;
+    protected final Class<T> tClass;
 
     protected AbstractDao(Class<T> tClass) {
         this.tClass = tClass;
