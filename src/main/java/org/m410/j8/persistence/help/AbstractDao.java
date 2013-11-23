@@ -28,9 +28,7 @@ public abstract class AbstractDao<T extends Id<K>, K> implements Dao<T,K> {
     }
 
     public List<T> list() {
-        final EntityManager entityManager = JpaThreadLocal.get();
-        System.out.println("entityManager="+entityManager);
-        return entityManager.createQuery(listQuery).getResultList();
+        return JpaThreadLocal.get().createQuery(listQuery).getResultList();
     }
 
     public List<T> page(int start, int limit) {
