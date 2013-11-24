@@ -48,4 +48,9 @@ public abstract class AbstractDao<T extends Id<K>, K> implements Dao<T,K> {
     public T update(T t) {
         return JpaThreadLocal.get().merge(t);
     }
+
+    @Override
+    public void delete(T t) {
+        JpaThreadLocal.get().remove(t);
+    }
 }

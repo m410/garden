@@ -20,4 +20,6 @@ public interface Dao<T extends Id<K>, K> {
     public T insert(T t) ;
 
     public T update(T t) ;
+
+    public void delete(T t) ;
 }
