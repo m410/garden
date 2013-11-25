@@ -1,7 +1,7 @@
 package org.m410.j8.action.status;
 
 /**
- * Document Me..
+ * An async request action that gets acted on.
  *
  * @author Michael Fortin
  */

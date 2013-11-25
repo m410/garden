@@ -1,7 +1,8 @@
 package org.m410.j8.action.status;
 
 /**
- * Document Me..
+ * Action status values used internally to determine the state of the
+ * action request.
  *
  * @author Michael Fortin
  */

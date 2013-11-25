@@ -107,7 +107,7 @@ public class ActionRequestTest {
                     @Override public boolean isFinished() { return true; }
                     @Override public boolean isReady()  {
                         try { return sr.ready(); }
-                        catch (IOException e) { throw new RuntimeIOException(e); }
+                        catch (IOException e) { throw new NotAPostException(e); }
                     }
                     @Override public void setReadListener(ReadListener readListener) { }
                     @Override public int read() throws IOException {
@@ -131,7 +131,7 @@ public class ActionRequestTest {
                     @Override public boolean isFinished() { return true; }
                     @Override public boolean isReady()  {
                         try { return sr.ready(); }
-                        catch (IOException e) { throw new RuntimeIOException(e); }
+                        catch (IOException e) { throw new NotAPostException(e); }
                     }
                     @Override public void setReadListener(ReadListener readListener) { }
                     @Override public int read() throws IOException {

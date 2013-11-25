@@ -6,7 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.j8.servlet.ServletExtension;
 
 /**
- * @author m410
+ * A request action that must be forwarded.
+ *
+ * @author Michael Fortin
  */
 public class Forward implements ActionStatus, ServletExtension {
     private String forwardPath;

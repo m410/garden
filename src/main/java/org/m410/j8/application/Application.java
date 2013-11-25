@@ -23,6 +23,9 @@ import org.slf4j.LoggerFactory;
 /**
  * This is the base implementation of the applicationModule.  It's what uses
  * of the framework need to extend.
+ *
+ * @see ApplicationModule
+ * @author Michael Fortin
  */
 abstract public class Application implements ApplicationModule {
     private static final Logger log = LoggerFactory.getLogger(Application.class);

@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Document Me..
+ * A persistence module definition.
  *
  * @author Michael Fortin
  */

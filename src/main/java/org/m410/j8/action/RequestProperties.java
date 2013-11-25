@@ -3,8 +3,9 @@ package org.m410.j8.action;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * Document Me..
+ * Makes the request properties accessible from the ActionRequest object.
  *
+ * @todo finish me...
  * @author Michael Fortin
  */
 public class RequestProperties {

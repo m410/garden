@@ -1,7 +1,7 @@
 package org.m410.j8.configuration;
 
+import org.m410.j8.action.NotAPostException;
 import org.yaml.snakeyaml.Yaml;
-import org.m410.j8.action.RuntimeIOException;
 
 import java.io.*;
 import java.nio.file.FileSystems;
@@ -28,7 +28,7 @@ public class ConfigurationFactory {
             return fromInputStream(new FileInputStream(file), env);
         }
         catch (FileNotFoundException e) {
-            throw new RuntimeIOException(e);
+            throw new NotAPostException(e);
         }
     }
 

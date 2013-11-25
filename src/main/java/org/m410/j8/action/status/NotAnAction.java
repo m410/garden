@@ -1,7 +1,7 @@
 package org.m410.j8.action.status;
 
 /**
- * Document Me..
+ * Requests that are not actions.
  *
  * @author Michael Fortin
  */
@@ -14,6 +14,6 @@ public final class NotAnAction implements ActionStatus {
 
     @Override
     public int id() {
-        return ACT_ON;
+        return NOT_AN_ACTION;
     }
 }

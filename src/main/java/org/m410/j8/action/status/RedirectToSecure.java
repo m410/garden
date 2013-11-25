@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Document Me..
+ * An action state that needs to be redirected to secure connection.
  *
  * @author Michael Fortin
  */

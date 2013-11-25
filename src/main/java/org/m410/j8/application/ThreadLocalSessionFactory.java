@@ -8,10 +8,15 @@ package org.m410.j8.application;
  * @author Michael Fortin
  */
 public interface ThreadLocalSessionFactory<T extends ThreadLocalSession> {
+
+    /**
+     * Create a threadLocal instance.
+     * @return
+     */
     T make();
 
     /**
-     * De-register jdbc drivers.
+     * Shutdown the factory, and do cleanup like deregistering jdbc drivers.
      */
     void shutdown();
 }

@@ -14,6 +14,20 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
+ * This is an action and it's meta data.  It includes it path expression, http method
+ * and other information.
+ *
+ * You don't create one of of these explicitly, it's created on the controller when you
+ * use one of the action methods
+ *
+ * <code>
+ * public List<ActionDefinition> actions() {
+ *    return ImmutableList.of(get("", home));
+ * }
+ * </code>
+ *
+ * @todo missing contentType validation, authentication and authorization
+ * @author Michael Fortin
  */
 public class ActionDefinition implements  Comparable<ActionDefinition>, ServletExtension {
     private static final Logger log = LoggerFactory.getLogger(ActionDefinition.class);

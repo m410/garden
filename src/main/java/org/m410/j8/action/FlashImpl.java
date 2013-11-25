@@ -3,7 +3,7 @@ package org.m410.j8.action;
 import javax.servlet.http.HttpSession;
 
 /**
- * Document Me..
+ * Still a work in progress.
  *
  * @author Michael Fortin
  */

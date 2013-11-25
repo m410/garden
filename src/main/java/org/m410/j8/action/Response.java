@@ -18,7 +18,7 @@ import java.util.Map;
  *
  * @author Michael Fortin
  */
-public class Response implements ActionResponse {
+public final class Response {
     public static final String XML_CONTENT_TYPE = "application/xml";
     public static final String JSON_CONTENT_TYPE = "application/json";
     public static final String HTML_CONTENT_TYPE = "text/html";
@@ -210,7 +210,7 @@ public class Response implements ActionResponse {
                 outputStream.write(v.getBytes());
             }
             catch (IOException e) {
-                throw new RuntimeIOException(e);
+                throw new NotAPostException(e);
             }
         };
         return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, PLAIN_CONTENT_TYPE,s);
@@ -229,7 +229,7 @@ public class Response implements ActionResponse {
                 outputStream.write(v.getBytes());
             }
             catch (IOException e) {
-                throw new RuntimeIOException(e);
+                throw new NotAPostException(e);
             }
         };
         return new Response(headers, model, session, flash, Directions.noView(), invalidateSession,JSON_CONTENT_TYPE,s);
@@ -248,7 +248,7 @@ public class Response implements ActionResponse {
                 outputStream.write(v.getBytes());
             }
             catch (IOException e) {
-                throw new RuntimeIOException(e);
+                throw new NotAPostException(e);
             }
         };
         return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, XML_CONTENT_TYPE,s);
@@ -277,37 +277,30 @@ public class Response implements ActionResponse {
         return new Response(headers, model, session, flash, direction, invalidateSession, contentType,s);
     }
 
-    @Override
     public Map<String, String> getHeaders() {
         return headers;
     }
 
-    @Override
     public Direction getDirection() {
         return direction;
     }
 
-    @Override
     public Map<String, Object> getModel() {
         return model;
     }
 
-    @Override
     public Map<String, Object> getSession() {
         return session;
     }
 
-    @Override
     public Flash getFlash() {
         return flash;
     }
 
-    @Override
     public boolean doInvalidateSession() {
         return invalidateSession;
     }
 
-    @Override
     public String getContentType() {
         return contentType;
     }
@@ -317,7 +310,6 @@ public class Response implements ActionResponse {
      * @param request the servlet request.
      * @param response the servlet response.
      */
-    @Override
     public void handleResponse(HttpServletRequest request, HttpServletResponse response) {
         if(responseStream != null) {
             try {
@@ -325,7 +317,7 @@ public class Response implements ActionResponse {
                 responseStream.stream(response.getOutputStream());
             }
             catch (IOException e) {
-                throw new RuntimeIOException(e);
+                throw new NotAPostException(e);
             }
         }
         else if(invalidateSession && request.getSession(false) != null) {
@@ -345,7 +337,7 @@ public class Response implements ActionResponse {
                         request.getRequestDispatcher(((View)direction).getPath()).forward(request,response);
                     }
                     catch (ServletException|IOException e) {
-                        throw new RuntimeIOException(e);
+                        throw new NotAPostException(e);
                     }
                     break;
                 case Direction.REDIRECT:
@@ -353,7 +345,7 @@ public class Response implements ActionResponse {
                         response.sendRedirect(((Redirect)direction).getPath());
                     }
                     catch (IOException e) {
-                        throw new RuntimeIOException(e);
+                        throw new NotAPostException(e);
                     }
                 case Direction.NO_VIEW:
                     break;

@@ -5,7 +5,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.action.ActionRequest;
-import org.m410.j8.action.ActionResponse;
 import org.m410.j8.action.RequestProperties;
 import org.m410.j8.action.UserPrincipal;
 import org.m410.j8.sample.MyController;

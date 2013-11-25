@@ -3,7 +3,7 @@ package org.m410.j8.configuration;
 import java.util.Map;
 
 /**
- * Document Me..
+ * Logging node definition.
  *
  * @author Michael Fortin
  */

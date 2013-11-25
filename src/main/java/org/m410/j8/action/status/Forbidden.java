@@ -1,7 +1,7 @@
 package org.m410.j8.action.status;
 
 /**
- * Document Me..
+ * An action that is forbibben to be accessed.
  *
  * @author Michael Fortin
  */

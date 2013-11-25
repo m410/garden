@@ -3,7 +3,8 @@ package org.m410.j8.action;
 import javax.servlet.http.HttpSession;
 
 /**
- * Document Me..
+ * Placed into session scope, this removes itself from the session once it's
+ * called from a page.
  *
  * @author Michael Fortin
  */

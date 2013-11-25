@@ -1,7 +1,7 @@
 package org.m410.j8.action.direction;
 
 /**
- * Document Me..
+ * A response view that redirects the client.
  *
  * @author Michael Fortin
  */

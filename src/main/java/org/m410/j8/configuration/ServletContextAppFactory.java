@@ -3,7 +3,7 @@ package org.m410.j8.configuration;
 import org.m410.j8.application.ApplicationModule;
 
 /**
- * Document Me..
+ * Creates a configuration at runtime using the servlet context.
  *
  * @author Michael Fortin
  */

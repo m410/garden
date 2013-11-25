@@ -3,7 +3,7 @@ package org.m410.j8.configuration;
 import java.util.Map;
 
 /**
- * Document Me..
+ * Base module definition.
  *
  * @author Michael Fortin
  */

@@ -17,7 +17,9 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Created with IntelliJ IDEA.
+ * Logging configuration
+ *
+ *  @author Michael Fortin
  */
 public class LogbackXmlBuilder implements ConfigFileBuilder {
 

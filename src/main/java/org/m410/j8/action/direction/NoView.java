@@ -1,7 +1,9 @@
 package org.m410.j8.action.direction;
 
 /**
- * Document Me..
+ * The default response view, of no view.  This is used on
+ * responses that don't need a direction like when the response
+ * is a outputstream.
  *
  * @author Michael Fortin
  */

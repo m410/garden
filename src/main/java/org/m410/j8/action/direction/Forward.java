@@ -1,7 +1,7 @@
 package org.m410.j8.action.direction;
 
 /**
- * Document Me..
+ * Send a response forward.
  *
  * @author Michael Fortin
  */

@@ -93,7 +93,7 @@ public class ActionRequestDefaultImpl implements ActionRequest {
             return servletRequest.getInputStream();
         }
         catch (IOException e) {
-            throw new RuntimeIOException(e);
+            throw new NotAPostException(e);
         }
     }
 
@@ -105,7 +105,7 @@ public class ActionRequestDefaultImpl implements ActionRequest {
             return writer.toString();
         }
         catch (IOException e) {
-            throw new RuntimeIOException(e);
+            throw new NotAPostException(e);
         }
     }
 }

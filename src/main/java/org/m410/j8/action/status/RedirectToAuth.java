@@ -5,7 +5,7 @@ import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
- * Document Me..
+ * Request action that must be redirected to authorization.
  *
  * @author Michael Fortin
  */

@@ -1,7 +1,7 @@
 package org.m410.j8.action.direction;
 
 /**
- * Document Me..
+ * Static helpers to create directions.
  *
  * @author Michael Fortin
  */

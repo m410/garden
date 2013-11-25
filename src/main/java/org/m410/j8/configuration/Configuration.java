@@ -12,6 +12,8 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
+ * The base file of the configuration.
+ * @author Michael Fortin
  */
 public class Configuration {
     private String version;
