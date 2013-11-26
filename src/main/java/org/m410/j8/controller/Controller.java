@@ -58,7 +58,6 @@ public abstract class Controller {
      *  public List&gt;ActionDefinition&gt; actions() {
      *       return ImmutableList.of(get("", home));
      *  }
-     *
      *  Action home = req -&gt; response().withView("/index.jsp");
      * </pre>
      *
@@ -71,7 +70,8 @@ public abstract class Controller {
     }
 
     /**
-     * a post action definition
+     * A post action definition.
+     *
      * @param path the path expression
      * @param act the action
      * @return a new action definition.
