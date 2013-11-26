@@ -60,7 +60,7 @@ public interface ActionRequest {
     /**
      * The body of the request as an input stream.
      *
-     * @throws NotAPostException
+     * @throws NotAPostException when it's not a post
      * @return an inputstream if the request is a post.
      */
     InputStream postBodyAsStream();
@@ -68,7 +68,7 @@ public interface ActionRequest {
     /**
      * The post body as a string.
      *
-     * @throws NotAPostException
+     * @throws NotAPostException when it's not a post
      * @return String value of the post.
      */
     String postBodyAsString();

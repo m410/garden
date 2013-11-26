@@ -42,10 +42,10 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
      * http://wiki.eclipse.org/EclipseLink/Examples/JPA/EmployeeXML
      *
      * @return this OrmBuilder
-     * @throws ParserConfigurationException
-     * @throws TransformerException
-     * @throws SAXException
-     * @throws IOException
+     * @throws ParserConfigurationException just re-throw all exceptions
+     * @throws TransformerException just re-throw all exceptions
+     * @throws SAXException just re-throw all exceptions
+     * @throws IOException just re-throw all exceptions
      */
     public String make() throws ParserConfigurationException, TransformerException, SAXException,
             IOException {

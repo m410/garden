@@ -7,5 +7,5 @@ package org.m410.j8.action;
  * @author Michael Fortin
  */
 public interface Action {
-    public ActionResponse action(ActionRequest args);
+    public Response action(ActionRequest args);
 }

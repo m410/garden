@@ -52,14 +52,15 @@ public abstract class Controller {
     /**
      * a basic get action.
      *
-     * Typically used like
-     * <code>
-     *  public List<ActionDefinition> actions() {
+     * Typically used like:
+     *
+     * <pre>
+     *  public List&gt;ActionDefinition&gt; actions() {
      *       return ImmutableList.of(get("", home));
      *  }
      *
-     *  Action home = req -> response().withView("/index.jsp");
-     * </code>
+     *  Action home = req -&gt; response().withView("/index.jsp");
+     * </pre>
      *
      * @param path the action path expression
      * @param act the action implementation.

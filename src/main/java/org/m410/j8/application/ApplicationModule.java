@@ -32,7 +32,7 @@ public interface ApplicationModule {
      * container at startup.
      *
      * @param c configuration
-     * @return
+     * @return list of filter definitions
      */
     List<FilterDefinition> makeFilters(Configuration c) ;
 

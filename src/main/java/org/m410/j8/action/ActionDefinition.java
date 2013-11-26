@@ -20,11 +20,11 @@ import javax.servlet.http.HttpServletResponse;
  * You don't create one of of these explicitly, it's created on the controller when you
  * use one of the action methods
  *
- * <code>
- * public List<ActionDefinition> actions() {
+ * <pre>
+ * public List&lt;ActionDefinition$gt; actions() {
  *    return ImmutableList.of(get("", home));
  * }
- * </code>
+ * </pre>
  *
  * @todo missing contentType validation, authentication and authorization
  * @author Michael Fortin

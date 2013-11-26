@@ -11,7 +11,7 @@ public interface ThreadLocalSessionFactory<T extends ThreadLocalSession> {
 
     /**
      * Create a threadLocal instance.
-     * @return
+     * @return a new threadlocal instance.
      */
     T make();
 

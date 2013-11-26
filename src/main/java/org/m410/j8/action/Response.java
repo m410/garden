@@ -267,9 +267,10 @@ public final class Response {
     /**
      * Takes a closure as an argument to stream content to the client.
      *
-     * <code>
-     *     response().contentType("text/json").stream(out->out.write(""));
-     * </code>
+     * <pre>
+     *     response().contentType("text/json").stream(out-&gt;out.write(""));
+     * </pre>
+     *
      * @param s response stream
      * @return a new Response object
      */

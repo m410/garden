@@ -6,6 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.action.ActionRequest;
 import org.m410.j8.action.RequestProperties;
+import org.m410.j8.action.Response;
 import org.m410.j8.action.UserPrincipal;
 import org.m410.j8.sample.MyController;
 import org.m410.j8.sample.MyService;
@@ -40,7 +41,7 @@ public class ControllerCrudTest {
     public void testGetByUrlParameter() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
-        ActionResponse response = controller.httpGetAction.action(mockRequest);
+        Response response = controller.httpGetAction.action(mockRequest);
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -50,7 +51,7 @@ public class ControllerCrudTest {
     public void testList() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
-        ActionResponse response = controller.httpGetAction.action(mockRequest);
+        Response response = controller.httpGetAction.action(mockRequest);
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -60,7 +61,7 @@ public class ControllerCrudTest {
     public void testCreate() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
-        ActionResponse response = controller.httpPostAction.action(mockRequest);
+        Response response = controller.httpPostAction.action(mockRequest);
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -70,7 +71,7 @@ public class ControllerCrudTest {
     public void testUpdate() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
-        ActionResponse response = controller.httpPutAction.action(mockRequest);
+        Response response = controller.httpPutAction.action(mockRequest);
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -80,7 +81,7 @@ public class ControllerCrudTest {
     public void testDelete() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
-        ActionResponse response = controller.httpDeleteAction.action(mockRequest);
+        Response response = controller.httpDeleteAction.action(mockRequest);
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
