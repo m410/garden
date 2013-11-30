@@ -24,20 +24,26 @@ import java.util.Enumeration;
 public class HibernatePersistence implements ThreadLocalSessionFactory<JpaThreadLocal> {
     private static final Logger log = LoggerFactory.getLogger(HibernatePersistence.class);
 
-    private Configuration configuration;
     private EntityManagerFactory entityManagerFactory;
 
     public HibernatePersistence(Configuration configuration) {
-        this.configuration = configuration;
         entityManagerFactory = Persistence.createEntityManagerFactory("m410-jpa");
         log.info("Created EntityManagerFactory: {}", entityManagerFactory);
     }
 
+    /**
+     * create a thread local with the entity manager factory.
+     *
+     * @return a thread local to manage connections.
+     */
     @Override
     public JpaThreadLocal make() {
         return new JpaThreadLocal(entityManagerFactory);
     }
 
+    /**
+     * Shutdown and connection pools
+     */
     @Override
     public void shutdown() {
         log.debug("shutting down and de-registering jdbc drivers");
