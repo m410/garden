@@ -5,7 +5,7 @@ import javax.servlet.http.HttpServletRequest;
 /**
  * Makes the request properties accessible from the ActionRequest object.
  *
- * @todo finish me...
+ * todo finish me...
  * @author Michael Fortin
  */
 public class RequestProperties {

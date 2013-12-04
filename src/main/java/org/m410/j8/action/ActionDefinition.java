@@ -26,7 +26,8 @@ import javax.servlet.http.HttpServletResponse;
  * }
  * </pre>
  *
- * @todo missing contentType validation, authentication and authorization
+ *
+ * todo missing contentType validation, authentication and authorization
  * @author Michael Fortin
  */
 public class ActionDefinition implements  Comparable<ActionDefinition>, ServletExtension {

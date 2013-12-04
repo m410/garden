@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
  *
  * Strategy can be one of, [TABLE, SEQUENCE, IDENTITY, AUTO].
  *
- * @todo fix the strategy
+ * todo fix the strategy
  * @author Michael Fortin
  */
 public final class GeneratedValue extends Node {

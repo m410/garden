@@ -9,9 +9,11 @@ import java.util.List;
 /**
  * This is not implemented.  The concept is that if you would prefer
  * to use spring bean annotations to wire your class instead of
- * explicit wiring you could add this module to your application.
+ * explicit wiring you you would have that option simply by adding
+ * this module to your application.
  *
- * @todo not implemented
+ * todo not implemented
+ *
  * @author Michael Fortin
  */
 public interface SpringBeanModule extends ApplicationModule {
