@@ -1,7 +1,7 @@
 package org.m410.j8.application;
 
 import org.m410.j8.configuration.Configuration;
-import org.m410.j8.controller.Controller;
+import org.m410.j8.controller.Ctlr;
 import org.m410.j8.servlet.FilterDefinition;
 import org.m410.j8.servlet.ListenerDefinition;
 import org.m410.j8.servlet.ServletDefinition;
@@ -63,7 +63,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of controllers
      */
-    List<? extends Controller> makeControllers(Configuration c);
+    List<Ctlr> makeControllers(Configuration c);
 
     /**
      * Creates the application services.
@@ -74,8 +74,9 @@ public interface ApplicationModule {
     List<?> makeServices(Configuration c);
 
     /**
-     * This is the main initialization method for the application.  It calls the
-     * other factory methods in turn with the passed in configuration.
+     * This is the main initialization method for the application.  It will be
+     * called by the {@link ApplicationContextListener} on startup.  This, in turn,
+     * calls the other factory methods using the passed in configuration.
      *
      * @param configuration configuration
      */

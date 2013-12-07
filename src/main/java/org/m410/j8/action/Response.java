@@ -161,7 +161,7 @@ public final class Response {
 
     /**
      * The full context relative path of the view to display for this action if any.  This will
-     * typically be response().withModel("name","value").withView("/person/view.jsp");
+     * typically be respond().withModel("name","value").withView("/person/view.jsp");
      * @param v the path of the view
      * @return a new Response.
      */
@@ -190,6 +190,7 @@ public final class Response {
     /**
      * Add a flash object to the response
      * todo needs flash message types and internationalization.
+     *
      * @param flash the content of the flash message.
      * @return a new Response.
      */
@@ -268,7 +269,7 @@ public final class Response {
      * Takes a closure as an argument to stream content to the client.
      *
      * <pre>
-     *     response().contentType("text/json").stream(out-&gt;out.write(""));
+     *     respond().contentType("text/json").stream(out-&gt;out.write(""));
      * </pre>
      *
      * @param s response stream

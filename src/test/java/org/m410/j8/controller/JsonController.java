@@ -5,11 +5,8 @@ import com.google.common.collect.ImmutableList;
 import org.m410.j8.action.Action;
 import org.m410.j8.action.ActionDefinition;
 import org.m410.j8.action.PathExpr;
-import org.m410.j8.action.direction.Redirect;
 
 import java.util.List;
-
-import static org.m410.j8.action.Response.response;
 
 
 /**
@@ -31,19 +28,19 @@ public final class JsonController extends Controller {
 
     public final Action httpGetAction = (call) -> {
         final String msg = "<message id=" + call.urlParameters().get("id") + "></message>";
-        return response().asJson(msg);
+        return respond().asJson(msg);
     };
 
     public final Action httpPostAction = (call) -> {
-        return response().asJson(call.postBodyAsString());
+        return respond().asJson(call.postBodyAsString());
     };
 
     public final Action httpPutAction = (call) -> {
-        return response().asJson(call.postBodyAsString());
+        return respond().asJson(call.postBodyAsString());
     };
 
     public final Action httpDeleteAction = (call) -> {
-        return response().redirect("/xml");
+        return respond().redirect("/xml");
     };
 }
 

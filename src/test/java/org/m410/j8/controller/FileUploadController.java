@@ -2,7 +2,6 @@ package org.m410.j8.controller;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.action.Action;
-import static org.m410.j8.action.Response.*;
 
 import org.m410.j8.action.ActionDefinition;
 import org.m410.j8.action.PathExpr;
@@ -28,6 +27,6 @@ public class FileUploadController extends Controller {
 
     Action upload = (req) -> {
         String in = req.postBodyAsString();
-        return response().asText(in);
+        return respond().asText(in);
     };
 }

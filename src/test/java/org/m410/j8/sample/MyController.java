@@ -9,9 +9,6 @@ import org.m410.j8.controller.Controller;
 
 import java.util.List;
 
-import static org.m410.j8.action.Response.response;
-import static org.m410.j8.action.direction.Directions.view;
-
 
 /**
  */
@@ -34,22 +31,22 @@ public final class MyController extends Controller {
 
     public final Action httpGetAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView("/home");
+        return respond().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpPostAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView("/home");
+        return respond().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpPutAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView("/home");
+        return respond().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpDeleteAction = (call) -> {
         final String myEntity = myService.get(call.urlParameters().get("id"));
-        return response().withModel("name", myEntity).withView("/home");
+        return respond().withModel("name", myEntity).withView("/home");
     };
 }
 

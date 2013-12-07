@@ -9,14 +9,51 @@ import org.m410.j8.action.Response;
 import java.util.List;
 
 /**
- * This is the default base implementation of a controller.
+ * This is the default implementation of a the Ctlr interface.
+ * <p>
+ * To create your own application controller add a class like this.
+ *
+ * <pre>
+ * public class MyController extends Controller {
+ *     public MyController() { super("basepath"); }
+ *     public List&lt;ActionDefinition&gt; actions() {
+ *         return ImmutableList.of(
+ *             get("", home),
+ *             get("{id:\\d+}", view)
+ *         );
+ *     }
+ *     Action home = req -> respond().withView("/index.jsp");
+ *     Action view = req -> respond().withModel("name","value").withView("/view.jsp");
+ * }
+ * </pre>
+ *
+ * The Controller class has a private constructor so you have to write one of your own and
+ * call one of the super class constructors that sets the base path expression.
+ * <p>
+ * There is only one method you must implement, but do do anything useful you have to create
+ * actions and return them in the list of actions.
+ * <p>
+ * In the example above the get methods returns an Action definition, using a sub path expression
+ * and an action class.  The Action classes are defined as closures at the bottom of the example.
+ *
+ * Each Action must return a response instance.
+ *
+ * By default, each action is wrapped in a transaction.  If you're using the
+ * {@link org.m410.j8.module.jpa.JpaModule}, the entity manager for the request is accessible
+ * with the JpaThreadLocal.get() method.
+ *
+ * Missing from this release is action discrimination based on content type, securing with ssl,
+ * and role based authorization.
+ *
+ * @see org.m410.j8.action.PathExpr
+ * @see org.m410.j8.action.Action
+ *
+ * @author Michael Fortin
  */
-public abstract class Controller {
+public abstract class Controller implements Ctlr {
     protected PathExpr pathExpr;
-    // default roles
-    // default ssl
-    // default content-type
-
+    // todo default ssl
+    // todo default content-type
 
     /**
      * private constructor so you must implement a path.
@@ -26,6 +63,8 @@ public abstract class Controller {
 
     /**
      * Creates a controller with the base path expression.
+     *
+     * @see org.m410.j8.action.PathExpr
      * @param pathExpr a path expression.
      */
     protected Controller(PathExpr pathExpr) {
@@ -41,15 +80,6 @@ public abstract class Controller {
     }
 
     /**
-     * All controllers must implement an action and add it to it's to this list.
-     * It's highly recommended that you use the an immutable list implementation
-     * form guava.
-     *
-     * @return a list of action defintions.
-     */
-    public abstract List<ActionDefinition> actions();
-
-    /**
      * a basic get action.
      *
      * Typically used like:
@@ -58,7 +88,7 @@ public abstract class Controller {
      *  public List&gt;ActionDefinition&gt; actions() {
      *       return ImmutableList.of(get("", home));
      *  }
-     *  Action home = req -&gt; response().withView("/index.jsp");
+     *  Action home = req -&gt; respond().withView("/index.jsp");
      * </pre>
      *
      * @param path the action path expression
@@ -103,21 +133,25 @@ public abstract class Controller {
     }
 
     /**
-     * A generic action definition builder.
+     * A generic action definition builder called by all other methods named with
+     * by the http method. You may call this directly but the convenience methods
+     * are shorter and more readable.
+     *
      * @param method the http method.
      * @param a an action.
      * @param p the path expression.
      * @return a new action definition.
      */
-    private ActionDefinition act(HttpMethod method, Action a, PathExpr p) {
+    protected ActionDefinition act(HttpMethod method, Action a, PathExpr p) {
         return new ActionDefinition(a,p,method);
     }
 
     /**
      * A helper function used by any action to create a response.
+     *
      * @return a new response.
      */
-    protected Response response() {
+    protected Response respond() {
         return new Response();
     }
 
