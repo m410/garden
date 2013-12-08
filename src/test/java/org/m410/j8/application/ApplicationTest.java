@@ -35,7 +35,7 @@ public class ApplicationTest {
         Application app = new MyWebApp();
         app.init(conf);
         assertNotNull(app);
-        assertNotNull(app.actionDefinitions.size() == 0);
+        assertNotNull(app.getActionDefinitions().size() == 0);
     }
 
     @Test

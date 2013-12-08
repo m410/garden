@@ -28,7 +28,7 @@ public class ControllerJsonTest {
     @Before
     public void setup() {
         myApp = new MyWebApp() {
-            @Override public List<? extends Controller> makeControllers(Configuration c) {
+            @Override public List<Ctlr> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
             }
         };

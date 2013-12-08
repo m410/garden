@@ -22,8 +22,8 @@ import java.util.List;
  *             get("{id:\\d+}", view)
  *         );
  *     }
- *     Action home = req -> respond().withView("/index.jsp");
- *     Action view = req -> respond().withModel("name","value").withView("/view.jsp");
+ *     Action home = req -&gt; respond().withView("/index.jsp");
+ *     Action view = req -&gt; respond().withModel("name","value").withView("/view.jsp");
  * }
  * </pre>
  *

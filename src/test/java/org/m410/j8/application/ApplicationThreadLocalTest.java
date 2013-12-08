@@ -42,13 +42,7 @@ public class ApplicationThreadLocalTest {
 
         List<ThreadLocalSessionFactory> factories = new ArrayList<>();
         factories.add(new MyThreadLocalFactory("local"));
-
-        try {
-            app.doWithThreadLocal(factories, work);
-        }
-        catch (IOException|ServletException e) {
-            fail("IO exception was thrown");
-        }
+        app.doWithThreadLocal(factories, work);
     }
 
     @Test
@@ -61,13 +55,7 @@ public class ApplicationThreadLocalTest {
         List<ThreadLocalSessionFactory> factories = new ArrayList<>();
         factories.add(new MyThreadLocalFactory("local2"));
         factories.add(new My2ThreadLocalFactory("local3"));
-
-        try {
-            app.doWithThreadLocal(factories, work);
-        }
-        catch (IOException|ServletException e) {
-            fail("IO exception was thrown");
-        }
+        app.doWithThreadLocal(factories, work);
     }
 
 }

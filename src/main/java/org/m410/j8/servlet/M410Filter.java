@@ -11,6 +11,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
+import java.util.function.Consumer;
+import java.util.function.Function;
 
 /**
  * Filter that routes action requests.
@@ -47,7 +49,7 @@ public class M410Filter implements Filter {
                 case ActionStatus.ACT_ON:
                     log.debug("ActOn({})", action);
                     webapp.doWithThreadLocals(() -> {
-                        chain.doFilter(req, res);
+                        wrapExceptions(() -> chain.doFilter(req, res));
                     });
                     break;
                 case ActionStatus.ACT_ON_ASYNC:
@@ -81,6 +83,26 @@ public class M410Filter implements Filter {
         else {
             log.debug("NotAnAction({})", request.getRequestURI());
             chain.doFilter(req, res);
+        }
+    }
+
+    /**
+     * Used to rethrow caught exceptions to RuntimeException
+     */
+    interface Throwing {
+        void doIn() throws Exception;
+    }
+
+    /**
+     * Used to rethrow caught exceptions to RuntimeException
+     * @param f a block that possible throws a caught exception
+     */
+    void wrapExceptions(Throwing f) {
+        try {
+            f.doIn();
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
         }
     }
 

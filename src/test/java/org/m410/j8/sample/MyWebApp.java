@@ -4,7 +4,7 @@ package org.m410.j8.sample;
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.application.Application;
 import org.m410.j8.configuration.Configuration;
-import org.m410.j8.controller.Controller;
+import org.m410.j8.controller.Ctlr;
 import org.m410.j8.module.migration.MigrationModule;
 import org.m410.j8.module.jpa.JpaModule;
 import org.m410.j8.module.ormbuilder.OrmBuilderModule;
@@ -34,7 +34,7 @@ public class MyWebApp extends Application implements JpaModule, MailModule, JmsM
     }
 
     @Override
-    public List<? extends Controller> makeControllers(Configuration c) {
+    public List<Ctlr> makeControllers(Configuration c) {
         return ImmutableList.of(
                 new MyController(myService)
         );

@@ -24,15 +24,17 @@ public final class Response {
     public static final String HTML_CONTENT_TYPE = "text/html";
     public static final String PLAIN_CONTENT_TYPE = "text/plain";
 
-    protected Map<String, String> headers = ImmutableSortedMap.of();
-    protected Map<String, Object> model = ImmutableSortedMap.of();
-    protected Map<String, Object> session = ImmutableSortedMap.of();
-    protected Flash flash = null;
-    protected Direction direction = Directions.noView();
-    protected boolean invalidateSession = false;
-    protected String contentType = HTML_CONTENT_TYPE;
+    private final Map<String, String> headers;
+    private final Map<String, Object> model;
+    private final Map<String, Object> session;
 
-    protected ResponseStream responseStream;
+    private final Flash flash;
+
+    private final Direction direction;
+    private final boolean invalidateSession;
+    private final String contentType;
+
+    private final ResponseStream responseStream;
 
     Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
             Flash flash, Direction viewPath, boolean invalidateSession) {
@@ -42,6 +44,8 @@ public final class Response {
         this.flash = flash;
         this.direction = viewPath;
         this.invalidateSession = invalidateSession;
+        this.contentType = HTML_CONTENT_TYPE;
+        responseStream = null;
     }
 
     Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
@@ -53,6 +57,7 @@ public final class Response {
         this.direction = viewPath;
         this.invalidateSession = invalidateSession;
         this.contentType = contentType;
+        responseStream = null;
     }
 
     Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
@@ -71,6 +76,14 @@ public final class Response {
      * Create an instance with default values
      */
     public Response() {
+        this.headers = ImmutableSortedMap.of();
+        this.model = ImmutableSortedMap.of();
+        this.session = ImmutableSortedMap.of();
+        this.flash = null;
+        this.direction = Directions.noView();
+        this.invalidateSession = false;
+        this.contentType = HTML_CONTENT_TYPE;
+        this.responseStream = null;
     }
 
     /**
@@ -201,6 +214,7 @@ public final class Response {
     /**
      * Sets the response as plain text and returns the value directly to the client.  If this
      * is used with the withView() method, this will take precedence and the view will be ignored.
+     *
      * @param v the content to return
      * @return a new response.
      */
@@ -220,6 +234,7 @@ public final class Response {
     /**
      * Sets the response as json text and returns the value directly to the client.  If this
      * is used with the withView() method, this will take precedence and the view will be ignored.
+     *
      * @param v the content to return
      * @return a new response.
      */
@@ -239,6 +254,7 @@ public final class Response {
     /**
      * Sets the response as xml text content type and returns the value directly to the client.  If this
      * is used with the withView() method, this will take precedence and the view will be ignored.
+     *
      * @param v the content to return
      * @return a new response.
      */
@@ -258,6 +274,7 @@ public final class Response {
     /**
      * Explicitly sets the content type of the response.  Typically used in conjunction with the
      * stream response method.
+     *
      * @param s the content type
      * @return a new Response
      */

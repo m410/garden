@@ -64,6 +64,11 @@ abstract public class Application implements ApplicationModule {
         return listenerDefinitions;
     }
 
+    @Override
+    public List<ActionDefinition> getActionDefinitions() {
+        return actionDefinitions;
+    }
+
     // todo add other web.xml attributes to mvn build, like the orm config.
 
     /**
@@ -124,8 +129,8 @@ abstract public class Application implements ApplicationModule {
      * <pre>
      *  public List&lt;...&gt; makeThreadLocalFactories(Configuration c) {
      *    return ImmutableList.Builder
-     *          .addAll(JpaModule.makeThreadLocalFactories(c))
-     *          .addAll(JmsModule.makeThreadLocalFactories(c))
+     *          .addAll(JpaModule.super.makeThreadLocalFactories(c))
+     *          .addAll(JmsModule.super.makeThreadLocalFactories(c))
      *          .build();
      *  }
      * </pre>
@@ -172,7 +177,7 @@ abstract public class Application implements ApplicationModule {
     /**
      * Finds an action based on the request URI.
      *
-     * @param request
+     * @param request the HttpServletException
      * @return Optional ActionDefinition
      */
     public Optional<ActionDefinition> actionForRequest(HttpServletRequest request) {
@@ -185,17 +190,15 @@ abstract public class Application implements ApplicationModule {
      * Used for internal use to wrap actions in a single method function.
      */
     public interface Work {
-        void doWork() throws IOException, ServletException;
+        void doWork();
     }
 
     /**
      * Wraps action invocations with a thread local context.
      *
      * @param work internal closure to wrap the action.
-     * @throws IOException
-     * @throws ServletException
      */
-    public void doWithThreadLocals(Work work) throws IOException, ServletException {
+    public void doWithThreadLocals(Work work) {
         doWithThreadLocal(threadLocalsFactories, work);
     }
 
@@ -205,11 +208,8 @@ abstract public class Application implements ApplicationModule {
      *
      * @param tlf list of ThreadLocalFactory objects
      * @param block an internal worker closure.
-     * @throws IOException
-     * @throws ServletException
      */
-    protected void doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block)
-            throws IOException, ServletException {
+    protected void doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block) {
         if (tlf != null && tlf.size() >= 1) {
             ThreadLocalSession session = tlf.get(tlf.size() - 1).make();
             session.start();
