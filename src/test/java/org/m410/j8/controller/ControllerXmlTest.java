@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.j8.application.ThreadLocalSessionFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpServletResponse;
 import org.m410.j8.configuration.Configuration;
@@ -28,6 +29,11 @@ public class ControllerXmlTest {
         myApp = new MyWebApp() {
             @Override public List<Ctlr> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
+            }
+
+            @Override
+            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+                return null;
             }
         };
         myApp.init(null);

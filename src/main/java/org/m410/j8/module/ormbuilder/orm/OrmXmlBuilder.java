@@ -21,8 +21,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
-
- *
+  * <p>
  * @author Michael Fortin
  */
 public final class OrmXmlBuilder implements ConfigFileBuilder{

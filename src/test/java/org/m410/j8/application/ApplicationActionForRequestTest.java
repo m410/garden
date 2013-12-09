@@ -37,6 +37,11 @@ public class ApplicationActionForRequestTest {
                 ctrls.add(mockController);
                 return ctrls;
             }
+
+            @Override
+            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+                return null;
+            }
         };
         app.init(conf);
     }

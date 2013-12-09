@@ -56,7 +56,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of thread local factory implementations.
      */
-    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c);
+    List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c);
 
     /**
      * Creates the controllers for the application.

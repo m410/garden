@@ -30,7 +30,13 @@ public class ApplicationThreadLocalTest {
     public void setup() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in, "development");
-        app = new MyWebApp();
+        app = new MyWebApp(){
+
+            @Override
+            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+                return null;
+            }
+        };
         app.init(conf);
     }
 

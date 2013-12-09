@@ -15,7 +15,7 @@ import java.util.Enumeration;
 /**
  * A hibernate implementation of the threadLocalSession factory.  It's created by the
  * JpaModule and injected into the application to manage the persistence context.
- *
+  * <p>
  * It's configuration comes from the configuration.m410.yml file which is also
  * response for the generation of the persistence.xml during the build process.
  *

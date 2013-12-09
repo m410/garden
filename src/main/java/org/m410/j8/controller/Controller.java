@@ -12,7 +12,7 @@ import java.util.List;
  * This is the default implementation of a the Ctlr interface.
  * <p>
  * To create your own application controller add a class like this.
- *
+  * <p>
  * <pre>
  * public class MyController extends Controller {
  *     public MyController() { super("basepath"); }
@@ -35,13 +35,13 @@ import java.util.List;
  * <p>
  * In the example above the get methods returns an Action definition, using a sub path expression
  * and an action class.  The Action classes are defined as closures at the bottom of the example.
- *
+  * <p>
  * Each Action must return a response instance.
- *
+  * <p>
  * By default, each action is wrapped in a transaction.  If you're using the
  * {@link org.m410.j8.module.jpa.JpaModule}, the entity manager for the request is accessible
  * with the JpaThreadLocal.get() method.
- *
+  * <p>
  * Missing from this release is action discrimination based on content type, securing with ssl,
  * and role based authorization.
  *
@@ -81,9 +81,9 @@ public abstract class Controller implements Ctlr {
 
     /**
      * a basic get action.
-     *
+  * <p>
      * Typically used like:
-     *
+  * <p>
      * <pre>
      *  public List&gt;ActionDefinition&gt; actions() {
      *       return ImmutableList.of(get("", home));

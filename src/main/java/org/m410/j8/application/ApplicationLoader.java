@@ -11,7 +11,7 @@ import java.net.URLClassLoader;
  * This loads the application but with a small caveat.  The application must be loaded
  * by the child classloader in development mode.  So the application needs to override this
  * class.
- *
+  * <p>
  * For the server to be able to find the class, it must adherer to a specific naming convention.  If
  * you application class is com.mycompany.webapp.MyCompanyApplication, then the loader must be
  * named com.mycompany.webapp.MyCompanyApplicationLoader.

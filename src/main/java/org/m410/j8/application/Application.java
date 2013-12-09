@@ -23,20 +23,20 @@ import org.slf4j.LoggerFactory;
 /**
  * This is the base implementation of the applicationModule.  All projects using
  * this framework must implement one class that extends this class.
- *
+ * <p>
  * There is only one instance of an application per running web application.
- *
+ * <p>
  * This class is created by the {@link org.m410.j8.application.ApplicationContextListener}
  * when the war is initialized and it is placed into the ServletContext's application scope
  * with by the name "application".  It can be accessible from even listeners and jsp's
  * by doing something like
  * <code>request.getServletContext().getAttribute("application")</code>.
+ * <p>
+ * The application class and all it's properties should be considered immutable, and
+ * any properties added by a developer should also treat it as such for thread safety.
  *
- * The application class and all it's properties are immutable, and any properties
- * added by a developer should also treat it as such.
- *
- * @see ApplicationModule
  * @author Michael Fortin
+ * @see ApplicationModule
  */
 abstract public class Application implements ApplicationModule {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
@@ -57,7 +57,6 @@ abstract public class Application implements ApplicationModule {
     public List<FilterDefinition> getFilters() {
         return filterDefinitions;
     }
-
 
     @Override
     public List<ListenerDefinition> getListeners() {
@@ -82,7 +81,7 @@ abstract public class Application implements ApplicationModule {
      * <li>javax.servlet.http.HttpSessionAttributeListener</li>
      * <li>javax.servlet.http.HttpSessionAttributeListener</li>
      * </ul>
-     *
+     * <p>
      * The most common example usage is if you would like to perform some action
      * on session start or session expire.  In those cases add your own implement
      * of the HttpSessionListener here.
@@ -108,9 +107,10 @@ abstract public class Application implements ApplicationModule {
 
     /**
      * Creates the servlet definitions that are added to the container at startup.
-     *
+     * <p>
      * If you want to add other servlets to the application you can add them here, for
      * example if you want to add Velocity for view rendering.
+     * <p>
      *
      * @param c configuration
      * @return a list of servlet definitions
@@ -122,37 +122,15 @@ abstract public class Application implements ApplicationModule {
     }
 
     /**
-     * Creates the thread local factories that will wrap each action request.  In most cases
-     * you will not need to override this unless more than one module adds thread locals
-     * to the application.  In which case you will need to do something like
-     *
-     * <pre>
-     *  public List&lt;...&gt; makeThreadLocalFactories(Configuration c) {
-     *    return ImmutableList.Builder
-     *          .addAll(JpaModule.super.makeThreadLocalFactories(c))
-     *          .addAll(JmsModule.super.makeThreadLocalFactories(c))
-     *          .build();
-     *  }
-     * </pre>
-     *
-     * @param c configuration
-     * @return a list of thread local factories.
-     */
-    @Override
-    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
-        return ImmutableList.of();
-    }
-
-    /**
      * Creates service classes with the available configuration.  Some modules may add
      * services through this method.
-     *
+     * <p>
      * It is not explicitly necessary for you to add your service here unless you
      * require lifecycle management.  Note lifecycle management is not fully implemented yet.
      *
-     * @see org.m410.j8.application.ApplicationModule#makeControllers(org.m410.j8.configuration.Configuration)
      * @param c configuration
      * @return a list of service classes.
+     * @see org.m410.j8.application.ApplicationModule#makeControllers(org.m410.j8.configuration.Configuration)
      */
     @Override
     public List<?> makeServices(Configuration c) {
@@ -161,7 +139,7 @@ abstract public class Application implements ApplicationModule {
 
     /**
      * This does the work of executing an action on a request.
-     *
+     * <p>
      * It only gets called if the action is found by the filter and forwarded to this
      * application.
      *
@@ -171,7 +149,7 @@ abstract public class Application implements ApplicationModule {
     public void doRequest(HttpServletRequest req, HttpServletResponse res) {
         log.debug("method={}, req={}", req.getMethod(), req.getRequestURI());
         actionDefinitions.stream().filter((a) -> a.doesRequestMatchAction(req))
-                .findFirst().ifPresent((action)-> action.apply(req, res));
+                .findFirst().ifPresent((action) -> action.apply(req, res));
     }
 
     /**
@@ -206,7 +184,7 @@ abstract public class Application implements ApplicationModule {
      * This is part of the plumbing of the application that you shouldn't need to change.  It's
      * called by the application to wrap each request within a thread local context.
      *
-     * @param tlf list of ThreadLocalFactory objects
+     * @param tlf   list of ThreadLocalFactory objects
      * @param block an internal worker closure.
      */
     protected void doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block) {
@@ -215,8 +193,7 @@ abstract public class Application implements ApplicationModule {
             session.start();
             doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
             session.stop();
-        }
-        else {
+        } else {
             block.doWork();
         }
     }
