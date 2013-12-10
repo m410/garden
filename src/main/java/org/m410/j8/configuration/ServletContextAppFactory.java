@@ -16,11 +16,12 @@ public class ServletContextAppFactory {
 
         try {
             Class clazz = Class.forName(config.getApplication().getApplicationClass());
-            Constructor constructor = clazz.getConstructor(Configuration.class);
-            return (ApplicationModule) constructor.newInstance(config);
+            final ApplicationModule application = (ApplicationModule) clazz.newInstance();
+            application.init(config);
+            return application;
         }
-        catch (ClassNotFoundException|InstantiationException|InvocationTargetException|
-                IllegalAccessException|NoSuchMethodException e) {
+        catch (ClassNotFoundException|InstantiationException|
+                IllegalAccessException e) {
             throw new RuntimeException(e);
         }
     }
