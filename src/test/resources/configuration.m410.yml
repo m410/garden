@@ -1,8 +1,8 @@
-version: 0.1.0-SNAPSHOT
+version: 0.1.0
 application:
   name: &name demo-jpa
   organization: org.m410.j8.demo
-  version: "1.0-SNAPSHOT"
+  version: "1.0"
   author: Michael Fortin
   description: &desc A simple  JPA Scala demo  based website.
 build:

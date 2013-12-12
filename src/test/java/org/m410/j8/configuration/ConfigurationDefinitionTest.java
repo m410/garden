@@ -36,7 +36,7 @@ public class ConfigurationDefinitionTest {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration configuration = ConfigurationFactory.fromInputStream(in, "development");
 
-        assertEquals("0.1.0-SNAPSHOT", configuration.getVersion());
+        assertEquals("0.1.0", configuration.getVersion());
         assertNotNull(configuration.getApplication());
         assertNotNull(configuration.getBuild());
         assertNotNull(configuration.getLogging());
