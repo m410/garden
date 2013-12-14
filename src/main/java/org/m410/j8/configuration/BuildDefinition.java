@@ -4,7 +4,6 @@ import java.util.Map;
 
 /**
  * Build definition from the configuration file.
-  * <p>
  * <ul>
  *    <li>default_task: "package"                          </li>
  *    <li>compiler_type: "scala"                           </li>
@@ -31,7 +30,8 @@ import java.util.Map;
  *    <li>test_resource_dir: "{working_dir}/test/resources"</li>
  *    <li>test_classes_dir: "{target_dir}/test-classes"    </li>
  *    </ul>
-  * <p>
+ *
+ *
  * @author Michael Fortin
  */
 public class BuildDefinition {
