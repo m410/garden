@@ -3,7 +3,8 @@ package org.m410.j8.module.ormbuilder.orm;
 import java.util.Arrays;
 
 /**
- * Builder design pattern to create a Entity Node.
+ * Builder design pattern to create a Entity Node.  This allows you to add top level
+ * properties and relationships to a entity much the same way as adding annotations.
  *
  * @author Michael Fortin
  */
