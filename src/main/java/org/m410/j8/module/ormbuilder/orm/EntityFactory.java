@@ -28,7 +28,7 @@ package org.m410.j8.module.ormbuilder.orm;
  *              .make();
  *      }
  *  }
- *  class MyPersonServiceImpl implements PersonDao<Person,Long>, PersonEntityFactory {}
+ *  class MyPersonServiceImpl implements PersonDao&lt;Person,Long&gt;, PersonEntityFactory {}
  * </pre>
  *
  * See the ORM class for more details on creating the mapping.
@@ -41,7 +41,7 @@ package org.m410.j8.module.ormbuilder.orm;
  *  class MyApplication extends Application implements OrmBuilderModule{
  *      // ...
  *      private PersonDao personDao = new MyPersonServiceImpl();
- *      public List<EntityFactory> entityBuilders() {
+ *      public List&lt;EntityFactory&gt; entityBuilders() {
  *          return ImmutableList.of(personDao);
  *      }
  *  }

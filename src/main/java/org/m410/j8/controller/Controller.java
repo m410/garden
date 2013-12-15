@@ -12,7 +12,7 @@ import java.util.List;
  * This is the default implementation of a the Ctlr interface.
  * <p>
  * To create your own application controller add a class like this.
-  * <p>
+
  * <pre>
  * public class MyController extends Controller {
  *     public MyController() { super("basepath"); }
@@ -83,7 +83,7 @@ public abstract class Controller implements Ctlr {
      * a basic get action.
   * <p>
      * Typically used like:
-  * <p>
+     *
      * <pre>
      *  public List&gt;ActionDefinition&gt; actions() {
      *       return ImmutableList.of(get("", home));
