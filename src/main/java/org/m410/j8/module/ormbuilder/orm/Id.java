@@ -12,10 +12,10 @@ import org.w3c.dom.Element;
  * @author Michael Fortin
  */
 public final class Id  extends Node {
-    private String name;
+    String name;
 
     Id(String name) {
-        super(0);
+        super(2,0);
         this.name = name;
     }
 
@@ -52,7 +52,6 @@ public final class Id  extends Node {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("name",name)
-                .append("ord",listOrder)
                 .toString();
     }
 }

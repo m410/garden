@@ -21,7 +21,7 @@ public final class JoinColumn extends Node {
     String table =  "";
 
     JoinColumn(String name, String referencedColumnName, String table) {
-        super(0);
+        super(3,1);
         this.name = name;
         this.referencedColumnName = referencedColumnName;
         this.table = table;

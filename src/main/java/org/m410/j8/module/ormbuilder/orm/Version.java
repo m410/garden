@@ -12,11 +12,10 @@ import org.w3c.dom.Element;
  * @author Michael Fortin
  */
 public final class Version  extends Node {
-    protected int listOrder = 120;
-    private String name;
+    String name;
 
     Version(String name) {
-        super(3);
+        super(2,3);
         this.name = name;
     }
 
@@ -54,7 +53,6 @@ public final class Version  extends Node {
     public String toString() {
         return new ToStringBuilder(this)
                 .append("name",name)
-                .append("ord",listOrder)
                 .toString();
     }
 }

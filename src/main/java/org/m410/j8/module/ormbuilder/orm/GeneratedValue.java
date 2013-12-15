@@ -10,15 +10,15 @@ import org.w3c.dom.Element;
  *
  * Strategy can be one of, [TABLE, SEQUENCE, IDENTITY, AUTO].
  *
- * todo fix the strategy
  * @author Michael Fortin
  */
 public final class GeneratedValue extends Node {
-    String strategy;
+    ORM.Strategy strategy;
     String generator;
 
-    GeneratedValue(String strategy, String generator) {
-        super(0);
+
+    GeneratedValue(ORM.Strategy strategy, String generator) {
+        super(3,1);
         this.strategy = strategy;
         this.generator = generator;
     }
@@ -26,7 +26,7 @@ public final class GeneratedValue extends Node {
     @Override
     public void appendElement(Document root, Element parent) {
         Element basic = root.createElement("generated-value");
-        basic.setAttribute("strategy",strategy);
+        basic.setAttribute("strategy",strategy.toString());
         basic.setAttribute("generator",generator);
         children.stream().forEach(n->n.appendElement(root,basic));
         parent.appendChild(basic);

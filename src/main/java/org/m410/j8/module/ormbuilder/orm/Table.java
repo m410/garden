@@ -12,10 +12,10 @@ import org.w3c.dom.Element;
  * @author Michael Fortin
  */
 public final class Table  extends Node {
-    private String name;
+    String name;
 
     Table(String name) {
-        super(0);
+        super(1,0);
         this.name = name;
     }
 

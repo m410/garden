@@ -22,8 +22,7 @@ import static org.junit.Assert.*;
 public class OrmBuilderTest {
     static String expected =
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
-                    "<entity-mappings version=\"2.1\" " +
-                    "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
+                    "<entity-mappings version=\"2.1\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
                     "xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd\" " +
                     "xmlns=\"http://xmlns.jcp.org/xml/ns/persistence/orm\">" +
                     "<description>Description goes here</description>" +
@@ -34,9 +33,14 @@ public class OrmBuilderTest {
                     "<table name=\"person\"/>" +
                     "<attributes>" +
                     "<id name=\"id\">" +
-                    "<generated-value generator=\"SEQUENCE\" strategy=\"person_seq\"/>" +
+                    "<generated-value generator=\"personSeq\" strategy=\"SEQUENCE\"/>" +
+                    "<sequence-generator allocation-size=\"1\" initial-value=\"1\" name=\"personSeq\" sequence-name=\"person_seq\"/>" +
                     "</id>" +
-                    "<basic name=\"name\"><column insertable=\"true\" length=\"255\" name=\"my_name\" nullable=\"true\" unique=\"false\" updatable=\"true\"/>" +
+                    "<basic name=\"email\">" +
+                    "<column insertable=\"true\" length=\"255\" name=\"email\" nullable=\"true\" unique=\"false\" updatable=\"true\"/>" +
+                    "</basic>" +
+                    "<basic name=\"name\">" +
+                    "<column insertable=\"true\" length=\"255\" name=\"my_name\" nullable=\"true\" unique=\"false\" updatable=\"true\"/>" +
                     "</basic>" +
                     "<version name=\"version\"/>" +
                     "</attributes>" +
@@ -46,9 +50,10 @@ public class OrmBuilderTest {
     @Test
     public void buildOrmXml() throws ParserConfigurationException, TransformerException, IOException, SAXException {
         Entity entity = entity("org.m410.demo.Person", "person")
-                .id("id", generatedValue("person_seq", "SEQUENCE"))
+                .id("id", generatedValue(Strategy.SEQUENCE,"personSeq"),sequenceGenerator("personSeq","person_seq"))
                 .version("version")
                 .basic("name", column("my_name"))
+                .basic("email", column("email"))
                 .make();
         String result = new OrmXmlBuilder().addEntity(entity).make();
         assertEquals(expected, result);

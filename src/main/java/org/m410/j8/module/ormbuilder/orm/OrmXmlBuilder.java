@@ -67,6 +67,7 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
 
         Element meta = doc.createElement("persistence-unit-metadata");
         meta.appendChild(doc.createElement("xml-mapping-metadata-complete"));
+        meta.appendChild(doc.createElement("exclude-default-mappings"));
         root.appendChild(meta);
 
         entities.stream().sorted().forEach(e->e.appendElement(doc,root));

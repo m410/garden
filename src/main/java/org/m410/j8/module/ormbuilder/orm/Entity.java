@@ -11,10 +11,10 @@ import org.w3c.dom.Element;
  * @author Michael Fortin
  */
 public final class Entity  extends Node {
-    private String className;
+    String className;
 
     Entity(String className) {
-        super(0);
+        super(0,0);
         this.className = className;
     }
 

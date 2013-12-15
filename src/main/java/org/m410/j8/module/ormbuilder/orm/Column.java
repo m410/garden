@@ -23,7 +23,7 @@ public final class Column extends Node {
     int scale =  0; // decimal scale
 
     Column(String name) {
-        super(0);
+        super(3,0);
         this.name = name;
     }
 

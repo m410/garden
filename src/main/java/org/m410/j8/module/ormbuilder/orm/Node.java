@@ -12,11 +12,12 @@ import java.util.*;
  * @author Michael Fortin
  */
 abstract public class Node implements Comparable<Node> {
-    protected int listOrder;
+    protected int nodeDepth;
+    protected int nodeOrder;
     protected Set<Node> children = new TreeSet<>();
 
-    protected Node(int listOrder) {
-        this.listOrder = listOrder;
+    protected Node(int nodeDepth, int nodeOrder) {
+        this.nodeOrder = nodeOrder;
     }
 
     public void addChild(Node node) {
@@ -37,6 +38,9 @@ abstract public class Node implements Comparable<Node> {
 
     @Override
     public int compareTo(Node o) {
-        return new CompareToBuilder().append(this.listOrder, o.listOrder).toComparison();
+        return new CompareToBuilder()
+                .append(this.nodeDepth, o.nodeDepth)
+                .append(this.nodeOrder, o.nodeOrder)
+                .toComparison();
     }
 }

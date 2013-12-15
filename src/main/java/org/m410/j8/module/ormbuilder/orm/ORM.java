@@ -12,6 +12,11 @@ package org.m410.j8.module.ormbuilder.orm;
  */
 public final class ORM {
 
+
+    public static enum Strategy {
+        TABLE, SEQUENCE,IDENTITY,AUTO
+    }
+
     /**
      * Initialize the orm builder with the root entity node.
      *
@@ -62,7 +67,7 @@ public final class ORM {
      * @param generator the generator.
      * @return generated value
      */
-    public static GeneratedValue generatedValue(String strategy, String generator) {
+    public static GeneratedValue generatedValue(Strategy strategy, String generator) {
         return new GeneratedValue(strategy,generator);
     }
 
@@ -75,5 +80,9 @@ public final class ORM {
      */
     public static SequenceGenerator sequenceGenerator(String name, String sequenceName ) {
         return new SequenceGenerator(name,sequenceName);
+    }
+
+    public static SequenceGenerator sequenceGenerator(String name, String sequenceName, int init, int allocate) {
+        return new SequenceGenerator(name,sequenceName,init,allocate);
     }
 }
