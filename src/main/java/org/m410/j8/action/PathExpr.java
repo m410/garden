@@ -24,23 +24,27 @@ import org.m410.j8.servlet.ServletExtension;
  * A partial path expression for a controller or a full path expression for an
  * action.
  * <p>
+ *
  * Path expressions are a restful uri, with variables embedded in it that
  * can extracted into parameters to be used by the application.
  * <p>
+ *
  * Path variables are wrapped in curly braces and can have embedded regular expressions.
  * <p>
+ *
  * For example the path "/clients/{id}" is a path with a dynamic id parameter.
  * <p>
+ *
  * A path with a regular expression matcher could look like "/clients/{id:\\d+}".  This
  * would only match urls where the id is a number.  You should use a regex where ever
  * possible, for example these two urls will work with the regex and without, they both will
  * match the url, and the first one found will be used.
- *
+
  * <ul>
  *     <li>/clients/{id}/users/{id:\\d+}</li>
  *     <li>/clients/{name}/users/{id:\\d+}</li>
  * </ul>
- * <p>
+
  * Url parameters are available to an in action using the {@link ActionRequest#urlParameters()}
  * argument.
  *

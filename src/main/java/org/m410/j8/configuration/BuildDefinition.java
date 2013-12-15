@@ -4,6 +4,7 @@ import java.util.Map;
 
 /**
  * Build definition from the configuration file.
+ *
  * <ul>
  *    <li>default_task: "package"                          </li>
  *    <li>compiler_type: "scala"                           </li>

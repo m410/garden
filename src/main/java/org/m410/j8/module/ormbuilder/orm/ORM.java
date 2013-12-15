@@ -2,7 +2,11 @@ package org.m410.j8.module.ormbuilder.orm;
 
 /**
  * This is a set of static methods used by the builder to simplify creation of the orm
- * mapping.
+ * mapping. It creates the nodes of the orm.xml file using the shema
+ *
+ * http://openjpa.apache.org/builds/2.2.1/apache-openjpa/docs/jpa_overview_meta_xml.html
+ *
+ *
  *
  * @author Michael Fortin
  */
@@ -10,6 +14,7 @@ public final class ORM {
 
     /**
      * Initialize the orm builder with the root entity node.
+     *
      * @param className the full class name of the entity to implement.
      * @param tableName the database table name it maps too.
      * @return an entity node.
@@ -19,7 +24,8 @@ public final class ORM {
     }
 
     /**
-     * add column node to a basic,id or version column default values.
+     * Add column node to a basic,id or version column default values.
+     *
      * @param name the name of the database column.
      * @return the column node.
      */
@@ -28,7 +34,8 @@ public final class ORM {
     }
 
     /**
-     * Add a column with all possible parameters
+     * Add a column with all possible parameters.
+     *
      * @param name the column name
      * @param length the column length
      * @param nullable is the column nullable or not.
@@ -50,6 +57,7 @@ public final class ORM {
 
     /**
      * Added to an sequence generator node.
+     *
      * @param strategy the strategy used to create a sequence.
      * @param generator the generator.
      * @return generated value
@@ -60,6 +68,7 @@ public final class ORM {
 
     /**
      * typically added to an ID column of the entity to add a sequence generator.
+     *
      * @param name the name of the generator
      * @param sequenceName the name of the sequence.
      * @return the sequence generator.
