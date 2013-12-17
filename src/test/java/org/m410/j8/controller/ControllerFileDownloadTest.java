@@ -39,7 +39,7 @@ public class ControllerFileDownloadTest {
             @Override public String getMethod() { return "GET"; }
         };
         Action a = (req) ->{
-            return response().contentType("application/json").stream(Assert::assertNotNull);
+            return response().withContentType("application/json").asStream(Assert::assertNotNull);
         };
 
         ActionDefinition ad = new ActionDefinition(a,new PathExpr(""), HttpMethod.GET);

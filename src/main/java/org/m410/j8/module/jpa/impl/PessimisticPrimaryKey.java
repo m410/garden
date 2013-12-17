@@ -8,7 +8,6 @@ package org.m410.j8.module.jpa.impl;
 abstract public class PessimisticPrimaryKey<T> implements Id<T>{
     protected T id;
 
-    @javax.persistence.Id
     public T getId() {
         return id;
     }

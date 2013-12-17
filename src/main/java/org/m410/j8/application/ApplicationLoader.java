@@ -49,7 +49,7 @@ public class ApplicationLoader {
         }
     }
 
-    void dumpThreadClasspath() {
+    public void dumpThreadClasspath() {
         ClassLoader classloader = Thread.currentThread().getContextClassLoader();
 
         do {

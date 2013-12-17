@@ -9,13 +9,23 @@ import javax.servlet.http.HttpSession;
  */
 public class FlashImpl implements Flash {
     String message;
+    String internationalKey;
 
     public FlashImpl(String message) {
         this.message = message;
     }
 
+    public FlashImpl(String message, String internationalKey) {
+        this.message = message;
+        this.internationalKey = internationalKey;
+    }
+
     public String getMessage() {
         return message;
+    }
+
+    public String getInternationalKey() {
+        return internationalKey;
     }
 
     @Override

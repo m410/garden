@@ -175,6 +175,7 @@ public final class Response {
     /**
      * The full context relative path of the view to display for this action if any.  This will
      * typically be respond().withModel("name","value").withView("/person/view.jsp");
+     *
      * @param v the path of the view
      * @return a new Response.
      */
@@ -184,15 +185,17 @@ public final class Response {
 
     /**
      * Can be either context relative or absolute path to redirect too.
+     *
      * @param v the path, eg. "/index.jsp" or "http://somesite.com/page"
      * @return a new Response
      */
-    public Response redirect(String v) {
+    public Response asRedirect(String v) {
         return new Response(headers, model, session, flash, new Redirect(v), invalidateSession);
     }
 
     /**
      * Internal forwarding of the request within the application.
+     *
      * @param v the context relative path.
      * @return a new Response.
      */
@@ -202,13 +205,24 @@ public final class Response {
 
     /**
      * Add a flash object to the response
-     * todo needs flash message types and internationalization.
      *
      * @param flash the content of the flash message.
      * @return a new Response.
      */
     public Response withFlash(String flash) {
         return new Response(headers, model, session, new FlashImpl(flash), direction, invalidateSession);
+    }
+
+    /**
+     * An internationalized version of a flash message.  It takes a default value and the i18n
+     * properties key as arguments.
+     *
+     * @param flash default message
+     * @param i18nKey property key
+     * @return a new Response
+     */
+    public Response withFlash(String flash, String i18nKey) {
+        return new Response(headers, model, session, new FlashImpl(flash, i18nKey), direction, invalidateSession);
     }
 
     /**
@@ -278,7 +292,7 @@ public final class Response {
      * @param s the content type
      * @return a new Response
      */
-    public Response contentType(String s) {
+    public Response withContentType(String s) {
         return new Response(headers, model, session, flash, direction, invalidateSession, s);
     }
 
@@ -292,7 +306,7 @@ public final class Response {
      * @param s response stream
      * @return a new Response object
      */
-    public Response stream(ResponseStream s) {
+    public Response asStream(ResponseStream s) {
         return new Response(headers, model, session, flash, direction, invalidateSession, contentType,s);
     }
 

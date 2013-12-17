@@ -5,6 +5,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -13,8 +14,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
 import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
@@ -62,12 +67,11 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
         doc.appendChild(root);
 
         Element description = doc.createElement("description");
-        description.setTextContent("Description goes here");
+        description.setTextContent("Generated Persistence Mapping");
         root.appendChild(description);
 
         Element meta = doc.createElement("persistence-unit-metadata");
         meta.appendChild(doc.createElement("xml-mapping-metadata-complete"));
-        meta.appendChild(doc.createElement("exclude-default-mappings"));
         root.appendChild(meta);
 
         entities.stream().sorted().forEach(e->e.appendElement(doc,root));
@@ -78,7 +82,7 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
 
         // code to validate
 //        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-//        URL schemaURL = new URL("http://www.eclipse.org/eclipselink/xsds/eclipselink_orm_2_1.xsd");
+//        URL schemaURL = new URL("http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd");
 //        Schema schema = sf.newSchema(schemaURL);
 //        Validator validator = schema.newValidator();
 //        validator.validate(source);
