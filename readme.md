@@ -1,15 +1,15 @@
 # m410 web application framework
 
-This is a Restful, action based, back to bases java 8 web framework.
+This is a Restful, action based, back to basics, java 8 web framework.
 
 ## Setup
 
 ### Prerequisites
 
-  * Java 8 ea JDK installed and set as the default.
-  * Maven 3, It might work with earlier version, but I haven't tried
+  * You must have Java 8 ea JDK installed and set as the default.
+  * You'll need Maven 3, It might work with earlier version, but I haven't tried
 
-Check out the seed at with this maven command.
+Check out the bootstrap app with this maven command.
 
     > mvn archetype:generate\
        -DarchetypeRepository=http://repo.m410.org/content/repositories/releases\
