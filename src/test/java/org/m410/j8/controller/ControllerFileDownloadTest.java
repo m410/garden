@@ -23,6 +23,9 @@ import java.io.IOException;
  */
 @RunWith(JUnit4.class)
 public class ControllerFileDownloadTest {
+    Ctlr controller = () -> { return null; };
+
+
     @Test
     public void testDownload() {
         HttpServletResponse response = new MockServletResponse() {
@@ -42,7 +45,7 @@ public class ControllerFileDownloadTest {
             return response().withContentType("application/json").asStream(Assert::assertNotNull);
         };
 
-        ActionDefinition ad = new ActionDefinition(a,new PathExpr(""), HttpMethod.GET);
+        ActionDefinition ad = new ActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
         ad.apply(request, response);
     }
 }

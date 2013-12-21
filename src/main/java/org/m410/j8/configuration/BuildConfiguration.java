@@ -1,6 +1,8 @@
-package org.m410.j8.servlet;
+package org.m410.j8.configuration;
 
-import org.m410.j8.configuration.*;
+import org.m410.j8.servlet.FilterDefinition;
+import org.m410.j8.servlet.ListenerDefinition;
+import org.m410.j8.servlet.ServletDefinition;
 
 import java.util.ArrayList;
 import java.util.HashMap;

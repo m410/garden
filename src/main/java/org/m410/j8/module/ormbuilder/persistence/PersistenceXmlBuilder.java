@@ -34,11 +34,11 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         }).findAny().orElseThrow(() -> new RuntimeException("JPA persistence definition not found"));
 
         Document doc = docBuilder.newDocument();
-        Element root = doc.createElementNS("http://java.sun.com/xml/ns/persistence", "persistence");
+        Element root = doc.createElementNS("http://xmlns.jcp.org/xml/ns/persistence", "persistence");
+        root.setAttribute("version", "2.1");
         root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation",
-                "http://java.sun.com/xml/ns/persistence" +
-                        " http://java.sun.com/xml/ns/persistence/persistence_1_0.xsd");
-        root.setAttribute("version", "1.0");
+                "http://xmlns.jcp.org/xml/ns/persistence" +
+                        " http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd");
         doc.appendChild(root);
 
         Element persistUnit = doc.createElement("persistence-unit");

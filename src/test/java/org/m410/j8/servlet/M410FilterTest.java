@@ -30,7 +30,7 @@ public class M410FilterTest {
     public void testForward() throws ServletException, IOException {
         Application application = new MyWebApp() {
             @Override public Optional<ActionDefinition> actionForRequest(HttpServletRequest request) {
-                return Optional.of(new ActionDefinition(null,new PathExpr("json"), HttpMethod.GET));
+                return Optional.of(new ActionDefinition(null, null,new PathExpr("json"), HttpMethod.GET));
             }
         };
 

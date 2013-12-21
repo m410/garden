@@ -1,6 +1,9 @@
 package org.m410.j8.controller;
 
+import org.m410.j8.action.Action;
 import org.m410.j8.action.ActionDefinition;
+import org.m410.j8.action.ActionRequest;
+import org.m410.j8.action.Response;
 
 import java.util.List;
 
@@ -20,4 +23,17 @@ public interface Ctlr {
      * @return a list of action definitions.
      */
     List<ActionDefinition> actions();
+
+    /**
+     * Default implementation of calling an action.  This can be overridden to intercept calls
+     * to all actions in the controller.
+     *
+     * @param actionRequest ActionRequest
+     * @param action the definition of the action.
+     * @return a Response object, this can be modified to add values to every action in the
+     *      controller like a pragma header.
+     */
+    default Response intercept(ActionRequest actionRequest, Action action) {
+        return action.action(actionRequest);
+    }
 }

@@ -7,7 +7,9 @@ import org.junit.runners.JUnit4;
 import org.m410.j8.action.Action;
 import org.m410.j8.action.ActionDefinition;
 import org.m410.j8.action.PathExpr;
+import org.m410.j8.controller.Ctlr;
 import org.m410.j8.controller.HttpMethod;
+import org.m410.j8.controller.Securable;
 import org.m410.j8.mock.MockServletRequest;
 
 
@@ -19,13 +21,14 @@ import static org.junit.Assert.*;
  */
 @RunWith(JUnit4.class)
 public class ActionStatusTest {
+    Ctlr controller = () -> { return null; };
 
     @Test
     public void testActOn() {
         Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(action, path, get);
+        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
         MockServletRequest request = new MockServletRequest(){
             @Override public String getRequestURI() { return "/path.m410"; }
             @Override public String getMethod() { return "GET"; }
@@ -38,7 +41,7 @@ public class ActionStatusTest {
         Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(action, path, get);
+        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
         MockServletRequest request = new MockServletRequest(){
             @Override public String getRequestURI() { return "/path"; }
             @Override public String getMethod() { return "GET"; }
@@ -51,7 +54,7 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(action, path, get);
+        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
         MockServletRequest request = new MockServletRequest(){
             @Override public String getRequestURI() { return "/path.m410"; }
             @Override public String getMethod() { return "GET"; }
@@ -64,7 +67,8 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(action, path, get,  true, false,false, new String[]{});
+        ActionDefinition ad = new ActionDefinition(controller,action, path, get,
+                Securable.State.Optional, false,false, new String[]{}, new String[]{});
         MockServletRequest request = new MockServletRequest(){
             @Override public String getRequestURI() { return "/path.m410"; }
             @Override public String getMethod() { return "GET"; }
@@ -79,7 +83,8 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(action, path, get, false, true, false, new String[]{});
+        ActionDefinition ad = new ActionDefinition(controller,action, path, get,
+                Securable.State.Optional, true, false, new String[]{}, new String[]{});
         MockServletRequest request = new MockServletRequest(){
             @Override public String getRequestURI() { return "/path.m410"; }
             @Override public String getMethod() { return "GET"; }
@@ -91,7 +96,7 @@ public class ActionStatusTest {
     @Test @Ignore
     public void dispatchTo() {
         Action action = (args) -> { return null; };
-        ActionDefinition ad = new ActionDefinition(action,new PathExpr(""), HttpMethod.GET);
+        ActionDefinition ad = new ActionDefinition(controller,action,new PathExpr(""), HttpMethod.GET);
         MockServletRequest request = new MockServletRequest();
         final DispatchTo expected = new DispatchTo("/");
         assertEquals(expected, ad.status(request));
@@ -102,7 +107,7 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(action, path, get);
+        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
         MockServletRequest request = new MockServletRequest(){
             @Override public String getRequestURI() { return "/otherpath"; }
             @Override public String getMethod() { return "GET"; }
@@ -116,7 +121,8 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(action, path, get, false, false, true, new String[]{});
+        ActionDefinition ad = new ActionDefinition(controller,action, path, get,
+                Securable.State.Optional, false, true, new String[]{}, new String[]{});
         MockServletRequest request = new MockServletRequest(){
             @Override public String getRequestURI() { return "/path.m410"; }
             @Override public String getMethod() { return "GET"; }

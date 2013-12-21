@@ -1,10 +1,7 @@
 package org.m410.j8.controller;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.m410.j8.action.Action;
-import org.m410.j8.action.ActionDefinition;
-import org.m410.j8.action.PathExpr;
-import org.m410.j8.action.Response;
+import org.m410.j8.action.*;
 
 import java.util.List;
 
@@ -45,20 +42,40 @@ import java.util.List;
  * Missing from this release is action discrimination based on content type, securing with ssl,
  * and role based authorization.
  *
+ * todo document contentType and ssl in constructor.
+ *
  * @see org.m410.j8.action.PathExpr
  * @see org.m410.j8.action.Action
  *
  * @author Michael Fortin
  */
 public abstract class Controller implements Ctlr {
+
+    /**
+     * A helper property to set the content type of action definitions.
+     */
+    public static final String TEXT_HTML = "text/html";
+
+    /**
+     * A helper property to set the content type of action definitions.
+     */
+    public static final String APPLICATION_JSON = "application/json";
+
+    /**
+     * A helper property to set the content type of action definitions.
+     */
+    public static final String APPLICATION_XML = "application/xml";
+
+
     protected PathExpr pathExpr;
-    // todo default ssl
-    // todo default content-type
+    protected boolean useSsl = false;
+    protected String[] contentTypes = {};
 
     /**
      * private constructor so you must implement a path.
      */
     private Controller() {
+        this.pathExpr = null;
     }
 
     /**
@@ -77,6 +94,21 @@ public abstract class Controller implements Ctlr {
      */
     protected Controller(String pathExpr) {
         this.pathExpr = new PathExpr(pathExpr);
+    }
+
+    /**
+     * This returns a WebSocket Definition, with takes a WebSocket class with the
+     * handler implementations.
+     *
+     * todo not implemented yet.
+     * Note: can't be intercepted.  Don't know how to authorize
+     *
+     * @param path the path expression
+     * @param act the action
+     * @return a new action definition.
+     */
+    protected final WebSocketDefinition ws(String path, WsAction act) {
+        return new WebSocketDefinition(pathExpr.append(path),act, this);
     }
 
     /**
@@ -138,12 +170,12 @@ public abstract class Controller implements Ctlr {
      * are shorter and more readable.
      *
      * @param method the http method.
-     * @param a an action.
-     * @param p the path expression.
+     * @param action an action.
+     * @param pathExpr the path expression.
      * @return a new action definition.
      */
-    protected ActionDefinition act(HttpMethod method, Action a, PathExpr p) {
-        return new ActionDefinition(a,p,method);
+    protected ActionDefinition act(HttpMethod method, Action action, PathExpr pathExpr) {
+        return new ActionDefinition(this, action, pathExpr, method);
     }
 
     /**

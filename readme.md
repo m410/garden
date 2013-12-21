@@ -25,23 +25,17 @@ light for now.
 
 
 ## Application Class
-
 See the application class documentation.
-
 [http://m410.org/javadoc/current/org/m410/j8/application/Application.html](http://m410.org/javadoc/current/org/m410/j8/application/Application.html)
 
 
 ## Controller Classes
-
 See the controller class documentation.
-
 [http://m410.org/javadoc/current/org/m410/j8/controller/Controller.html](http://m410.org/javadoc/current/org/m410/j8/controller/Controller.html)
 
 
 ## ORM mapping
-
 See the orm builder docs.
-
 [http://m410.org/javadoc/current/org/m410/j8/module/ormbuilder/orm/EntityFactory.html](http://m410.org/javadoc/current/org/m410/j8/module/ormbuilder/orm/EntityFactory.html)
 
 
