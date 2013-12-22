@@ -6,9 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
-import org.m410.j8.controller.Controller;
 import org.m410.j8.controller.Ctlr;
-import org.m410.j8.mock.MockServletRequest;
 import org.m410.j8.sample.MyWebApp;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Michael Fortin
@@ -48,20 +47,20 @@ public class ApplicationActionForRequestTest {
 
     @Test
     public void actionForRequestNotFound() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public String getRequestURI() { return "/mock"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/mock");
+        when(request.getMethod()).thenReturn("GET");
 
         assertTrue(app.actionForRequest(request).isPresent());
     }
 
     @Test
     public void actionForRequestFound() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public String getRequestURI() { return "/people"; }
-            @Override public String getMethod() { return "POST"; }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/people");
+        when(request.getMethod()).thenReturn("POST");
 
         assertFalse(app.actionForRequest(request).isPresent());
     }

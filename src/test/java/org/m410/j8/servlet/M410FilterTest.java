@@ -7,18 +7,20 @@ import org.m410.j8.action.ActionDefinition;
 import org.m410.j8.action.PathExpr;
 import org.m410.j8.application.Application;
 import org.m410.j8.controller.HttpMethod;
-import org.m410.j8.mock.*;
 import org.m410.j8.sample.MyWebApp;
 
 
+import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Michael Fortin
@@ -34,29 +36,20 @@ public class M410FilterTest {
             }
         };
 
-        MockServletContext context = new MockServletContext() {
-            @Override public Object getAttribute(String s) {
-                if("application".equals(s))
-                    return application;
-                else
-                    return null;
-            }
-        };
+        ServletContext context = mock(ServletContext.class);
+        when(context.getAttribute("application")).thenReturn(application);
 
-        MockServletRequest request = new MockServletRequest() {
-            @Override public ServletContext getServletContext() { return context; }
-            @Override public String getRequestURI() { return "/json"; }
-            @Override public String getMethod() { return "GET"; }
-            @Override public RequestDispatcher getRequestDispatcher(String s) {
-                if("/json.m410".equals(s))
-                    return new MockRequestDispatcher();
-                else
-                    return null;
-            }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getServletContext()).thenReturn(context);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/json");
+        when(request.getMethod()).thenReturn("GET");
 
-        MockServletResponse response = new MockServletResponse();
-        MockFilterChain chain = new MockFilterChain();
+        RequestDispatcher dispatcher = mock(RequestDispatcher.class);
+        when(request.getRequestDispatcher("/json.m410")).thenReturn(dispatcher);
+
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        FilterChain chain = mock(FilterChain.class);
 
         M410Filter filter = new M410Filter();
         filter.doFilter(request, response, chain);

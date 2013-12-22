@@ -6,14 +6,13 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
-import org.m410.j8.module.ormbuilder.orm.OrmXmlBuilder;
 import org.m410.j8.sample.MyWebApp;
 
 import java.io.InputStream;
 import java.util.List;
 
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Michael Fortin

@@ -10,10 +10,12 @@ import org.m410.j8.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.controller.HttpMethod;
 import org.m410.j8.controller.Securable;
-import org.m410.j8.mock.MockServletRequest;
 
+
+import javax.servlet.http.HttpServletRequest;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 
 /**
@@ -29,10 +31,12 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         ActionDefinition ad = new ActionDefinition(controller,action, path, get);
-        MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/path.m410"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/path.m410");
+        when(request.getMethod()).thenReturn("GET");
+
         assertEquals(ActOn.getInstance(), ad.status(request));
     }
 
@@ -42,10 +46,12 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         ActionDefinition ad = new ActionDefinition(controller,action, path, get);
-        MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/path"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/path");
+        when(request.getMethod()).thenReturn("GET");
+
         assertEquals(new Forward("/path"), ad.status(request));
     }
 
@@ -55,10 +61,11 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         ActionDefinition ad = new ActionDefinition(controller,action, path, get);
-        MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/path.m410"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/path.m410");
+        when(request.getMethod()).thenReturn("GET");
         assertEquals(ActOnAsync.getInstance(), ad.status(request));
     }
 
@@ -69,11 +76,13 @@ public class ActionStatusTest {
         final PathExpr path = new PathExpr("/path");
         ActionDefinition ad = new ActionDefinition(controller,action, path, get,
                 Securable.State.Optional, false,false, new String[]{}, new String[]{});
-        MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/path.m410"; }
-            @Override public String getMethod() { return "GET"; }
-            @Override public boolean isSecure() { return false; }
-        };
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/path.m410");
+        when(request.getMethod()).thenReturn("GET");
+        when(request.isSecure()).thenReturn(false);
+
         final RedirectToSecure expected = new RedirectToSecure("/");
         assertEquals(expected, ad.status(request));
     }
@@ -85,10 +94,13 @@ public class ActionStatusTest {
         final PathExpr path = new PathExpr("/path");
         ActionDefinition ad = new ActionDefinition(controller,action, path, get,
                 Securable.State.Optional, true, false, new String[]{}, new String[]{});
-        MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/path.m410"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/path.m410");
+        when(request.getMethod()).thenReturn("GET");
+
         final RedirectToAuth expected = new RedirectToAuth("/","/path");
         assertEquals(expected, ad.status(request));
     }
@@ -97,7 +109,7 @@ public class ActionStatusTest {
     public void dispatchTo() {
         Action action = (args) -> { return null; };
         ActionDefinition ad = new ActionDefinition(controller,action,new PathExpr(""), HttpMethod.GET);
-        MockServletRequest request = new MockServletRequest();
+        HttpServletRequest request = mock(HttpServletRequest.class);
         final DispatchTo expected = new DispatchTo("/");
         assertEquals(expected, ad.status(request));
     }
@@ -108,10 +120,14 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         ActionDefinition ad = new ActionDefinition(controller,action, path, get);
-        MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/otherpath"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/otherpath");
+        when(request.getMethod()).thenReturn("GET");
+
+
         final NotAnAction expected = NotAnAction.getInstance();
         assertEquals(expected, ad.status(request));
     }
@@ -123,10 +139,14 @@ public class ActionStatusTest {
         final PathExpr path = new PathExpr("/path");
         ActionDefinition ad = new ActionDefinition(controller,action, path, get,
                 Securable.State.Optional, false, true, new String[]{}, new String[]{});
-        MockServletRequest request = new MockServletRequest(){
-            @Override public String getRequestURI() { return "/path.m410"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/path.m410");
+        when(request.getMethod()).thenReturn("GET");
+
+
         final Forbidden expected = Forbidden.getInstance();
         assertEquals(expected, ad.status(request));
     }

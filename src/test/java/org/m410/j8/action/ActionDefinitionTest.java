@@ -6,8 +6,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.controller.HttpMethod;
-import org.m410.j8.mock.MockServletRequest;
-import org.m410.j8.mock.MockServletResponse;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,6 +13,8 @@ import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 
 /**
  * @author Michael Fortin
@@ -25,10 +25,11 @@ public class ActionDefinitionTest {
 
     @Test
     public void testDoesPathMatch() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public String getRequestURI() { return "/"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/");
+        when(request.getMethod()).thenReturn("GET");
+
         Action a = (args) -> Response.response();
         ActionDefinition ad = new ActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
@@ -36,10 +37,11 @@ public class ActionDefinitionTest {
 
     @Test
     public void testDoesLongerPathMatch() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public String getRequestURI() { return "/a/b/c"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class) ;
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/a/b/c");
+        when(request.getMethod()).thenReturn("GET");
+
         Action a = (args) -> Response.response();
         ActionDefinition ad = new ActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
@@ -47,10 +49,11 @@ public class ActionDefinitionTest {
 
     @Test
     public void testDoesLongerPathMatchWithExtension() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public String getRequestURI() { return "/a/b/c.m410"; }
-            @Override public String getMethod() { return "GET"; }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class) ;
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/a/b/c.m410");
+        when(request.getMethod()).thenReturn("GET");
+
         Action a = (args) -> Response.response();
         ActionDefinition ad = new ActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
@@ -58,11 +61,12 @@ public class ActionDefinitionTest {
 
     @Test
     public void testApply() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public String getRequestURI() { return "/"; }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/");
+        when(request.getMethod()).thenReturn("GET");
 
-        HttpServletResponse response = new MockServletResponse();
+        HttpServletResponse response = mock(HttpServletResponse.class);
 
         Action a = (args) -> {
             throw new RuntimeException("I was called");
@@ -101,13 +105,13 @@ public class ActionDefinitionTest {
 
     @Test
     public void testMatchHttpMethod() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public String getRequestURI() { return "/"; }
-            @Override public String getMethod() { return "PUT"; }
-        };
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/");
+        when(request.getMethod()).thenReturn("PUT");
 
-        HttpServletResponse response = new MockServletResponse();
-        Action a = (args) -> { return Response.response(); };
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        Action a = (args) -> Response.response();
         ActionDefinition ad1 = new ActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
         ActionDefinition ad2 = new ActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT);
 

@@ -10,13 +10,12 @@ import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
 import org.m410.j8.sample.MyWebApp;
 
-import javax.servlet.ServletException;
-import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.*;
 
 /**
  * @author Michael Fortin

@@ -6,22 +6,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.application.ThreadLocalSessionFactory;
-import org.springframework.mock.web.MockHttpServletRequest;
-import org.springframework.mock.web.MockHttpServletResponse;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.sample.MyWebApp;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 
 /**
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class ControllerJsonTest {
+public class ControllerJsonTest implements MockServletInput{
 
     JsonController controller = new JsonController();
     MyWebApp myApp;
@@ -43,49 +45,65 @@ public class ControllerJsonTest {
 
 
     @Test
-    public void testGetXml() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setRequestURI("/json");
-        request.setMethod("GET");
-        MockHttpServletResponse response = new MockHttpServletResponse();
+    public void testGetXml() throws IOException {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/json");
+        when(request.getMethod()).thenReturn("GET");
+
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        StringBuffer sb = new StringBuffer();
+        when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         myApp.doRequest(request, response);
-        assertEquals("application/json", response.getContentType());
+        verify(response).setContentType("application/json");
     }
 
     @Test
-    public void testPostXml() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setRequestURI("/json");
-        request.setMethod("POST");
-        request.setContent("{\"f\":\"d\"}".getBytes());
-        MockHttpServletResponse response = new MockHttpServletResponse();
+    public void testPostXml() throws IOException {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/json");
+        when(request.getMethod()).thenReturn("POST");
+        when(request.getInputStream()).thenReturn(servletInputStream("{\"f\":\"d\"}"));
 
-        assertNotNull(request.getInputStream());
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        StringBuffer sb = new StringBuffer();
+        when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
+
         myApp.doRequest(request, response);
-        assertEquals("application/json", response.getContentType());
+        verify(response).setContentType("application/json");
     }
 
     @Test
-    public void testPutXml() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setRequestURI("/json/100");
-        request.setMethod("PUT");
-        request.setContent("{\"f\":\"d\"}".getBytes());
-        MockHttpServletResponse response = new MockHttpServletResponse();
+    public void testPutXml() throws IOException {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/json/100");
+        when(request.getMethod()).thenReturn("PUT");
+        when(request.getInputStream()).thenReturn(servletInputStream("{\"f\":\"d\"}"));
+
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        StringBuffer sb = new StringBuffer();
+        when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         myApp.doRequest(request, response);
-        assertEquals("application/json", response.getContentType());
+        verify(response).setContentType("application/json");
     }
 
     @Test
-    public void testDeleteXml() {
-        MockHttpServletRequest request = new MockHttpServletRequest();
-        request.setRequestURI("/json/100");
-        request.setMethod("DELETE");
-        MockHttpServletResponse response = new MockHttpServletResponse();
+    public void testDeleteXml() throws IOException {
+        HttpSession session = mock(HttpSession.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getSession()).thenReturn(session);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/json/100");
+        when(request.getMethod()).thenReturn("DELETE");
+
+        HttpServletResponse response = mock(HttpServletResponse.class);
+        StringBuffer sb = new StringBuffer();
+        when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         myApp.doRequest(request, response);
-//        assertEquals("application/json", response.get);
     }
 }

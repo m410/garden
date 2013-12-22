@@ -3,28 +3,29 @@ package org.m410.j8.action;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.j8.mock.MockServletRequest;
-import org.m410.j8.mock.MockSession;
+import org.m410.j8.controller.MockServletInput;
 
-import javax.servlet.ReadListener;
-import javax.servlet.ServletInputStream;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.StringReader;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.Map;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
+
 
 /**
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class ActionRequestTest {
+public class ActionRequestTest implements MockServletInput {
 
     @Test
     public void isActiveSessionNot() {
-        HttpServletRequest request = new MockServletRequest() ;
+        HttpServletRequest request = mock(HttpServletRequest.class) ;
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -33,13 +34,11 @@ public class ActionRequestTest {
 
     @Test
     public void isActiveSessionYes() {
-        HttpServletRequest request = new MockServletRequest() {
-            MockSession mockSession = new MockSession();
-            @Override
-            public HttpSession getSession(boolean is) {
-                return mockSession;
-            }
-        };
+        HttpSession mockSession = mock(HttpSession.class);
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getSession(false)).thenReturn(mockSession);
+
+
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -48,13 +47,15 @@ public class ActionRequestTest {
 
     @Test
     public void getSession() {
-        HttpServletRequest request = new MockServletRequest() {
-            MockSession mockSession = new MockSession();
-            @Override
-            public HttpSession getSession(boolean is) {
-                return mockSession;
-            }
-        };
+        HttpSession session = mock(HttpSession.class);
+        Hashtable<String,String> map = new Hashtable();
+        map.put("name","value");
+        when(session.getAttributeNames()).thenReturn(map.keys());
+        when(session.getAttribute("name")).thenReturn("value");
+
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getSession(false)).thenReturn(session);
+
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -64,7 +65,14 @@ public class ActionRequestTest {
 
     @Test
     public void requestHeaders() {
-        HttpServletRequest request = new MockServletRequest();
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Hashtable<String,String> map = new Hashtable();
+        map.put("name","value");
+        when(request.getHeaderNames()).thenReturn(map.keys());
+        when(request.getHeader("name")).thenReturn("value");
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/persons/12/children");
+
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -73,7 +81,11 @@ public class ActionRequestTest {
 
     @Test
     public void urlParameters() {
-        HttpServletRequest request = new MockServletRequest();
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/persons/21/address");
+        when(request.getMethod()).thenReturn("GET");
+
         PathExpr path = new PathExpr("/persons/{id}/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -82,7 +94,11 @@ public class ActionRequestTest {
 
     @Test
     public void requestParameters() {
-        HttpServletRequest request = new MockServletRequest();
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Map<String,String[]> map = new HashMap();
+        map.put("one",new String[]{"two"});
+        when(request.getParameterMap()).thenReturn(map);
+
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -91,7 +107,7 @@ public class ActionRequestTest {
 
     @Test
     public void  userPrincipal() {
-        HttpServletRequest request = new MockServletRequest();
+        HttpServletRequest request = mock(HttpServletRequest.class);
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -99,23 +115,10 @@ public class ActionRequestTest {
     }
 
     @Test
-    public void postBodyAsStream() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public ServletInputStream getInputStream() throws IOException {
-                StringReader sr = new StringReader("hello");
-                return new ServletInputStream() {
-                    @Override public boolean isFinished() { return true; }
-                    @Override public boolean isReady()  {
-                        try { return sr.ready(); }
-                        catch (IOException e) { throw new NotAPostException(e); }
-                    }
-                    @Override public void setReadListener(ReadListener readListener) { }
-                    @Override public int read() throws IOException {
-                        return sr.read();
-                    }
-                };
-            }
-        };
+    public void postBodyAsStream() throws IOException {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getInputStream()).thenReturn(servletInputStream("hello"));
+
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
@@ -123,23 +126,10 @@ public class ActionRequestTest {
     }
 
     @Test
-    public void postBodyAsString() {
-        HttpServletRequest request = new MockServletRequest() {
-            @Override public ServletInputStream getInputStream() throws IOException {
-                StringReader sr = new StringReader("hello");
-                return new ServletInputStream() {
-                    @Override public boolean isFinished() { return true; }
-                    @Override public boolean isReady()  {
-                        try { return sr.ready(); }
-                        catch (IOException e) { throw new NotAPostException(e); }
-                    }
-                    @Override public void setReadListener(ReadListener readListener) { }
-                    @Override public int read() throws IOException {
-                        return sr.read();
-                    }
-                };
-            }
-        };
+    public void postBodyAsString() throws IOException {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getInputStream()).thenReturn(servletInputStream("hello"));
+
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
