@@ -1,6 +1,6 @@
 package org.m410.j8.configuration;
 
-import org.m410.j8.action.NotAPostException;
+import org.m410.j8.controller.action.NotAPostException;
 import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
@@ -32,6 +32,7 @@ public class ConfigurationFactory {
         }
     }
 
+    @SuppressWarnings("unchecked")
     public static Configuration fromInputStream(InputStream in, String env) {
         final Map<String, Object> map = (Map<String, Object>) new Yaml().load(in);
         return Configuration.fromMap(map);

@@ -48,6 +48,7 @@ public class PersistenceDefinition {
         this.properties = properties;
     }
 
+    @SuppressWarnings("unchecked")
     public static PersistenceDefinition fromMap(Map<String, Object> val) {
         PersistenceDefinition pd = new PersistenceDefinition();
         pd.setName((String)val.getOrDefault("name","UNKNOWN"));

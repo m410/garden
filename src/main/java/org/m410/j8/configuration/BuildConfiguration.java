@@ -98,6 +98,7 @@ public class BuildConfiguration {
         this.listenerDefinitions = listenerDefinitions;
     }
 
+    @SuppressWarnings("unchecked")
     public static BuildConfiguration fromMap(Map<String, Object> c) {
         BuildConfiguration configuration = new BuildConfiguration();
         configuration.version = (String)c.getOrDefault("version","UNKNOWN");

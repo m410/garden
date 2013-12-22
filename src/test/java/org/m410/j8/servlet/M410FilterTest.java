@@ -3,8 +3,8 @@ package org.m410.j8.servlet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.j8.action.ActionDefinition;
-import org.m410.j8.action.PathExpr;
+import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.application.Application;
 import org.m410.j8.controller.HttpMethod;
 import org.m410.j8.sample.MyWebApp;
@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 /**

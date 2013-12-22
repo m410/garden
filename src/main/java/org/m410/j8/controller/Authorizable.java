@@ -6,7 +6,7 @@ import java.util.List;
  * Add authorization abilities to a controller.  Once a controller implements this
  * interface, the roles can be overridden by the action definition.
  *
- * @see org.m410.j8.action.ActionDefinition#roles(String...)
+ * @see org.m410.j8.controller.action.http.ActionDefinition#roles(String...)
  *
  * @author Michael Fortin
  */

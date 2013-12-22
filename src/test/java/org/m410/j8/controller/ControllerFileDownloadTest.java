@@ -4,10 +4,10 @@ import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.j8.action.Action;
+import org.m410.j8.controller.action.http.Action;
 
-import org.m410.j8.action.ActionDefinition;
-import org.m410.j8.action.PathExpr;
+import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.PathExpr;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 import static org.mockito.Mockito.*;
-import static org.m410.j8.action.Response.*;
+import static org.m410.j8.controller.action.http.Response.*;
 
 
 /**

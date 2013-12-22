@@ -1,7 +1,7 @@
 package org.m410.j8.sample;
 
 import com.google.common.collect.ImmutableList;
-import org.m410.j8.action.ActionDefinition;
+import org.m410.j8.controller.action.http.ActionDefinition;
 import org.m410.j8.controller.Authorizable;
 import org.m410.j8.controller.Controller;
 

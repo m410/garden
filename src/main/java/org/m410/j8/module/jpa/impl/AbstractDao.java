@@ -25,10 +25,12 @@ public abstract class AbstractDao<T extends Id<K>, K> implements Dao<T,K> {
         return Optional.ofNullable(JpaThreadLocal.get().find(tClass, id));
     }
 
+    @SuppressWarnings("unchecked")
     public List<T> list() {
         return JpaThreadLocal.get().createQuery(listQuery).getResultList();
     }
 
+    @SuppressWarnings("unchecked")
     public List<T> page(int start, int limit) {
         return JpaThreadLocal.get()
                 .createQuery(listQuery)

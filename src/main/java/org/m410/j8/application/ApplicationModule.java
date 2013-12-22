@@ -1,6 +1,6 @@
 package org.m410.j8.application;
 
-import org.m410.j8.action.ActionDefinition;
+import org.m410.j8.controller.action.http.ActionDefinition;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.servlet.FilterDefinition;

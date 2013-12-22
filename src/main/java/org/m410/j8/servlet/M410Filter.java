@@ -1,9 +1,9 @@
 package org.m410.j8.servlet;
 
-import org.m410.j8.action.status.*;
+import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.status.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.m410.j8.action.*;
 import org.m410.j8.application.Application;
 
 import javax.servlet.*;
@@ -11,8 +11,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * Filter that routes action requests.

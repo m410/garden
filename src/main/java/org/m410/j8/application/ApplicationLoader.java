@@ -24,6 +24,7 @@ public class ApplicationLoader {
      * Creates a new instance of the application class in a new classloader.
      * @return an instance of the Application class.
      */
+    @SuppressWarnings("unchecked")
     public Application load() {
         ClassLoader appClassLoader = getClass().getClassLoader();
 

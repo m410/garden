@@ -1,9 +1,12 @@
 package org.m410.j8.controller;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.m410.j8.action.*;
-
-import java.util.List;
+import org.m410.j8.controller.action.*;
+import org.m410.j8.controller.action.http.Action;
+import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.Response;
+import org.m410.j8.controller.action.ws.WebSocketDefinition;
+import org.m410.j8.controller.action.ws.WsAction;
 
 /**
  * This is the default implementation of a the Ctlr interface.
@@ -44,8 +47,8 @@ import java.util.List;
  *
  * todo document contentType and ssl in constructor.
  *
- * @see org.m410.j8.action.PathExpr
- * @see org.m410.j8.action.Action
+ * @see org.m410.j8.controller.action.PathExpr
+ * @see org.m410.j8.controller.action.http.Action
  *
  * @author Michael Fortin
  */
@@ -81,7 +84,7 @@ public abstract class Controller implements Ctlr {
     /**
      * Creates a controller with the base path expression.
      *
-     * @see org.m410.j8.action.PathExpr
+     * @see org.m410.j8.controller.action.PathExpr
      * @param pathExpr a path expression.
      */
     protected Controller(PathExpr pathExpr) {

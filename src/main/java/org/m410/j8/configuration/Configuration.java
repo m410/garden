@@ -99,6 +99,7 @@ public class Configuration {
         this.listenerDefinitions = listenerDefinitions;
     }
 
+    @SuppressWarnings("unchecked")
     public static Configuration fromMap(Map<String, Object> c) {
         Configuration configuration = new Configuration();
         configuration.version = (String)c.getOrDefault("version","UNKNOWN");
