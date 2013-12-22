@@ -44,6 +44,8 @@ public class ActionRequestTest implements MockServletInput {
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
         assertTrue(ar.isActiveSession());
+
+        verify(request).getSession(false);
     }
 
     @Test
@@ -61,6 +63,11 @@ public class ActionRequestTest implements MockServletInput {
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
         assertEquals(1, ar.session().size());
+
+
+        verify(session).getAttributeNames();
+        verify(session).getAttribute("name");
+        verify(request,times(3)).getSession(false);
     }
 
 
@@ -71,13 +78,15 @@ public class ActionRequestTest implements MockServletInput {
         map.put("name","value");
         when(request.getHeaderNames()).thenReturn(map.keys());
         when(request.getHeader("name")).thenReturn("value");
-        when(request.getContextPath()).thenReturn("");
-        when(request.getRequestURI()).thenReturn("/persons/12/children");
 
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
         assertEquals(1, ar.requestHeaders().size());
+
+
+        verify(request).getHeaderNames();
+        verify(request).getHeader("name");
     }
 
     @Test
@@ -85,12 +94,17 @@ public class ActionRequestTest implements MockServletInput {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/persons/21/address");
-        when(request.getMethod()).thenReturn("GET");
+//        when(request.getMethod()).thenReturn("GET");
 
         PathExpr path = new PathExpr("/persons/{id}/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
         assertEquals(1, ar.urlParameters().size());
+
+
+        verify(request).getContextPath();
+        verify(request).getRequestURI();
+//        verify(request).getMethod();
     }
 
     @Test
@@ -104,6 +118,8 @@ public class ActionRequestTest implements MockServletInput {
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
         assertEquals(1, ar.requestParameters().size());
+
+        verify(request).getParameterMap();
     }
 
     @Test
@@ -124,6 +140,8 @@ public class ActionRequestTest implements MockServletInput {
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
         assertNotNull(ar.postBodyAsStream());
+
+        verify(request).getInputStream();
     }
 
     @Test
@@ -135,5 +153,8 @@ public class ActionRequestTest implements MockServletInput {
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
         assertNotNull(ar.postBodyAsString());
+
+        verify(request).getInputStream();
+
     }
 }

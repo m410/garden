@@ -1,7 +1,7 @@
 package org.m410.j8.controller.action.ws;
 
 import org.m410.j8.controller.Securable;
-import org.m410.j8.controller.action.ControllerAction;
+import org.m410.j8.controller.action.ActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
 
@@ -13,7 +13,7 @@ import java.util.Optional;
  *
  * @author m410
  */
-public final class WebSocketDefinition  implements ControllerAction {
+public final class WsActionDefinition implements ActionDefinition {
     private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.WS;
     private final PathExpr pathExpr;
     private final Ctlr controller;
@@ -24,8 +24,8 @@ public final class WebSocketDefinition  implements ControllerAction {
 
     private WebSocket webSocket;
 
-    public WebSocketDefinition(PathExpr pathExpr, WebSocket webSocket, Ctlr controller,
-               Securable.State ssl, String[] roles, boolean isAuthenticated) {
+    public WsActionDefinition(PathExpr pathExpr, WebSocket webSocket, Ctlr controller,
+                              Securable.State ssl, String[] roles, boolean isAuthenticated) {
         this.pathExpr = pathExpr;
         this.controller = controller;
         this.webSocket = webSocket;

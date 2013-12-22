@@ -60,6 +60,7 @@ public class ControllerFileUploadTest implements MockServletInput{
         when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
         myApp.doRequest(request, response);
 
+        verify(request).getContextPath();
         verify(request,times(3)).getRequestURI();
         verify(request,times(2)).getMethod();
 

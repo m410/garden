@@ -1,6 +1,7 @@
 package org.m410.j8.application;
 
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.servlet.FilterDefinition;
@@ -66,7 +67,7 @@ public interface ApplicationModule {
      */
     List<? extends Ctlr> makeControllers(Configuration c);
 
-    List<ActionDefinition> getActionDefinitions();
+    List<? extends ActionDefinition> getActionDefinitions();
 
     /**
      * Creates the application services.

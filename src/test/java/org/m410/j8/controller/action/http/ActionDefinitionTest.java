@@ -21,6 +21,7 @@ import static org.mockito.Mockito.*;
 public class ActionDefinitionTest {
     Ctlr controller = () -> { return null; };
 
+
     @Test
     public void testDoesPathMatch() {
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -29,8 +30,12 @@ public class ActionDefinitionTest {
         when(request.getMethod()).thenReturn("GET");
 
         Action a = (args) -> Response.response();
-        ActionDefinition ad = new ActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
+
+        verify(request).getContextPath();
+        verify(request).getRequestURI();
+        verify(request).getMethod();
     }
 
     @Test
@@ -41,8 +46,12 @@ public class ActionDefinitionTest {
         when(request.getMethod()).thenReturn("GET");
 
         Action a = (args) -> Response.response();
-        ActionDefinition ad = new ActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
+
+        verify(request).getContextPath();
+        verify(request).getRequestURI();
+        verify(request).getMethod();
     }
 
     @Test
@@ -53,50 +62,52 @@ public class ActionDefinitionTest {
         when(request.getMethod()).thenReturn("GET");
 
         Action a = (args) -> Response.response();
-        ActionDefinition ad = new ActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
+
+        verify(request).getContextPath();
+        verify(request).getRequestURI();
+        verify(request).getMethod();
     }
 
     @Test
     public void testApply() {
         HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getContextPath()).thenReturn("");
-        when(request.getRequestURI()).thenReturn("/");
-        when(request.getMethod()).thenReturn("GET");
-
         HttpServletResponse response = mock(HttpServletResponse.class);
 
         Action a = (args) -> {
             throw new RuntimeException("I was called");
         };
 
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
+
         try {
-            ActionDefinition ad = new ActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
             ad.apply(request, response);
             fail("exception was not thrown");
         }
         catch (Exception e) {
             assertNotNull(e);
         }
+
     }
 
     @Test
     public void actionDefinitionsEqual() {
         Action action = (args) -> { return null; };
-        ActionDefinition ad1 = new ActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
-        ActionDefinition ad2 = new ActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
         assertEquals(ad1,ad2);
     }
 
     @Test
     public void actionDefinitionsDontEqual() {
         Action action = (args) -> { return null; };
-        ActionDefinition ad1 = new ActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
-        ActionDefinition ad2 = new ActionDefinition(controller, action,new PathExpr("persons"), HttpMethod.GET);
+        HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr("persons"), HttpMethod.GET);
         assertNotEquals(ad1, ad2);
     }
 
-    @Test @Ignore
+    @Test
     public void testMatchContentType() {
         assertTrue("Implement me", false);
     }
@@ -110,11 +121,16 @@ public class ActionDefinitionTest {
 
         HttpServletResponse response = mock(HttpServletResponse.class);
         Action a = (args) -> Response.response();
-        ActionDefinition ad1 = new ActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
-        ActionDefinition ad2 = new ActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT);
+        HttpActionDefinition ad1 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad2 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT);
 
         assertTrue(ad2.doesRequestMatchAction(request));
         assertFalse(ad1.doesRequestMatchAction(request));
+
+
+        verify(request,times(2)).getContextPath();
+        verify(request,times(2)).getRequestURI();
+        verify(request,times(2)).getMethod();
     }
 
 }

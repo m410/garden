@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.controller.action.http.Action;
 
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.action.http.HttpMethod;
 
@@ -40,7 +40,13 @@ public class ControllerFileDownloadTest implements MockServletInput {
 
         Action a = (req) -> response().withContentType("application/json").asStream(Assert::assertNotNull);
 
-        ActionDefinition ad = new ActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
         ad.apply(request, response);
+
+        verify(request).getContextPath();
+        verify(request).getRequestURI();
+        verify(request).getMethod();
+
+        verify(response).getOutputStream();
     }
 }

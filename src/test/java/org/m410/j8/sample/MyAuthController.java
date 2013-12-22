@@ -1,7 +1,7 @@
 package org.m410.j8.sample;
 
 import com.google.common.collect.ImmutableList;
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.Authorizable;
 import org.m410.j8.controller.Controller;
 
@@ -24,7 +24,7 @@ public class MyAuthController extends Controller implements Authorizable {
     }
 
     @Override
-    public List<ActionDefinition> actions() {
+    public List<HttpActionDefinition> actions() {
         return null;
     }
 }

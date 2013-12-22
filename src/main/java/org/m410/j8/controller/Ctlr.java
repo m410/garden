@@ -1,7 +1,8 @@
 package org.m410.j8.controller;
 
+import org.m410.j8.controller.action.ActionDefinition;
 import org.m410.j8.controller.action.http.Action;
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.http.ActionRequest;
 import org.m410.j8.controller.action.http.Response;
 
@@ -22,7 +23,7 @@ public interface Ctlr {
      *
      * @return a list of action definitions.
      */
-    List<ActionDefinition> actions();
+    List<? extends ActionDefinition> actions();
 
     /**
      * Default implementation of calling an action.  This can be overridden to intercept calls

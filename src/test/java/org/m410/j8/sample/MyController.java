@@ -4,7 +4,7 @@ package org.m410.j8.sample;
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.controller.action.*;
 import org.m410.j8.controller.action.http.Action;
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.http.ActionRequest;
 import org.m410.j8.controller.action.http.Response;
 import org.m410.j8.controller.Controller;
@@ -24,7 +24,7 @@ public final class MyController extends Controller {
         this.useSsl = true;
     }
 
-    public List<ActionDefinition> actions() {
+    public List<HttpActionDefinition> actions() {
         return ImmutableList.of(
                 get("path", httpGetAction),
                 get("path2", httpGetAction).contentTypes("text/html"),

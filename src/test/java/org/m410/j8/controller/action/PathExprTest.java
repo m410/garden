@@ -3,7 +3,7 @@ package org.m410.j8.controller.action;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.application.MockController;
 
 import javax.servlet.http.HttpServletRequest;
@@ -100,7 +100,7 @@ public class PathExprTest {
         when(request.getMethod()).thenReturn("GET");
 
         final MockController controller = new MockController();
-        final ActionDefinition action = controller.actions().get(0);
+        final HttpActionDefinition action = controller.actions().get(0);
         assertTrue(action.doesRequestMatchAction(request));
     }
 }

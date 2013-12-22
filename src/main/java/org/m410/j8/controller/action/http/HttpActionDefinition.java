@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.m410.j8.controller.action.ControllerAction;
+import org.m410.j8.controller.action.ActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.action.status.*;
 import org.m410.j8.controller.Ctlr;
@@ -36,8 +36,8 @@ import java.util.Optional;
  *
  * @author Michael Fortin
  */
-public final class ActionDefinition implements ControllerAction, ServletExtension {
-    private static final Logger log = LoggerFactory.getLogger(ActionDefinition.class);
+public final class HttpActionDefinition implements ActionDefinition, ServletExtension {
+    private static final Logger log = LoggerFactory.getLogger(HttpActionDefinition.class);
     private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.HTTP;
 
     private final Ctlr controller;
@@ -71,9 +71,9 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
      * @param roles The roles this action will accept.  This only applies if the controller implements
      *          the Authentication interface.
      */
-    public ActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
-            Securable.State useSsl,boolean useAuthentication, boolean useAuthorization, String[] contentTypes,
-            String[] roles ) {
+    public HttpActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
+                                Securable.State useSsl, boolean useAuthentication, boolean useAuthorization, String[] contentTypes,
+                                String[] roles) {
         this.controller = controller;
         this.action = action;
         this.pathExpr = pathExpr;
@@ -94,7 +94,7 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
      * @param pathExpr The path expression for the controller and action.
      * @param httpMethod The Http Method to accept on this definition.
      */
-    public ActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod) {
+    public HttpActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod) {
         this.controller = controller;
         this.action = action;
         this.pathExpr = pathExpr;
@@ -112,8 +112,8 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
      * @param contentTypes An array of content types or an empty array for all types.
      * @return a new ActionDefinition
      */
-    public ActionDefinition contentTypes(String... contentTypes) {
-        return new ActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
+    public HttpActionDefinition contentTypes(String... contentTypes) {
+        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
                 useAuthentication,useAuthorization,contentTypes, roles);
     }
 
@@ -123,8 +123,8 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
      * @param roles The list of roles, or empty for all roles.
      * @return A new ActionDefinition.
      */
-    public ActionDefinition roles(String... roles) {
-        return new ActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
+    public HttpActionDefinition roles(String... roles) {
+        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
                 useAuthentication,useAuthorization,contentTypes, roles);
 
     }
@@ -134,8 +134,8 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
      * @param ssl
      * @return
      */
-    public ActionDefinition ssl(Securable.State ssl) {
-        return new ActionDefinition(controller, action,pathExpr,httpMethod,ssl,
+    public HttpActionDefinition ssl(Securable.State ssl) {
+        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,ssl,
                 useAuthentication,useAuthorization,contentTypes, roles);
 
     }
@@ -204,9 +204,9 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
     }
 
     @Override
-    public int compareTo(ControllerAction o) {
-        if(o instanceof ActionDefinition) {
-            ActionDefinition that = (ActionDefinition)o;
+    public int compareTo(ActionDefinition o) {
+        if(o instanceof HttpActionDefinition) {
+            HttpActionDefinition that = (HttpActionDefinition)o;
             return new CompareToBuilder()
                     .append(this.getPathExpr(), that.getPathExpr())
                     .append(this.httpMethod, that.httpMethod)
@@ -214,7 +214,7 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
                     .toComparison();
         }
         else {
-            return ControllerAction.super.compareTo(o);
+            return ActionDefinition.super.compareTo(o);
         }
     }
 
@@ -231,13 +231,13 @@ public final class ActionDefinition implements ControllerAction, ServletExtensio
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof ActionDefinition)) {
+        if (!(obj instanceof HttpActionDefinition)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        ActionDefinition rhs = (ActionDefinition) obj;
+        HttpActionDefinition rhs = (HttpActionDefinition) obj;
         return new EqualsBuilder()
                 .append(this.pathExpr, rhs.pathExpr)
                 .append(this.httpMethod, rhs.httpMethod)

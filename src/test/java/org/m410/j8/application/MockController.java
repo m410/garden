@@ -2,7 +2,7 @@ package org.m410.j8.application;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.controller.action.http.Action;
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.action.http.Response;
 import org.m410.j8.controller.Controller;
@@ -20,7 +20,7 @@ public class MockController extends Controller {
     }
 
     @Override
-    public List<ActionDefinition> actions() {
+    public List<HttpActionDefinition> actions() {
         return ImmutableList.of(
                 get("", listAction)
         );

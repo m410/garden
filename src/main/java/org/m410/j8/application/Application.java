@@ -1,6 +1,7 @@
 package org.m410.j8.application;
 
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Ctlr;
 
@@ -41,7 +42,7 @@ abstract public class Application implements ApplicationModule {
 
     private List<? extends ThreadLocalSessionFactory> threadLocalsFactories;
     private List<?> services;
-    private List<ActionDefinition> actionDefinitions;
+    private List<? extends ActionDefinition> actionDefinitions;
     private List<ServletDefinition> servletDefinitions;
     private List<FilterDefinition> filterDefinitions;
     private List<ListenerDefinition> listenerDefinitions;
@@ -62,7 +63,7 @@ abstract public class Application implements ApplicationModule {
     }
 
     @Override
-    public List<ActionDefinition> getActionDefinitions() {
+    public List<? extends ActionDefinition> getActionDefinitions() {
         return actionDefinitions;
     }
 
@@ -146,8 +147,12 @@ abstract public class Application implements ApplicationModule {
      */
     public void doRequest(HttpServletRequest req, HttpServletResponse res) {
         log.debug("method={}, req={}", req.getMethod(), req.getRequestURI());
-        actionDefinitions.stream().filter((a) -> a.doesRequestMatchAction(req))
-                .findFirst().ifPresent((action) -> action.apply(req, res));
+        actionDefinitions.stream()
+                .filter((a) -> a instanceof HttpActionDefinition)
+                .filter((a) -> ((HttpActionDefinition)a).doesRequestMatchAction(req))
+                .findFirst()
+                .ifPresent((a) -> ((HttpActionDefinition)a).apply(req, res)
+            );
     }
 
     /**
@@ -156,9 +161,11 @@ abstract public class Application implements ApplicationModule {
      * @param request the HttpServletException
      * @return Optional ActionDefinition
      */
-    public Optional<ActionDefinition> actionForRequest(HttpServletRequest request) {
+    public Optional<HttpActionDefinition> actionForRequest(HttpServletRequest request) {
         return actionDefinitions.stream()
-                .filter((ad) -> ad.doesRequestMatchAction(request))
+                .filter((a) -> a instanceof HttpActionDefinition)
+                .filter((a) -> ((HttpActionDefinition)a).doesRequestMatchAction(request))
+                .map((a)->((HttpActionDefinition)a))
                 .findFirst();
     }
 
@@ -191,7 +198,8 @@ abstract public class Application implements ApplicationModule {
             session.start();
             doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
             session.stop();
-        } else {
+        }
+        else {
             block.doWork();
         }
     }

@@ -9,7 +9,7 @@ import java.util.Optional;
 /**
  * @author m410
  */
-public interface ControllerAction extends Comparable<ControllerAction>{
+public interface ActionDefinition extends Comparable<ActionDefinition>{
 
 
     static enum ActionProtocol {
@@ -29,7 +29,7 @@ public interface ControllerAction extends Comparable<ControllerAction>{
 
     ActionProtocol getType();
 
-    default int compareTo(ControllerAction o) {
+    default int compareTo(ActionDefinition o) {
         return new CompareToBuilder()
                 .append(this.getType(), o.getType())
                 .append(this.getPathExpr(), o.getPathExpr())

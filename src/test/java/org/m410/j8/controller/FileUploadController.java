@@ -3,7 +3,7 @@ package org.m410.j8.controller;
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.controller.action.http.Action;
 
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 
 import java.util.List;
@@ -19,7 +19,7 @@ public class FileUploadController extends Controller {
     }
 
     @Override
-    public List<ActionDefinition> actions() {
+    public List<HttpActionDefinition> actions() {
         return ImmutableList.of(
                 post("", upload)
         );

@@ -3,11 +3,11 @@ package org.m410.j8.controller;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.j8.controller.action.*;
 import org.m410.j8.controller.action.http.Action;
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.http.HttpMethod;
 import org.m410.j8.controller.action.http.Response;
 import org.m410.j8.controller.action.ws.WebSocket;
-import org.m410.j8.controller.action.ws.WebSocketDefinition;
+import org.m410.j8.controller.action.ws.WsActionDefinition;
 
 /**
  * This is the default implementation of a the Ctlr interface.
@@ -111,8 +111,8 @@ public abstract class Controller implements Ctlr {
      * @param act the action
      * @return a new action definition.
      */
-    protected final WebSocketDefinition ws(String path, WebSocket act) {
-        return new WebSocketDefinition(pathExpr.append(path),act, this,
+    protected final WsActionDefinition ws(String path, WebSocket act) {
+        return new WsActionDefinition(pathExpr.append(path),act, this,
                 Securable.State.Optional,new String[0],false);
     }
 
@@ -132,7 +132,7 @@ public abstract class Controller implements Ctlr {
      * @param act the action implementation.
      * @return an action definition
      */
-    protected final ActionDefinition get(String path, Action act) {
+    protected final HttpActionDefinition get(String path, Action act) {
         return act(HttpMethod.GET, act, pathExpr.append(path));
     }
 
@@ -143,7 +143,7 @@ public abstract class Controller implements Ctlr {
      * @param act the action
      * @return a new action definition.
      */
-    protected final ActionDefinition post(String path, Action act) {
+    protected final HttpActionDefinition post(String path, Action act) {
         return act(HttpMethod.POST, act, pathExpr.append(path));
     }
 
@@ -154,7 +154,7 @@ public abstract class Controller implements Ctlr {
      * @param act the action
      * @return a new action definition.
      */
-    protected final ActionDefinition put(String path, Action act) {
+    protected final HttpActionDefinition put(String path, Action act) {
         return act(HttpMethod.PUT, act, pathExpr.append(path));
     }
 
@@ -165,7 +165,7 @@ public abstract class Controller implements Ctlr {
      * @param act the action
      * @return a new action definition.
      */
-    protected final ActionDefinition delete(String path, Action act) {
+    protected final HttpActionDefinition delete(String path, Action act) {
         return act(HttpMethod.DELETE, act, pathExpr.append(path));
     }
 
@@ -179,8 +179,8 @@ public abstract class Controller implements Ctlr {
      * @param pathExpr the path expression.
      * @return a new action definition.
      */
-    protected ActionDefinition act(HttpMethod method, Action action, PathExpr pathExpr) {
-        return new ActionDefinition(this, action, pathExpr, method);
+    protected HttpActionDefinition act(HttpMethod method, Action action, PathExpr pathExpr) {
+        return new HttpActionDefinition(this, action, pathExpr, method);
     }
 
     /**

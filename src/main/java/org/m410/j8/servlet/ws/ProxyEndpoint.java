@@ -10,6 +10,7 @@ import javax.websocket.Session;
  * @author Michael Fortin
  */
 public class ProxyEndpoint extends Endpoint {
+
     @Override
     public void onOpen(Session session, EndpointConfig endpointConfig) {
 

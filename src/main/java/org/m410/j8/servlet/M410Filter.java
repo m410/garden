@@ -1,6 +1,6 @@
 package org.m410.j8.servlet;
 
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.status.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,10 +32,10 @@ public class M410Filter implements Filter {
         final HttpServletResponse response = (HttpServletResponse) res;
         final Application webapp = (Application) request.getServletContext().getAttribute("application");
 
-        final Optional<ActionDefinition> optionalAction = webapp.actionForRequest(request);
+        final Optional<HttpActionDefinition> optionalAction = webapp.actionForRequest(request);
 
         if (optionalAction.isPresent()) {
-            final ActionDefinition action = optionalAction.get();
+            final HttpActionDefinition action = optionalAction.get();
             final ActionStatus status = action.status(request);
 
             switch (status.id()) {

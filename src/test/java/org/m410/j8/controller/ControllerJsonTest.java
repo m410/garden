@@ -45,7 +45,7 @@ public class ControllerJsonTest implements MockServletInput{
 
 
     @Test
-    public void testGetXml() throws IOException {
+    public void testGetJson() throws IOException {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/json");
@@ -56,11 +56,17 @@ public class ControllerJsonTest implements MockServletInput{
         when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         myApp.doRequest(request, response);
+
+        verify(request,times(2)).getContextPath();
+        verify(request,times(3)).getRequestURI();
+        verify(request,times(2)).getMethod();
+
+        verify(response).getOutputStream();
         verify(response).setContentType("application/json");
     }
 
     @Test
-    public void testPostXml() throws IOException {
+    public void testPostJson() throws IOException {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/json");
@@ -72,11 +78,17 @@ public class ControllerJsonTest implements MockServletInput{
         when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         myApp.doRequest(request, response);
+
+        verify(request,times(2)).getContextPath();
+        verify(request,times(3)).getRequestURI();
+        verify(request,times(3)).getMethod();
+
+        verify(response).getOutputStream();
         verify(response).setContentType("application/json");
     }
 
     @Test
-    public void testPutXml() throws IOException {
+    public void testPutJson() throws IOException {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/json/100");
@@ -88,11 +100,17 @@ public class ControllerJsonTest implements MockServletInput{
         when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         myApp.doRequest(request, response);
+
+        verify(request,times(3)).getContextPath();
+        verify(request,times(4)).getRequestURI();
+        verify(request,times(2)).getMethod();
+
+        verify(response).getOutputStream();
         verify(response).setContentType("application/json");
     }
 
     @Test
-    public void testDeleteXml() throws IOException {
+    public void testDeleteJson() throws IOException {
         HttpSession session = mock(HttpSession.class);
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getSession()).thenReturn(session);
@@ -105,5 +123,12 @@ public class ControllerJsonTest implements MockServletInput{
         when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         myApp.doRequest(request, response);
+
+        verify(request,times(4)).getContextPath();
+        verify(request,times(5)).getRequestURI();
+        verify(request,times(3)).getMethod();
+
+//        verify(response).getOutputStream();
+//        verify(response).setContentType("application/json");
     }
 }

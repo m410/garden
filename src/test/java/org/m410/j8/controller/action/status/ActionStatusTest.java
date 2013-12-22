@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.controller.action.http.Action;
-import org.m410.j8.controller.action.http.ActionDefinition;
+import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.controller.action.http.HttpMethod;
@@ -30,7 +30,7 @@ public class ActionStatusTest {
         Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -45,7 +45,7 @@ public class ActionStatusTest {
         Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -60,7 +60,7 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -74,7 +74,7 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(controller,action, path, get,
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
                 Securable.State.Optional, false,false, new String[]{}, new String[]{});
 
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -92,7 +92,7 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(controller,action, path, get,
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
                 Securable.State.Optional, true, false, new String[]{}, new String[]{});
 
 
@@ -105,10 +105,10 @@ public class ActionStatusTest {
         assertEquals(expected, ad.status(request));
     }
 
-    @Test @Ignore
+    @Test
     public void dispatchTo() {
         Action action = (args) -> { return null; };
-        ActionDefinition ad = new ActionDefinition(controller,action,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action,new PathExpr(""), HttpMethod.GET);
         HttpServletRequest request = mock(HttpServletRequest.class);
         final DispatchTo expected = new DispatchTo("/");
         assertEquals(expected, ad.status(request));
@@ -119,7 +119,7 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
 
 
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -137,7 +137,7 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        ActionDefinition ad = new ActionDefinition(controller,action, path, get,
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
                 Securable.State.Optional, false, true, new String[]{}, new String[]{});
 
 

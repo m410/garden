@@ -42,6 +42,7 @@ public class ControllerCrudTest {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
         Response response = controller.httpGetAction.action(mockRequest);
+
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -51,7 +52,9 @@ public class ControllerCrudTest {
     public void testList() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
+
         Response response = controller.httpGetAction.action(mockRequest);
+
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -61,7 +64,9 @@ public class ControllerCrudTest {
     public void testCreate() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
+
         Response response = controller.httpPostAction.action(mockRequest);
+
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -71,7 +76,9 @@ public class ControllerCrudTest {
     public void testUpdate() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
+
         Response response = controller.httpPutAction.action(mockRequest);
+
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
@@ -81,7 +88,9 @@ public class ControllerCrudTest {
     public void testDelete() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
+
         Response response = controller.httpDeleteAction.action(mockRequest);
+
         assertNotNull(response);
         assertNotNull(response.getModel());
         assertEquals("got id: 10", response.getModel().get("name"));
