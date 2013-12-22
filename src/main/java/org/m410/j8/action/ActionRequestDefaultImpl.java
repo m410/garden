@@ -44,7 +44,7 @@ public class ActionRequestDefaultImpl implements ActionRequest {
     public Map<String, Object> session() {
 
         if(isActiveSession()) {
-            HashMap<String,Object> map = new HashMap();
+            HashMap<String,Object> map = new HashMap<>();
             Enumeration<String> attributeNames = servletRequest.getSession(false).getAttributeNames();
 
             while (attributeNames.hasMoreElements()) {
@@ -66,7 +66,7 @@ public class ActionRequestDefaultImpl implements ActionRequest {
 
     @Override
     public Map<String, String> requestHeaders() {
-        HashMap<String,String> map = new HashMap();
+        HashMap<String,String> map = new HashMap<>();
         Enumeration<String> headerNames = servletRequest.getHeaderNames();
 
         while (headerNames.hasMoreElements()) {

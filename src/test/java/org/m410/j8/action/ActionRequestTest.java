@@ -48,7 +48,7 @@ public class ActionRequestTest implements MockServletInput {
     @Test
     public void getSession() {
         HttpSession session = mock(HttpSession.class);
-        Hashtable<String,String> map = new Hashtable();
+        Hashtable<String,String> map = new Hashtable<>();
         map.put("name","value");
         when(session.getAttributeNames()).thenReturn(map.keys());
         when(session.getAttribute("name")).thenReturn("value");
@@ -66,7 +66,7 @@ public class ActionRequestTest implements MockServletInput {
     @Test
     public void requestHeaders() {
         HttpServletRequest request = mock(HttpServletRequest.class);
-        Hashtable<String,String> map = new Hashtable();
+        Hashtable<String,String> map = new Hashtable<>();
         map.put("name","value");
         when(request.getHeaderNames()).thenReturn(map.keys());
         when(request.getHeader("name")).thenReturn("value");
@@ -95,7 +95,7 @@ public class ActionRequestTest implements MockServletInput {
     @Test
     public void requestParameters() {
         HttpServletRequest request = mock(HttpServletRequest.class);
-        Map<String,String[]> map = new HashMap();
+        Map<String,String[]> map = new HashMap<>();
         map.put("one",new String[]{"two"});
         when(request.getParameterMap()).thenReturn(map);
 

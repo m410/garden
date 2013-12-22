@@ -12,7 +12,7 @@ final class MyThreadLocal implements ThreadLocalSession {
         this.value = value;
     }
 
-    private static final ThreadLocal<String> myThreadLocal = new ThreadLocal();
+    private static final ThreadLocal<String> myThreadLocal = new ThreadLocal<String>();
     public static String get() {
         return myThreadLocal.get();
     }

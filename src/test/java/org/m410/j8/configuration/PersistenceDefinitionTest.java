@@ -7,7 +7,7 @@ import org.junit.runners.JUnit4;
 import java.util.HashMap;
 import java.util.Map;
 
-import static junit.framework.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 
 /**
