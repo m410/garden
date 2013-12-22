@@ -1,7 +1,11 @@
 package org.m410.j8.controller.action.ws;
 
+import org.m410.j8.controller.Securable;
+import org.m410.j8.controller.action.ControllerAction;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
+
+import java.util.Optional;
 
 /**
  * todo not quite defined yet, needs an interface in common with ActionDefinition
@@ -9,26 +13,58 @@ import org.m410.j8.controller.Ctlr;
  *
  * @author m410
  */
-public class WebSocketDefinition {
+public final class WebSocketDefinition  implements ControllerAction {
+    private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.WS;
     private final PathExpr pathExpr;
     private final Ctlr controller;
-    private WsAction wsAction;
 
-    public WebSocketDefinition(PathExpr pathExpr, WsAction wsAction, Ctlr controller) {
+    private final Securable.State useSsl;
+    private final String[] roles;
+    private final boolean isAuthenticated;
+
+    private WebSocket webSocket;
+
+    public WebSocketDefinition(PathExpr pathExpr, WebSocket webSocket, Ctlr controller,
+               Securable.State ssl, String[] roles, boolean isAuthenticated) {
         this.pathExpr = pathExpr;
         this.controller = controller;
-        this.wsAction = wsAction;
+        this.webSocket = webSocket;
+        this.useSsl = ssl;
+        this.roles = roles;
+        this.isAuthenticated = isAuthenticated;
     }
 
+    @Override
     public PathExpr getPathExpr() {
         return pathExpr;
     }
 
+    @Override
     public Ctlr getController() {
         return controller;
     }
 
-    public WsAction getWsAction() {
-        return wsAction;
+    @Override
+    public Securable.State getSsl() {
+        return useSsl;
+    }
+
+    @Override
+    public Optional<String[]> getAuthorizedRoles() {
+        return Optional.of(roles);
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return isAuthenticated;
+    }
+
+    @Override
+    public ActionProtocol getType() {
+        return DEF_ACTION_PROTOCOL;
+    }
+
+    public WebSocket getWebSocket() {
+        return webSocket;
     }
 }

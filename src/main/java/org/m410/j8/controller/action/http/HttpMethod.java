@@ -1,4 +1,4 @@
-package org.m410.j8.controller;
+package org.m410.j8.controller.action.http;
 
 /**
  * Allowed http methods in controller actions.

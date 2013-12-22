@@ -1,4 +1,4 @@
-package org.m410.j8.servlet.ws;
+package org.m410.j8.controller.action.ws;
 
 /**
  * @author m410

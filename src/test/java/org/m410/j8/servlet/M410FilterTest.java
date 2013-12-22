@@ -6,7 +6,7 @@ import org.junit.runners.JUnit4;
 import org.m410.j8.controller.action.http.ActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.application.Application;
-import org.m410.j8.controller.HttpMethod;
+import org.m410.j8.controller.action.http.HttpMethod;
 import org.m410.j8.sample.MyWebApp;
 
 

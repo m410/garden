@@ -32,7 +32,7 @@ public class ApplicationThreadLocalTest {
         app = new MyWebApp(){
 
             @Override
-            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
                 return null;
             }
         };

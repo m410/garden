@@ -225,7 +225,7 @@ abstract public class Application implements ApplicationModule {
         services = makeServices(configuration);
         log.debug("services: {}", services);
 
-        List<Ctlr> controllers = makeControllers(configuration);
+        List<? extends Ctlr> controllers = makeControllers(configuration);
         log.debug("controllers: {}", controllers);
 
         ImmutableList.Builder<ActionDefinition> b = ImmutableList.builder();

@@ -1,4 +1,4 @@
-package org.m410.j8.servlet.ws;
+package org.m410.j8.controller.action.ws;
 
 /**
  * Add a websocket listener to a controller.
@@ -7,23 +7,20 @@ package org.m410.j8.servlet.ws;
  * @author m410
  */
 public class WebSocket {
-    private CloseHandler closeHandler ;
-    private OpenHandler openHandler;
-    private ErrorHandler errorHandler;
-    private MessageHandler messageHandler;
+    private CloseHandler closeHandler = (s)->{} ;
+    private OpenHandler openHandler = (s)->{};
+    private ErrorHandler errorHandler = (s)->{};
+    private MessageHandler messageHandler = (s)->{};
 
-    WebSocket(CloseHandler closeHandler, OpenHandler openHandler, ErrorHandler errorHandler, MessageHandler messageHandler) {
+    public WebSocket(CloseHandler closeHandler, OpenHandler openHandler,
+             ErrorHandler errorHandler, MessageHandler messageHandler) {
         this.closeHandler = closeHandler;
         this.openHandler = openHandler;
         this.errorHandler = errorHandler;
         this.messageHandler = messageHandler;
     }
 
-    private WebSocket() {
-    }
-
-    public static WebSocket socket() {
-        return new WebSocket();
+    public WebSocket() {
     }
 
     public WebSocket open(OpenHandler openHandler) {

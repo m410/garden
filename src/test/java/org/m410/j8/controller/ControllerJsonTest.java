@@ -31,12 +31,12 @@ public class ControllerJsonTest implements MockServletInput{
     @Before
     public void setup() {
         myApp = new MyWebApp() {
-            @Override public List<Ctlr> makeControllers(Configuration c) {
+            @Override public List<? extends Ctlr> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
             }
 
             @Override
-            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
                 return null;
             }
         };

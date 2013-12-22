@@ -30,7 +30,7 @@ public class ApplicationActionForRequestTest {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in, "development");
         app = new MyWebApp() {
-            @Override public List<Ctlr> makeControllers(Configuration c) {
+            @Override public List<? extends Ctlr> makeControllers(Configuration c) {
                 List<Ctlr> ctrls = new ArrayList<>();
                 final MockController mockController = new MockController();
                 ctrls.add(mockController);
@@ -38,7 +38,7 @@ public class ApplicationActionForRequestTest {
             }
 
             @Override
-            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
                 return null;
             }
         };

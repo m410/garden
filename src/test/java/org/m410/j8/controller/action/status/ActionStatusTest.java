@@ -8,7 +8,7 @@ import org.m410.j8.controller.action.http.Action;
 import org.m410.j8.controller.action.http.ActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
-import org.m410.j8.controller.HttpMethod;
+import org.m410.j8.controller.action.http.HttpMethod;
 import org.m410.j8.controller.Securable;
 
 

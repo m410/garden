@@ -34,7 +34,7 @@ public class MyWebApp extends Application implements JpaModule, MailModule, JmsM
     }
 
     @Override
-    public List<Ctlr> makeControllers(Configuration c) {
+    public List<? extends Ctlr> makeControllers(Configuration c) {
         return ImmutableList.of(
                 new MyController(myService)
         );

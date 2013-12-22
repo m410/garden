@@ -4,10 +4,10 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.m410.j8.controller.action.ControllerAction;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.action.status.*;
 import org.m410.j8.controller.Ctlr;
-import org.m410.j8.controller.HttpMethod;
 import org.m410.j8.controller.Securable;
 import org.m410.j8.servlet.ServletExtension;
 import org.slf4j.Logger;
@@ -15,6 +15,8 @@ import org.slf4j.LoggerFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.Arrays;
+import java.util.Optional;
 
 /**
  * This is an action and it's meta data.  It includes it path expression, http method
@@ -34,17 +36,21 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Michael Fortin
  */
-public final class ActionDefinition implements  Comparable<ActionDefinition>, ServletExtension {
+public final class ActionDefinition implements ControllerAction, ServletExtension {
     private static final Logger log = LoggerFactory.getLogger(ActionDefinition.class);
-    private final Action action;
+    private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.HTTP;
+
     private final Ctlr controller;
     private final PathExpr pathExpr;
-    private final HttpMethod httpMethod;
     private final Securable.State useSsl;
+    private final String[] roles;
+
     private final boolean useAuthentication;
     private final boolean useAuthorization;
+
+    private final Action action;
+    private final HttpMethod httpMethod;
     private final String[] contentTypes;
-    private final String[] roles;
 
     /**
      * A full constructor setting all parameters of a action definition.  Generally there is no need to
@@ -168,18 +174,58 @@ public final class ActionDefinition implements  Comparable<ActionDefinition>, Se
     }
 
     @Override
-    public int compareTo(ActionDefinition o) {
-        ActionDefinition that = (ActionDefinition)o;
-        return new CompareToBuilder()
-                .append(this.httpMethod, that.httpMethod)
-                .toComparison();
+    public Ctlr getController() {
+        return controller;
     }
+
+    @Override
+    public PathExpr getPathExpr() {
+        return pathExpr;
+    }
+
+    @Override
+    public Securable.State getSsl() {
+        return useSsl;
+    }
+
+    @Override
+    public Optional<String[]> getAuthorizedRoles() {
+        return Optional.of(roles);
+    }
+
+    @Override
+    public boolean isAuthenticated() {
+        return useAuthentication;
+    }
+
+    @Override
+    public ActionProtocol getType() {
+        return DEF_ACTION_PROTOCOL;
+    }
+
+    @Override
+    public int compareTo(ControllerAction o) {
+        if(o instanceof ActionDefinition) {
+            ActionDefinition that = (ActionDefinition)o;
+            return new CompareToBuilder()
+                    .append(this.getPathExpr(), that.getPathExpr())
+                    .append(this.httpMethod, that.httpMethod)
+                    .append(this.contentTypes, that.contentTypes)
+                    .toComparison();
+        }
+        else {
+            return ControllerAction.super.compareTo(o);
+        }
+    }
+
 
     @Override
     public int hashCode() {
         return new HashCodeBuilder(3,3)
+                .append(DEF_ACTION_PROTOCOL)
                 .append(pathExpr)
                 .append(httpMethod)
+                .append(contentTypes)
                 .hashCode();
     }
 
@@ -193,16 +239,18 @@ public final class ActionDefinition implements  Comparable<ActionDefinition>, Se
         }
         ActionDefinition rhs = (ActionDefinition) obj;
         return new EqualsBuilder()
-                .append(this.httpMethod, rhs.httpMethod)
                 .append(this.pathExpr, rhs.pathExpr)
+                .append(this.httpMethod, rhs.httpMethod)
+                .append(this.contentTypes, rhs.contentTypes)
                 .isEquals();
     }
 
     @Override
     public String toString() {
         return new ToStringBuilder(this)
-                .append("method",httpMethod)
                 .append("path", pathExpr != null ? pathExpr.toText() : null)
+                .append("method", httpMethod)
+                .append("contentTypes", Arrays.toString(contentTypes))
                 .toString();
     }
 }

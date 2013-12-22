@@ -27,7 +27,7 @@ public class ApplicationTest {
         Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
         Application app = new MyWebApp() {
             @Override
-            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
                 return null;
             }
         };
@@ -42,7 +42,7 @@ public class ApplicationTest {
         Application app = new MyWebApp(){
 
             @Override
-            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
                 return null;
             }
         };
@@ -59,7 +59,7 @@ public class ApplicationTest {
 
 
             @Override
-            public List<ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
                 return ImmutableList.of(
                         new ThreadLocalSessionFactory<ThreadLocalSession<String>>() {
                             @Override
