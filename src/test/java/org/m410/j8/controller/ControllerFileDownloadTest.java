@@ -15,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import java.io.IOException;
 
+import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.m410.j8.controller.action.http.Response.*;
 
@@ -31,22 +32,19 @@ public class ControllerFileDownloadTest implements MockServletInput {
     @Test
     public void testDownload() throws IOException {
         HttpServletResponse response = mock(HttpServletResponse.class);
-        when(response.getOutputStream()).thenReturn(servletOutputStream(new StringBuffer()));
+        final StringBuffer sb = new StringBuffer();
+        when(response.getOutputStream()).thenReturn(servletOutputStream(sb));
 
         HttpServletRequest request = mock(HttpServletRequest.class);
-        when(request.getContextPath()).thenReturn("");
-        when(request.getRequestURI()).thenReturn("/otherpath");
-        when(request.getMethod()).thenReturn("GET");
 
-        Action a = (req) -> response().withContentType("application/json").asStream(Assert::assertNotNull);
+        Action a = (req) -> response()
+                .withContentType("application/json")
+                .asStream((out) -> out.write("hi".getBytes()));
 
         HttpActionDefinition ad = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
         ad.apply(request, response);
 
-        verify(request).getContextPath();
-        verify(request).getRequestURI();
-        verify(request).getMethod();
-
         verify(response).getOutputStream();
+        assertEquals("hi", sb.toString());
     }
 }

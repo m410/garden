@@ -55,7 +55,7 @@ public class M410FilterTest {
 
         verify(request).getServletContext();
         verify(request).getContextPath();
-        verify(request,times(3)).getRequestURI();
+        verify(request,times(4)).getRequestURI();
 
         verify(request).getRequestDispatcher("/json.m410");
 

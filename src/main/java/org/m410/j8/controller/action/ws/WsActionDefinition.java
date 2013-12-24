@@ -1,10 +1,13 @@
 package org.m410.j8.controller.action.ws;
 
+import com.google.common.collect.ImmutableList;
 import org.m410.j8.controller.Securable;
 import org.m410.j8.controller.action.ActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -19,7 +22,7 @@ public final class WsActionDefinition implements ActionDefinition {
     private final Ctlr controller;
 
     private final Securable.State useSsl;
-    private final String[] roles;
+    private final List<String> roles;
     private final boolean isAuthenticated;
 
     private WebSocket webSocket;
@@ -30,7 +33,7 @@ public final class WsActionDefinition implements ActionDefinition {
         this.controller = controller;
         this.webSocket = webSocket;
         this.useSsl = ssl;
-        this.roles = roles;
+        this.roles = ImmutableList.<String>builder().addAll(Arrays.asList(roles)).build();
         this.isAuthenticated = isAuthenticated;
     }
 
@@ -50,8 +53,8 @@ public final class WsActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public Optional<String[]> getAuthorizedRoles() {
-        return Optional.of(roles);
+    public List<String> getAuthorizedRoles() {
+        return roles;
     }
 
     @Override

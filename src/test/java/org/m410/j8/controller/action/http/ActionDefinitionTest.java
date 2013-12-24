@@ -4,8 +4,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.j8.controller.Securable;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
+import org.m410.j8.controller.action.status.ActionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -108,9 +110,47 @@ public class ActionDefinitionTest {
     }
 
     @Test
-    public void testMatchContentType() {
-        assertTrue("Implement me", false);
+    public void testDoesntMatchContentType() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/c.m410");
+        when(request.getMethod()).thenReturn("GET");
+        when(request.getContentType()).thenReturn("text/html");
+
+        Action action = (args) -> { return null; };
+        HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
+                HttpMethod.GET, Securable.State.Optional, new String[]{"application/json"}, new String[0]);
+
+        boolean match = a.doesRequestMatchAction(request);
+        assertFalse(match);
+
+        verify(request).getContentType();
+        verify(request).getContextPath();
+        verify(request).getRequestURI();
+        verify(request).getMethod();
     }
+
+    @Test
+    public void testMatchContentType() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        when(request.getContextPath()).thenReturn("");
+        when(request.getRequestURI()).thenReturn("/c.m410");
+        when(request.getMethod()).thenReturn("GET");
+        when(request.getContentType()).thenReturn("application/json");
+
+        Action action = (args) -> { return null; };
+        HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
+                HttpMethod.GET, Securable.State.Optional, new String[]{"application/json"}, new String[0]);
+
+        boolean match = a.doesRequestMatchAction(request);
+        assertTrue(match);
+
+        verify(request).getContentType();
+        verify(request).getContextPath();
+        verify(request).getRequestURI();
+        verify(request).getMethod();
+    }
+
 
     @Test
     public void testMatchHttpMethod() {

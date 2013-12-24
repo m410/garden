@@ -4,6 +4,7 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.controller.Securable;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -23,7 +24,7 @@ public interface ActionDefinition extends Comparable<ActionDefinition>{
 
     Securable.State getSsl();
 
-    Optional<String[]> getAuthorizedRoles();
+    List<String> getAuthorizedRoles();
 
     boolean isAuthenticated();
 

@@ -1,9 +1,11 @@
 package org.m410.j8.controller.action.http;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.m410.j8.controller.Authorizable;
 import org.m410.j8.controller.action.ActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.action.status.*;
@@ -16,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -43,14 +46,14 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private final Ctlr controller;
     private final PathExpr pathExpr;
     private final Securable.State useSsl;
-    private final String[] roles;
+    private final List<String> roles;
 
     private final boolean useAuthentication;
     private final boolean useAuthorization;
 
     private final Action action;
     private final HttpMethod httpMethod;
-    private final String[] contentTypes;
+    private final List<String> contentTypes;
 
     /**
      * A full constructor setting all parameters of a action definition.  Generally there is no need to
@@ -62,27 +65,23 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @param pathExpr The path of the action.
      * @param httpMethod The http method of the action.
      * @param useSsl if this action must use ssl.  Only used on Controllers with the Secure interface.
-     * @param useAuthentication if this action requires authentication.  Only applies if the controller
-     *          implements the Authentication interface.
-     * @param useAuthorization if the action requires authorization.  This only applies if the controller
-     *          implements the Authentication interface.
      * @param contentTypes The content types that this action will accept.  If it's empty, it accepts all
      *          types.
      * @param roles The roles this action will accept.  This only applies if the controller implements
      *          the Authentication interface.
      */
     public HttpActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
-                                Securable.State useSsl, boolean useAuthentication, boolean useAuthorization, String[] contentTypes,
+                                Securable.State useSsl, String[] contentTypes,
                                 String[] roles) {
         this.controller = controller;
         this.action = action;
         this.pathExpr = pathExpr;
         this.httpMethod = httpMethod;
         this.useSsl = useSsl;
-        this.useAuthentication = useAuthentication;
-        this.useAuthorization = useAuthorization;
-        this.contentTypes = contentTypes;
-        this.roles = roles;
+        this.useAuthentication = controller instanceof Authorizable;
+        this.useAuthorization = controller instanceof Authorizable;
+        this.contentTypes = ImmutableList.<String>builder().addAll(Arrays.asList(contentTypes)).build();
+        this.roles = ImmutableList.<String>builder().addAll(Arrays.asList(roles)).build();
     }
 
     /**
@@ -102,8 +101,8 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         this.useSsl = Securable.State.Optional;
         this.useAuthentication = false;
         this.useAuthorization = false;
-        this.contentTypes = new String[0];
-        this.roles = new String[0];
+        this.contentTypes = ImmutableList.of();
+        this.roles = ImmutableList.of();
     }
 
     /**
@@ -113,8 +112,8 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @return a new ActionDefinition
      */
     public HttpActionDefinition contentTypes(String... contentTypes) {
-        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
-                useAuthentication,useAuthorization,contentTypes, roles);
+        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
+                useSsl,contentTypes, roles.toArray(new String[roles.size()]));
     }
 
     /**
@@ -124,19 +123,18 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @return A new ActionDefinition.
      */
     public HttpActionDefinition roles(String... roles) {
-        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
-                useAuthentication,useAuthorization,contentTypes, roles);
-
+        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
+                useSsl ,contentTypes.toArray(new String[contentTypes.size()]), roles);
     }
 
     /**
      *
-     * @param ssl
-     * @return
+     * @param ssl the acceptable ssl states
+     * @return a new HttpActionDefinition
      */
     public HttpActionDefinition ssl(Securable.State ssl) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,ssl,
-                useAuthentication,useAuthorization,contentTypes, roles);
+                contentTypes.toArray(new String[contentTypes.size()]), roles.toArray(new String[roles.size()]));
 
     }
 
@@ -147,25 +145,29 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     public boolean doesRequestMatchAction(HttpServletRequest req) {
-        // todo check content type
-        return pathExpr.doesPathMatch(req) && httpMethod.toString().equalsIgnoreCase(req.getMethod());
+        return pathExpr.doesPathMatch(req) &&
+                httpMethod.toString().equalsIgnoreCase(req.getMethod()) &&
+                (contentTypes.size() == 0 || contentTypes.contains(req.getContentType()));
     }
 
     public ActionStatus status(HttpServletRequest req) {
         final boolean path = pathExpr.doesPathMatch(req);
 
-        // todo check for Secure interface
-        // todo check authorization interface
-
         if(path) {
             if(!req.getRequestURI().endsWith(SERVLET_EXT))
                 return new Forward(req.getRequestURI());
-//            else if(useSsl && !req.isSecure())
-//                return new RedirectToSecure(req.getRequestURI());
+
+            else if(useSsl == Securable.State.Only && !req.isSecure())
+                return new RedirectToSecure(req.getRequestURI());
+
             else if(useAuthentication && req.getUserPrincipal() == null)
                 return new RedirectToAuth("/auth",req.getRequestURI());
-            else if(useAuthorization && (req.getUserPrincipal() == null))
-                return Forbidden.getInstance();
+
+            //todo need to check user roles
+//            else if(useAuthorization && (req.getUserPrincipal() == null))
+//                return Forbidden.getInstance();
+
+
             else
                 return ActOn.getInstance();
         }
@@ -189,8 +191,8 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     @Override
-    public Optional<String[]> getAuthorizedRoles() {
-        return Optional.of(roles);
+    public List<String> getAuthorizedRoles() {
+        return roles;
     }
 
     @Override
@@ -250,7 +252,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         return new ToStringBuilder(this)
                 .append("path", pathExpr != null ? pathExpr.toText() : null)
                 .append("method", httpMethod)
-                .append("contentTypes", Arrays.toString(contentTypes))
+                .append("contentTypes", contentTypes)
                 .toString();
     }
 }

@@ -1,5 +1,6 @@
 package org.m410.j8.controller.action.http;
 
+import java.io.IOException;
 import java.io.OutputStream;
 
 /**
@@ -8,5 +9,5 @@ import java.io.OutputStream;
  * @author Michael Fortin
  */
 public interface ResponseStream {
-    void stream(OutputStream out);
+    void stream(OutputStream out) throws IOException;
 }

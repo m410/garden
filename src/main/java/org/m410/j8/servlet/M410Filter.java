@@ -34,6 +34,11 @@ public class M410Filter implements Filter {
 
         final Optional<HttpActionDefinition> optionalAction = webapp.actionForRequest(request);
 
+        log.debug("{}:{}[{}]",
+                request.getMethod(),
+                request.getRequestURI(),
+                request.getContentType());
+
         if (optionalAction.isPresent()) {
             final HttpActionDefinition action = optionalAction.get();
             final ActionStatus status = action.status(request);
