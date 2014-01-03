@@ -17,12 +17,13 @@ import static org.junit.Assert.*;
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class OrmBuilderTest {
+public class OrmXmlBuilderTest {
     static String expected =
             "<?xml version=\"1.0\" encoding=\"UTF-8\" standalone=\"no\"?>" +
                     "<entity-mappings version=\"2.1\" " +
                     "xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" " +
-                    "xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/persistence/orm http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd\" " +
+                    "xsi:schemaLocation=\"http://xmlns.jcp.org/xml/ns/persistence/orm " +
+                    "http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd\" " +
                     "xmlns=\"http://xmlns.jcp.org/xml/ns/persistence/orm\">" +
                     "<description>Generated Persistence Mapping</description>" +
                     "<persistence-unit-metadata>" +

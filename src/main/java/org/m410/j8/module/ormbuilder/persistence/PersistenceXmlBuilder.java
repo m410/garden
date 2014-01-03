@@ -37,17 +37,16 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         Element root = doc.createElementNS("http://xmlns.jcp.org/xml/ns/persistence", "persistence");
         root.setAttribute("version", "2.1");
         root.setAttributeNS("http://www.w3.org/2001/XMLSchema-instance", "xsi:schemaLocation",
-                "http://xmlns.jcp.org/xml/ns/persistence" +
-                        " http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd");
+                "http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd");
         doc.appendChild(root);
 
         Element persistUnit = doc.createElement("persistence-unit");
         persistUnit.setAttribute("name",definition.getName());
         persistUnit.setAttribute("transaction-type","RESOURCE_LOCAL");
 
-        Element provider = doc.createElement("provider");
-        provider.setTextContent("org.hibernate.ejb.HibernatePersistence");
-        persistUnit.appendChild(provider);
+//        Element provider = doc.createElement("provider");
+//        provider.setTextContent("org.hibernate.ejb.HibernatePersistence");
+//        persistUnit.appendChild(provider);
 
 //        Element mappingFile = doc.createElement("mapping-file");
 //        mappingFile.setTextContent("/META-INF/orm.xml");
