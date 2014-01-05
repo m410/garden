@@ -5,7 +5,9 @@ import org.m410.j8.configuration.PersistenceDefinition;
 import org.m410.j8.module.ormbuilder.orm.ConfigFileBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xml.sax.SAXException;
 
+import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
@@ -14,7 +16,12 @@ import javax.xml.transform.TransformerException;
 import javax.xml.transform.TransformerFactory;
 import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
+import javax.xml.validation.Schema;
+import javax.xml.validation.SchemaFactory;
+import javax.xml.validation.Validator;
+import java.io.IOException;
 import java.io.StringWriter;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
@@ -66,6 +73,20 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         Transformer transformer = transformerFactory.newTransformer();
         DOMSource source = new DOMSource(doc);
 
+
+        // validation
+        try {
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            URL schemaURL = new URL("http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd");
+            Schema schema = sf.newSchema(schemaURL);
+            Validator validator = schema.newValidator();
+            validator.validate(source);
+        }
+        catch (SAXException | IOException e) {
+            System.out.println("WARNING: Did not validate: " + e.getMessage());
+        }
+
+
         StringWriter s = new StringWriter();
         StreamResult result = new StreamResult(s);
         transformer.transform(source, result);
@@ -77,7 +98,8 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
     public void writeToFile(Path path, Configuration configuration) {
         try {
             Files.write(path, make(configuration).getBytes());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException("Could not write to path: " + path, e);
         }
     }

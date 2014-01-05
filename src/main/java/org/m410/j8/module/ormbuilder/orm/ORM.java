@@ -17,15 +17,27 @@ public final class ORM {
         TABLE, SEQUENCE,IDENTITY,AUTO
     }
 
+    public static enum Cascade {
+        DETACH,MERGE,PERSIST,REFRESH,REMOVE
+    }
+
+    public static enum Fetch {
+        EAGER,LAZY
+    }
+
+    public static enum Access {
+        FIELD,PROPERTY
+    }
+
     /**
      * Initialize the orm builder with the root entity node.
      *
-     * @param className the full class name of the entity to implement.
+     * @param entityClass the class of the entity to map.
      * @param tableName the database table name it maps too.
      * @return an entity node.
      */
-    public static EntityNodeBuilder entity(String className, String tableName) {
-        return new EntityNodeBuilder(className, tableName);
+    public static <T> EntityNodeBuilder entity(Class<T> entityClass, String tableName) {
+        return new EntityNodeBuilder(entityClass.getName(), tableName);
     }
 
     /**

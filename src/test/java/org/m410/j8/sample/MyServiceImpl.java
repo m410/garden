@@ -20,7 +20,7 @@ public class MyServiceImpl implements MyService {
 
     @Override
     public Entity makeEntity() {
-        return entity("org.m410.j8.sample.Person","person").make();
+        return entity(FixturePerson.class,"person").make();
     }
 
     @Override

@@ -3,6 +3,7 @@ package org.m410.j8.module.ormbuilder.orm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.j8.sample.FixturePerson;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;
@@ -29,7 +30,7 @@ public class OrmXmlBuilderTest {
                     "<persistence-unit-metadata>" +
                     "<xml-mapping-metadata-complete/>" +
                     "</persistence-unit-metadata>" +
-                    "<entity class=\"org.m410.demo.Person\">" +
+                    "<entity class=\"org.m410.j8.sample.FixturePerson\">" +
                     "<table name=\"person\"/>" +
                     "<attributes>" +
                     "<id name=\"id\">" +
@@ -49,7 +50,7 @@ public class OrmXmlBuilderTest {
 
     @Test
     public void buildOrmXml() throws ParserConfigurationException, TransformerException, IOException, SAXException {
-        Entity entity = entity("org.m410.demo.Person", "person")
+        Entity entity = entity(FixturePerson.class, "person")
                 .id("id", generatedValue(Strategy.SEQUENCE,"personSeq"),sequenceGenerator("personSeq","person_seq"))
                 .version("version")
                 .basic("name", column("my_name"))

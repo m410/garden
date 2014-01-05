@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This is an action and it's meta data.  It includes it path expression, http method
@@ -53,7 +52,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
 
     private final Action action;
     private final HttpMethod httpMethod;
-    private final List<String> contentTypes;
+    private final List<String> acceptTypes;
 
     /**
      * A full constructor setting all parameters of a action definition.  Generally there is no need to
@@ -65,13 +64,13 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @param pathExpr The path of the action.
      * @param httpMethod The http method of the action.
      * @param useSsl if this action must use ssl.  Only used on Controllers with the Secure interface.
-     * @param contentTypes The content types that this action will accept.  If it's empty, it accepts all
+     * @param acceptTypes The content types that this action will accept.  If it's empty, it accepts all
      *          types.
      * @param roles The roles this action will accept.  This only applies if the controller implements
      *          the Authentication interface.
      */
     public HttpActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
-                                Securable.State useSsl, String[] contentTypes,
+                                Securable.State useSsl, String[] acceptTypes,
                                 String[] roles) {
         this.controller = controller;
         this.action = action;
@@ -80,7 +79,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         this.useSsl = useSsl;
         this.useAuthentication = controller instanceof Authorizable;
         this.useAuthorization = controller instanceof Authorizable;
-        this.contentTypes = ImmutableList.<String>builder().addAll(Arrays.asList(contentTypes)).build();
+        this.acceptTypes = ImmutableList.<String>builder().addAll(Arrays.asList(acceptTypes)).build();
         this.roles = ImmutableList.<String>builder().addAll(Arrays.asList(roles)).build();
     }
 
@@ -101,7 +100,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         this.useSsl = Securable.State.Optional;
         this.useAuthentication = false;
         this.useAuthorization = false;
-        this.contentTypes = ImmutableList.of();
+        this.acceptTypes = ImmutableList.of();
         this.roles = ImmutableList.of();
     }
 
@@ -111,7 +110,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @param contentTypes An array of content types or an empty array for all types.
      * @return a new ActionDefinition
      */
-    public HttpActionDefinition contentTypes(String... contentTypes) {
+    public HttpActionDefinition accept(String... contentTypes) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
                 useSsl,contentTypes, roles.toArray(new String[roles.size()]));
     }
@@ -124,7 +123,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition roles(String... roles) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
-                useSsl ,contentTypes.toArray(new String[contentTypes.size()]), roles);
+                useSsl , acceptTypes.toArray(new String[acceptTypes.size()]), roles);
     }
 
     /**
@@ -134,7 +133,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition ssl(Securable.State ssl) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,ssl,
-                contentTypes.toArray(new String[contentTypes.size()]), roles.toArray(new String[roles.size()]));
+                acceptTypes.toArray(new String[acceptTypes.size()]), roles.toArray(new String[roles.size()]));
 
     }
 
@@ -147,7 +146,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     public boolean doesRequestMatchAction(HttpServletRequest req) {
         return pathExpr.doesPathMatch(req) &&
                 httpMethod.toString().equalsIgnoreCase(req.getMethod()) &&
-                (contentTypes.size() == 0 || contentTypes.contains(req.getContentType()));
+                (acceptTypes.size() == 0 || acceptTypes.contains(req.getContentType()));
     }
 
     public ActionStatus status(HttpServletRequest req) {
@@ -212,7 +211,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
             return new CompareToBuilder()
                     .append(this.getPathExpr(), that.getPathExpr())
                     .append(this.httpMethod, that.httpMethod)
-                    .append(this.contentTypes, that.contentTypes)
+                    .append(this.acceptTypes, that.acceptTypes)
                     .toComparison();
         }
         else {
@@ -227,7 +226,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
                 .append(DEF_ACTION_PROTOCOL)
                 .append(pathExpr)
                 .append(httpMethod)
-                .append(contentTypes)
+                .append(acceptTypes)
                 .hashCode();
     }
 
@@ -243,7 +242,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         return new EqualsBuilder()
                 .append(this.pathExpr, rhs.pathExpr)
                 .append(this.httpMethod, rhs.httpMethod)
-                .append(this.contentTypes, rhs.contentTypes)
+                .append(this.acceptTypes, rhs.acceptTypes)
                 .isEquals();
     }
 
@@ -252,7 +251,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         return new ToStringBuilder(this)
                 .append("path", pathExpr != null ? pathExpr.toText() : null)
                 .append("method", httpMethod)
-                .append("contentTypes", contentTypes)
+                .append("contentTypes", acceptTypes)
                 .toString();
     }
 }

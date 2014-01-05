@@ -81,11 +81,16 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
         DOMSource source = new DOMSource(doc);
 
         // code to validate
-//        SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
-//        URL schemaURL = new URL("http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd");
-//        Schema schema = sf.newSchema(schemaURL);
-//        Validator validator = schema.newValidator();
-//        validator.validate(source);
+        try {
+            SchemaFactory sf = SchemaFactory.newInstance(XMLConstants.W3C_XML_SCHEMA_NS_URI);
+            URL schemaURL = new URL("http://xmlns.jcp.org/xml/ns/persistence/orm_2_1.xsd");
+            Schema schema = sf.newSchema(schemaURL);
+            Validator validator = schema.newValidator();
+            validator.validate(source);
+        }
+        catch (SAXException | IOException e) {
+            System.out.println("WARNING: Did not validate:"+e.getMessage());
+        }
 
         StringWriter s = new StringWriter();
         StreamResult result = new StreamResult(s); // new File("orm.xml")
@@ -98,7 +103,8 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
     public void writeToFile(Path path, Configuration configuration) {
         try {
             Files.write(path, make().getBytes());
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             throw new RuntimeException("Couldn't write to path: " + path, e);
         }
     }

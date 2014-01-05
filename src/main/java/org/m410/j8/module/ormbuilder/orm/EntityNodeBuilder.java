@@ -8,7 +8,7 @@ import java.util.Arrays;
  *
  * @author Michael Fortin
  */
-public class EntityNodeBuilder {
+public final class EntityNodeBuilder {
     private Entity entityNode;
     private Node attributes = new Attributes();
 
@@ -45,20 +45,21 @@ public class EntityNodeBuilder {
         return append(new Version(id), new Node[0]);
     }
 
-    public EntityNodeBuilder manyToOne(String id, Node... nodes) {
-        return this;
+    public EntityNodeBuilder manyToOne(String name, Node... nodes) {
+        return append(new ManyToOne(name),nodes);
     }
 
-    public EntityNodeBuilder oneToMany(String id, Node... nodes) {
-        return this;
+    public <T> EntityNodeBuilder oneToMany(String name, Class<T> target, String mappedBy) {
+        return append(new OneToMany(name, target, mappedBy),new Node[]{});
     }
 
-    public EntityNodeBuilder manyToMany(String id, Node... nodes) {
-        return this;
+    public <T> EntityNodeBuilder manyToMany(String name, Class<T> target, String mappedBy, Node... nodes) {
+        return append(new ManyToMany(name, target, mappedBy),nodes);
+
     }
 
-    public EntityNodeBuilder oneToOne(String id, Node... nodes) {
-        return this;
+    public <T> EntityNodeBuilder oneToOne(String name, Class<T> target, String mappedBy, Node... nodes) {
+        return append(new OneToOne(name, target, mappedBy),nodes);
     }
 
     private EntityNodeBuilder append(Node node, Node[] children) {
