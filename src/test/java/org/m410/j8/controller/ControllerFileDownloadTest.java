@@ -1,6 +1,5 @@
 package org.m410.j8.controller;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -37,7 +36,7 @@ public class ControllerFileDownloadTest implements MockServletInput {
 
         HttpServletRequest request = mock(HttpServletRequest.class);
 
-        Action a = (req) -> response()
+        Action a = (req) -> respond()
                 .withContentType("application/json")
                 .asStream((out) -> out.write("hi".getBytes()));
 

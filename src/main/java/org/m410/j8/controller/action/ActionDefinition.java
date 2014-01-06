@@ -3,6 +3,7 @@ package org.m410.j8.controller.action;
 import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.controller.Securable;
+import org.m410.j8.controller.action.http.Action;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +20,8 @@ public interface ActionDefinition extends Comparable<ActionDefinition>{
     }
 
     Ctlr getController();
+
+    Action getAction();
 
     PathExpr getPathExpr();
 

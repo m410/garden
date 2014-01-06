@@ -1,13 +1,11 @@
 package org.m410.j8.controller.action.http;
 
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.controller.Securable;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
-import org.m410.j8.controller.action.status.ActionStatus;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -31,7 +29,7 @@ public class ActionDefinitionTest {
         when(request.getRequestURI()).thenReturn("/");
         when(request.getMethod()).thenReturn("GET");
 
-        Action a = (args) -> Response.response();
+        Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
 
@@ -47,7 +45,7 @@ public class ActionDefinitionTest {
         when(request.getRequestURI()).thenReturn("/a/b/c");
         when(request.getMethod()).thenReturn("GET");
 
-        Action a = (args) -> Response.response();
+        Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
 
@@ -63,7 +61,7 @@ public class ActionDefinitionTest {
         when(request.getRequestURI()).thenReturn("/a/b/c.m410");
         when(request.getMethod()).thenReturn("GET");
 
-        Action a = (args) -> Response.response();
+        Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
         assertTrue(ad.doesRequestMatchAction(request));
 
@@ -160,7 +158,7 @@ public class ActionDefinitionTest {
         when(request.getMethod()).thenReturn("PUT");
 
         HttpServletResponse response = mock(HttpServletResponse.class);
-        Action a = (args) -> Response.response();
+        Action a = (args) -> Response.respond();
         HttpActionDefinition ad1 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
         HttpActionDefinition ad2 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT);
 

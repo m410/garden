@@ -48,7 +48,6 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private final List<String> roles;
 
     private final boolean useAuthentication;
-    private final boolean useAuthorization;
 
     private final Action action;
     private final HttpMethod httpMethod;
@@ -78,7 +77,6 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         this.httpMethod = httpMethod;
         this.useSsl = useSsl;
         this.useAuthentication = controller instanceof Authorizable;
-        this.useAuthorization = controller instanceof Authorizable;
         this.acceptTypes = ImmutableList.<String>builder().addAll(Arrays.asList(acceptTypes)).build();
         this.roles = ImmutableList.<String>builder().addAll(Arrays.asList(roles)).build();
     }
@@ -99,7 +97,6 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         this.httpMethod = httpMethod;
         this.useSsl = Securable.State.Optional;
         this.useAuthentication = false;
-        this.useAuthorization = false;
         this.acceptTypes = ImmutableList.of();
         this.roles = ImmutableList.of();
     }
@@ -177,6 +174,11 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     @Override
     public Ctlr getController() {
         return controller;
+    }
+
+    @Override
+    public Action getAction() {
+        return action;
     }
 
     @Override

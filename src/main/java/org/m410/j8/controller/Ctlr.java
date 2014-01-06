@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public interface Ctlr {
+public interface Ctlr extends Intercept {
 
     /**
      * All controllers must implement an action and add it to it's to this list.
@@ -25,16 +25,4 @@ public interface Ctlr {
      */
     List<? extends ActionDefinition> actions();
 
-    /**
-     * Default implementation of calling an action.  This can be overridden to intercept calls
-     * to all actions in the controller.
-     *
-     * @param actionRequest ActionRequest
-     * @param action the definition of the action.
-     * @return a Response object, this can be modified to add values to every action in the
-     *      controller like a pragma header.
-     */
-    default Response intercept(ActionRequest actionRequest, Action action) {
-        return action.action(actionRequest);
-    }
 }

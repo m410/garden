@@ -16,7 +16,7 @@ public class ActionResponseTest {
 
     @Test
     public void getHeaders() {
-        Response response = Response.response();
+        Response response = Response.respond();
         assertNotNull(response);
         assertEquals(0, response.getHeaders().size());
         Response response1 = response.withHeader("header", "value");
@@ -25,7 +25,7 @@ public class ActionResponseTest {
 
     @Test
     public void getDirection() {
-        Response response = Response.response();
+        Response response = Response.respond();
         assertNotNull(response);
         assertEquals(Directions.noView(), response.getDirection());
         Response response1 = response.withView("/path");
@@ -35,7 +35,7 @@ public class ActionResponseTest {
 
     @Test
     public void getModel() {
-        Response response = Response.response();
+        Response response = Response.respond();
         assertNotNull(response);
         assertEquals(0, response.getModel().size());
         Response response1 = response.withModel("name","value");
@@ -44,7 +44,7 @@ public class ActionResponseTest {
 
     @Test
     public void getSession() {
-        Response response = Response.response();
+        Response response = Response.respond();
         assertNotNull(response);
         assertEquals(0, response.getSession().size());
         Response response1 = response.withSession("name","value");
@@ -53,7 +53,7 @@ public class ActionResponseTest {
 
     @Test
     public void getFlash() {
-        Response response = Response.response();
+        Response response = Response.respond();
         assertNotNull(response);
         assertNull(response.getFlash());
         Response response1 = response.withFlash("message");
@@ -62,7 +62,7 @@ public class ActionResponseTest {
 
     @Test
     public void doInvalidateSession() {
-        Response response = Response.response();
+        Response response = Response.respond();
         assertNotNull(response);
         assertFalse(response.doInvalidateSession());
         Response response1 = response.invalidateSession();

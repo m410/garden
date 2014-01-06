@@ -5,6 +5,7 @@ import org.m410.j8.controller.Securable;
 import org.m410.j8.controller.action.ActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
+import org.m410.j8.controller.action.http.Action;
 
 import java.util.Arrays;
 import java.util.List;
@@ -45,6 +46,11 @@ public final class WsActionDefinition implements ActionDefinition {
     @Override
     public Ctlr getController() {
         return controller;
+    }
+
+    @Override
+    public Action getAction() {
+        return null;  // todo only applies to http controllers
     }
 
     @Override

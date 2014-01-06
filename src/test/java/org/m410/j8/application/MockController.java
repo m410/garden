@@ -27,6 +27,6 @@ public class MockController extends Controller {
     }
 
     Action listAction = (req) ->{
-        return Response.response();
+        return Response.respond();
     };
 }

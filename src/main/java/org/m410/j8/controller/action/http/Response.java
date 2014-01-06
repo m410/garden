@@ -22,10 +22,15 @@ import java.util.Map;
  * @author Michael Fortin
  */
 public final class Response {
-    public static final String XML_CONTENT_TYPE = "application/xml";
-    public static final String JSON_CONTENT_TYPE = "application/json";
-    public static final String HTML_CONTENT_TYPE = "text/html";
-    public static final String PLAIN_CONTENT_TYPE = "text/plain";
+    public static final String CONTENT_TYPE_XML = "application/xml";
+    public static final String CONTENT_TYPE_JSON = "application/json";
+    public static final String CONTENT_TYPE_HTML = "text/html";
+    public static final String CONTENT_TYPE_PLAIN = "text/plain";
+
+    //  https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
+    public static final int SUCCESS_OK = 200;
+    public static final int ERROR_FORBIDDEN = 403;
+    public static final int REDIRECT_SEE_OTHER = 303;
 
     private final Map<String, String> headers;
     private final Map<String, Object> model;
@@ -39,20 +44,24 @@ public final class Response {
 
     private final ResponseStream responseStream;
 
+    private final int status;
+
+
     Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
-            Flash flash, Direction viewPath, boolean invalidateSession) {
+            Flash flash, Direction viewPath, boolean invalidateSession, int status) {
         this.headers = headers;
         this.model = model;
         this.session = session;
         this.flash = flash;
         this.direction = viewPath;
         this.invalidateSession = invalidateSession;
-        this.contentType = HTML_CONTENT_TYPE;
-        responseStream = null;
+        this.contentType = CONTENT_TYPE_HTML;
+        this.responseStream = null;
+        this.status = status;
     }
 
     Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
-            Flash flash, Direction viewPath, boolean invalidateSession, String contentType) {
+            Flash flash, Direction viewPath, boolean invalidateSession, String contentType, int status) {
         this.headers = headers;
         this.model = model;
         this.session = session;
@@ -60,7 +69,9 @@ public final class Response {
         this.direction = viewPath;
         this.invalidateSession = invalidateSession;
         this.contentType = contentType;
-        responseStream = null;
+        this.responseStream = null;
+        this.status = status;
+
     }
 
     Response(Map<String, String> headers, Map<String, Object> model, Map<String, Object> session,
@@ -73,6 +84,7 @@ public final class Response {
         this.invalidateSession = invalidateSession;
         this.contentType = contentType;
         this.responseStream = r;
+        this.status = SUCCESS_OK;
     }
 
     /**
@@ -85,15 +97,16 @@ public final class Response {
         this.flash = null;
         this.direction = Directions.noView();
         this.invalidateSession = false;
-        this.contentType = HTML_CONTENT_TYPE;
+        this.contentType = CONTENT_TYPE_HTML;
         this.responseStream = null;
+        this.status = SUCCESS_OK;
     }
 
     /**
      *  A new Response.
      *  @return a new Response.
      */
-    public static Response response() {
+    public static Response respond() {
         return new Response();
     }
 
@@ -102,7 +115,7 @@ public final class Response {
      * @return a new Response.
      */
     public Response invalidateSession() {
-        return new Response(null, null, null, null, null, true);
+        return new Response(null, null, null, null, null, true, status);
     }
 
     /**
@@ -111,7 +124,7 @@ public final class Response {
      * @return a new Response.
      */
     public Response withHeaders(Map<String, String> newHeaders) {
-        return new Response(newHeaders, model, session, flash, direction, invalidateSession);
+        return new Response(newHeaders, model, session, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -127,7 +140,7 @@ public final class Response {
                 .putAll(headers)
                 .putAll(newHeaders)
                 .build();
-        return new Response(combined, model, session, flash, direction, invalidateSession);
+        return new Response(combined, model, session, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -136,7 +149,11 @@ public final class Response {
      * @return a new Response.
      */
     public Response withModel(Map<String, Object> mod) {
-        return new Response(headers, mod, session, flash, direction, invalidateSession);
+        return new Response(headers, mod, session, flash, direction, invalidateSession, status);
+    }
+
+    public Response withStatus(int status) {
+        return new Response(headers, model, session, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -147,7 +164,7 @@ public final class Response {
      */
     public Response withModel(String name, Object value) {
         Map<String, Object> mod = ImmutableSortedMap.of(name, value);
-        return new Response(headers, mod, session, flash, direction, invalidateSession);
+        return new Response(headers, mod, session, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -156,7 +173,7 @@ public final class Response {
      * @return a new Response.
      */
     public Response withSession(Map<String, Object> sess) {
-        return new Response(headers, model, sess, flash, direction, invalidateSession);
+        return new Response(headers, model, sess, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -172,7 +189,7 @@ public final class Response {
                 .putAll(session)
                 .putAll(newSess)
                 .build();
-        return new Response(headers, model, combined, flash, direction, invalidateSession);
+        return new Response(headers, model, combined, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -183,7 +200,7 @@ public final class Response {
      * @return a new Response.
      */
     public Response withView(String v) {
-        return new Response(headers, model, session, flash, new View(v), invalidateSession);
+        return new Response(headers, model, session, flash, new View(v), invalidateSession, status);
     }
 
     /**
@@ -193,7 +210,7 @@ public final class Response {
      * @return a new Response
      */
     public Response asRedirect(String v) {
-        return new Response(headers, model, session, flash, new Redirect(v), invalidateSession);
+        return new Response(headers, model, session, flash, new Redirect(v), invalidateSession, REDIRECT_SEE_OTHER);
     }
 
     /**
@@ -203,7 +220,7 @@ public final class Response {
      * @return a new Response.
      */
     public Response forward(String v) {
-        return new Response(headers, model, session, flash, new Forward(v), invalidateSession);
+        return new Response(headers, model, session, flash, new Forward(v), invalidateSession, status);
     }
 
     /**
@@ -213,7 +230,7 @@ public final class Response {
      * @return a new Response.
      */
     public Response withFlash(String flash) {
-        return new Response(headers, model, session, new FlashImpl(flash), direction, invalidateSession);
+        return new Response(headers, model, session, new FlashImpl(flash), direction, invalidateSession, status);
     }
 
     /**
@@ -225,7 +242,7 @@ public final class Response {
      * @return a new Response
      */
     public Response withFlash(String flash, String i18nKey) {
-        return new Response(headers, model, session, new FlashImpl(flash, i18nKey), direction, invalidateSession);
+        return new Response(headers, model, session, new FlashImpl(flash, i18nKey), direction, invalidateSession, status);
     }
 
     /**
@@ -236,7 +253,7 @@ public final class Response {
      * @return a new response.
      */
     public Response asText(String v) {
-        Map<String, String> headers = ImmutableSortedMap.of("content-type", PLAIN_CONTENT_TYPE);
+        Map<String, String> headers = ImmutableSortedMap.of("content-type", CONTENT_TYPE_PLAIN);
         ResponseStream s = (outputStream)->{
             try {
                 outputStream.write(v.getBytes());
@@ -245,7 +262,7 @@ public final class Response {
                 throw new NotAPostException(e);
             }
         };
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, PLAIN_CONTENT_TYPE,s);
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, CONTENT_TYPE_PLAIN,s);
     }
 
     /**
@@ -256,7 +273,7 @@ public final class Response {
      * @return a new response.
      */
     public Response asJson(String v) {
-        Map<String, String> headers = ImmutableSortedMap.of("content-type", JSON_CONTENT_TYPE);
+        Map<String, String> headers = ImmutableSortedMap.of("content-type", CONTENT_TYPE_JSON);
         ResponseStream s = (outputStream)->{
             try {
                 outputStream.write(v.getBytes());
@@ -265,7 +282,7 @@ public final class Response {
                 throw new NotAPostException(e);
             }
         };
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession,JSON_CONTENT_TYPE,s);
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, CONTENT_TYPE_JSON,s);
     }
 
     /**
@@ -276,7 +293,7 @@ public final class Response {
      * @return a new response.
      */
     public Response asXml(String v) {
-        Map<String, String> headers = ImmutableSortedMap.of("content-type", XML_CONTENT_TYPE);
+        Map<String, String> headers = ImmutableSortedMap.of("content-type", CONTENT_TYPE_XML);
         ResponseStream s = (outputStream)->{
             try {
                 outputStream.write(v.getBytes());
@@ -285,7 +302,7 @@ public final class Response {
                 throw new NotAPostException(e);
             }
         };
-        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, XML_CONTENT_TYPE,s);
+        return new Response(headers, model, session, flash, Directions.noView(), invalidateSession, CONTENT_TYPE_XML,s);
     }
 
     /**
@@ -296,7 +313,7 @@ public final class Response {
      * @return a new Response
      */
     public Response withContentType(String s) {
-        return new Response(headers, model, session, flash, direction, invalidateSession, s);
+        return new Response(headers, model, session, flash, direction, invalidateSession, s, status);
     }
 
     /**
@@ -347,9 +364,11 @@ public final class Response {
      * @param response the servlet response.
      */
     public void handleResponse(HttpServletRequest request, HttpServletResponse response) {
+        response.setStatus(status);
+        response.setContentType(contentType);
+
         if(responseStream != null) {
             try {
-                response.setContentType(contentType);
                 responseStream.stream(response.getOutputStream());
             }
             catch (IOException e) {
