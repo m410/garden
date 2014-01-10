@@ -1,6 +1,7 @@
-package org.m410.j8.controller;
+package org.m410.j8.controller.fixtures;
 
 import com.google.common.collect.ImmutableList;
+import org.m410.j8.controller.Controller;
 import org.m410.j8.controller.action.http.Action;
 
 import org.m410.j8.controller.action.http.HttpActionDefinition;
@@ -14,7 +15,7 @@ import java.util.List;
  * @author Michael Fortin
  */
 public class FileUploadController extends Controller {
-    protected FileUploadController() {
+    public FileUploadController() {
         super(new PathExpr("/file"));
     }
 

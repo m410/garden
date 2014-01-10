@@ -1,7 +1,8 @@
-package org.m410.j8.controller;
+package org.m410.j8.controller.fixtures;
 
 
 import com.google.common.collect.ImmutableList;
+import org.m410.j8.controller.Controller;
 import org.m410.j8.controller.action.http.Action;
 import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
@@ -11,10 +12,10 @@ import java.util.List;
 
 /**
  */
-public final class XmlController extends Controller {
+public final class JsonController extends Controller {
 
-    public XmlController() {
-        super(new PathExpr("xml"));
+    public JsonController() {
+        super(new PathExpr("json"));
     }
 
     public List<HttpActionDefinition> actions() {
@@ -28,15 +29,15 @@ public final class XmlController extends Controller {
 
     public final Action httpGetAction = (call) -> {
         final String msg = "<message id=" + call.urlParameters().get("id") + "></message>";
-        return respond().asXml(msg);
+        return respond().asJson(msg);
     };
 
     public final Action httpPostAction = (call) -> {
-        return respond().asXml(call.postBodyAsString());
+        return respond().asJson(call.postBodyAsString());
     };
 
     public final Action httpPutAction = (call) -> {
-        return respond().asXml(call.postBodyAsString());
+        return respond().asJson(call.postBodyAsString());
     };
 
     public final Action httpDeleteAction = (call) -> {

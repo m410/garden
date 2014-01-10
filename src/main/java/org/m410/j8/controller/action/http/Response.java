@@ -390,14 +390,15 @@ public final class Response {
                 case Direction.VIEW:
                     try {
                         request.getRequestDispatcher(((View)direction).getPath()).forward(request,response);
+                        break;
                     }
                     catch (ServletException|IOException e) {
                         throw new NotAPostException(e);
                     }
-                    break;
                 case Direction.REDIRECT:
                     try {
                         response.sendRedirect(((Redirect)direction).getPath());
+                        break;
                     }
                     catch (IOException e) {
                         throw new NotAPostException(e);

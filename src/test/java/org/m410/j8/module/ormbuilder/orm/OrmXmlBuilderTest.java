@@ -3,7 +3,7 @@ package org.m410.j8.module.ormbuilder.orm;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.j8.sample.FixturePerson;
+import org.m410.j8.fixtures.FixturePerson;
 import org.xml.sax.SAXException;
 
 import javax.xml.parsers.ParserConfigurationException;

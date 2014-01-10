@@ -8,10 +8,10 @@ import org.m410.j8.controller.action.http.ActionRequest;
 import org.m410.j8.controller.action.http.RequestProperties;
 import org.m410.j8.controller.action.http.Response;
 import org.m410.j8.controller.action.UserPrincipal;
-import org.m410.j8.sample.MyController;
-import org.m410.j8.sample.MyService;
-import org.m410.j8.sample.MyServiceDaoImpl;
-import org.m410.j8.sample.MyServiceImpl;
+import org.m410.j8.fixtures.MyController;
+import org.m410.j8.fixtures.MyService;
+import org.m410.j8.fixtures.MyServiceDaoImpl;
+import org.m410.j8.fixtures.MyServiceImpl;
 
 import java.io.InputStream;
 import java.util.Map;

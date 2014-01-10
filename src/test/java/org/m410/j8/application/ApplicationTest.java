@@ -6,13 +6,12 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
-import org.m410.j8.sample.MyWebApp;
+import org.m410.j8.fixtures.MyWebApp;
 
 import java.io.InputStream;
 import java.util.List;
 
 import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 /**
  * @author Michael Fortin

@@ -1,4 +1,4 @@
-package org.m410.j8.sample;
+package org.m410.j8.fixtures;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.controller.Authorizable;

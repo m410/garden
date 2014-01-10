@@ -7,7 +7,7 @@ import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.application.Application;
 import org.m410.j8.controller.action.http.HttpMethod;
-import org.m410.j8.sample.MyWebApp;
+import org.m410.j8.fixtures.MyWebApp;
 
 
 import javax.servlet.FilterChain;

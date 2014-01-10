@@ -7,7 +7,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.j8.application.ThreadLocalSessionFactory;
 import org.m410.j8.configuration.Configuration;
-import org.m410.j8.sample.MyWebApp;
+import org.m410.j8.controller.fixtures.JsonController;
+import org.m410.j8.fixtures.MyWebApp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -15,7 +16,6 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.List;
 
-import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 
 
