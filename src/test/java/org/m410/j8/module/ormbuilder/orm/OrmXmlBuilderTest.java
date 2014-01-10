@@ -30,7 +30,7 @@ public class OrmXmlBuilderTest {
                     "<persistence-unit-metadata>" +
                     "<xml-mapping-metadata-complete/>" +
                     "</persistence-unit-metadata>" +
-                    "<entity class=\"org.m410.j8.sample.FixturePerson\">" +
+                    "<entity class=\"org.m410.j8.fixtures.FixturePerson\">" +
                     "<table name=\"person\"/>" +
                     "<attributes>" +
                     "<id name=\"id\">" +
