@@ -18,15 +18,27 @@ public final class ManyToMany extends Node {
 
 
     ManyToMany() {
-        super(3, 1);
-
+        super(2,4);
     }
 
-    public <T> ManyToMany(String name, Class<T> targetEntity, String mappedBy) {
+    public ManyToMany(String name, Class targetEntity, String mappedBy) {
         this();
         this.name = name;
         this.targetEntity = targetEntity;
         this.mappedBy = mappedBy;
+    }
+
+    public ManyToMany(String name, Class targetEntity, String mappedBy, String access, ORM.Fetch fetch) {
+        this();
+        this.name = name;
+        this.targetEntity = targetEntity;
+        this.mappedBy = mappedBy;
+        this.access = access;
+        this.fetch = fetch;
+    }
+
+    public ManyToMany fetch(ORM.Fetch fetch) {
+        return new ManyToMany(name,targetEntity,mappedBy,access,fetch);
     }
 
     @Override

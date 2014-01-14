@@ -49,8 +49,16 @@ public final class EntityNodeBuilder {
         return append(new ManyToOne(name),nodes);
     }
 
+    public <T> EntityNodeBuilder manyToOne(String name, Class<T> target, String mappedBy) {
+        return append(new ManyToOne(name, target, mappedBy),new Node[]{});
+    }
+
     public <T> EntityNodeBuilder oneToMany(String name, Class<T> target, String mappedBy) {
         return append(new OneToMany(name, target, mappedBy),new Node[]{});
+    }
+
+    public <T> EntityNodeBuilder oneToMany(String name, Class<T> target, Node... nodes) {
+        return append(new OneToMany(name, target), nodes);
     }
 
     public <T> EntityNodeBuilder manyToMany(String name, Class<T> target, String mappedBy, Node... nodes) {
@@ -58,8 +66,12 @@ public final class EntityNodeBuilder {
 
     }
 
-    public <T> EntityNodeBuilder oneToOne(String name, Class<T> target, String mappedBy, Node... nodes) {
-        return append(new OneToOne(name, target, mappedBy),nodes);
+    public <T> EntityNodeBuilder oneToOne(String name, Class<T> target, String mappedBy) {
+        return append(new OneToOne(name, target, mappedBy),new Node[]{});
+    }
+
+    public <T> EntityNodeBuilder oneToOne(String name, Class<T> target, Node... nodes) {
+        return append(new OneToOne(name, target),nodes);
     }
 
     private EntityNodeBuilder append(Node node, Node[] children) {

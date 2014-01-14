@@ -22,6 +22,9 @@ import java.util.Map;
  * @author Michael Fortin
  */
 public final class Response {
+
+    public static final String CONTENT_TYPE_MULTIPART_FORM = "multipart/form-data";
+    public static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
     public static final String CONTENT_TYPE_XML = "application/xml";
     public static final String CONTENT_TYPE_JSON = "application/json";
     public static final String CONTENT_TYPE_HTML = "text/html";

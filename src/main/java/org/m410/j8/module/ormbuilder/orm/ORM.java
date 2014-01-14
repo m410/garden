@@ -68,6 +68,10 @@ public final class ORM {
         return new JoinColumn(name,ref,table);
     }
 
+    public static JoinColumn joinColumn(String name) {
+        return new JoinColumn(name);
+    }
+
     public static JoinColumn joinColumn(String name, String ref, boolean unique, String table) {
         return new JoinColumn(name,ref,unique,table);
     }

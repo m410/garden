@@ -16,7 +16,7 @@ public final class OneToOne extends Node {
 
 
     OneToOne() {
-        super(3, 1);
+        super(2,7);
 
     }
 
@@ -25,6 +25,12 @@ public final class OneToOne extends Node {
         this.name = name;
         this.targetEntity = targetEntity;
         this.mappedBy = mappedBy;
+    }
+
+    public OneToOne(String name, Class targetEntity) {
+        this();
+        this.name = name;
+        this.targetEntity = targetEntity;
     }
 
     @Override

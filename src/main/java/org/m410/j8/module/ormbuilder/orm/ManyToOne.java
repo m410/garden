@@ -11,6 +11,7 @@ import java.util.Arrays;
  */
 public final class ManyToOne  extends Node {
     private String name; // property name
+    private String mappedBy;
     private ORM.Cascade[] cascade = {};// should be enum
     private ORM.Fetch fetch = ORM.Fetch.EAGER; // should be enum
     private Class targetEntity = void.class;
@@ -20,8 +21,7 @@ public final class ManyToOne  extends Node {
 //    private boolean id = false;
 
     ManyToOne() {
-        super(3, 1);
-
+        super(2,5);
     }
 
     public ManyToOne(String name, ORM.Cascade[] cascade, ORM.Fetch fetch, Class targetEntity, boolean optional) {
@@ -38,11 +38,26 @@ public final class ManyToOne  extends Node {
         this.name = name;
     }
 
+    public ManyToOne(String name, Class targetEntity,String mappedBy) {
+        this();
+        this.name = name;
+        this.targetEntity = targetEntity;
+        this.mappedBy = mappedBy;
+    }
+
     public ManyToOne(String name, ORM.Cascade[] cascade, ORM.Fetch fetch) {
         this();
         this.name = name;
         this.cascade = cascade;
         this.fetch = fetch;
+    }
+
+    public ManyToOne fetch(ORM.Fetch fetch) {
+        return new ManyToOne();
+    }
+
+    public ManyToOne cascade(ORM.Fetch fetch) {
+        return new ManyToOne();
     }
 
     @Override

@@ -54,6 +54,40 @@ public final class Column extends Node {
         this.scale = scale;
     }
 
+    public Column length(int length) {
+        return new Column(name,unique,nullable,insertable,updatable,
+                columnDefinition,table,length,precision,scale);
+    }
+
+    public Column precision(int precision) {
+        return new Column(name,unique,nullable,insertable,updatable,
+                columnDefinition,table,length,precision,scale);
+    }
+
+    public Column scale(int scale) {
+        return new Column(name,unique,nullable,insertable,updatable,
+                columnDefinition,table,length,precision,scale);
+    }
+
+    public Column table(String table) {
+        return new Column(name,unique,nullable,insertable,updatable,
+                columnDefinition,table,length,precision,scale);
+    }
+
+    public Column definition(String columnDefinition) {
+        return new Column(name,unique,nullable,insertable,updatable,
+                columnDefinition,table,length,precision,scale);
+    }
+
+    public Column notNull() {
+        return new Column(name,unique,false,insertable,updatable,
+                columnDefinition,table,length,precision,scale);
+    }
+
+    public Column unique() {
+        return new Column(name,true,nullable,insertable,updatable,
+                columnDefinition,table,length,precision,scale);
+    }
 
     @Override
     public void appendElement(Document root, Element parent) {

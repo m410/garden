@@ -15,7 +15,7 @@ public final class OneToMany  extends Node {
     private boolean orphanRemoval = true;
 
     public OneToMany() {
-        super(3, 1);
+        super(2,6);
     }
 
     public <T> OneToMany(String name, Class<T> targetEntity, String mappedBy) {
@@ -23,6 +23,12 @@ public final class OneToMany  extends Node {
         this.name = name;
         this.targetEntity = targetEntity;
         this.mappedBy = mappedBy;
+    }
+
+    public <T> OneToMany(String name, Class<T> targetEntity) {
+        this();
+        this.name = name;
+        this.targetEntity = targetEntity;
     }
 
     public OneToMany(String name, String mappedBy, ORM.Cascade[] cascade, ORM.Fetch fetch,
