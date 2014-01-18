@@ -53,12 +53,16 @@ public class Person extends PessimisticPrimaryKey<Long> implements EntityFactory
     @Override
     public Entity makeEntity() {
         return entity(getClass(),"person")
-                .id("id", column("id"), generatedValue(Strategy.SEQUENCE, "id_gen"),
+                .id("id", column("id").notNull(),
+                        generatedValue(Strategy.SEQUENCE, "id_gen"),
                         sequenceGenerator("id_gen", "person_seq",1,1))
-                .basic("firstName",column("first_name").length(36))
-                .basic("lastName",column("last_name").length(36))
-                .basic("createdOn",column("created_on"))
-                .oneToMany("company", Company.class, joinColumn("company_id"))
+                .basic("firstName",column("first_name").length(36).notNull())
+                .basic("lastName",column("last_name").length(36).notNull())
+                .basic("createdOn",column("created_on").notNull())
+                .oneToMany("company", Company.class,
+                        joinTable("person_company",
+                            joinColumn("company_id").notNull(),
+                            inverseJoinColumn("person_id").notNull()))
                 .make();
     }
 }

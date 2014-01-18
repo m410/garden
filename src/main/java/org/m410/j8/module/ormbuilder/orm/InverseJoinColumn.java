@@ -2,18 +2,18 @@ package org.m410.j8.module.ormbuilder.orm;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.m410.j8.module.ormbuilder.orm.ORM.Fetch;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-
-import org.m410.j8.module.ormbuilder.orm.ORM.Fetch;
-
 
 /**
  * An orm.xml node.
  *
  * @author Michael Fortin
  */
-public final class JoinColumn extends Node {
+public final class InverseJoinColumn extends Node {
+
+    // todo should probably extends JoinColumn
 
     private String name =  "";
     private String referencedColumnName =  "";
@@ -25,20 +25,20 @@ public final class JoinColumn extends Node {
     private String table =  "";
     private Fetch fetch = Fetch.LAZY;
 
-    public JoinColumn(String name, String referencedColumnName, String table) {
-        super(3,1);
+    public InverseJoinColumn(String name, String referencedColumnName, String table) {
+        super(3,2);
         this.name = name;
         this.referencedColumnName = referencedColumnName;
         this.table = table;
     }
 
-    public JoinColumn(String name, String referencedColumnName, boolean unique, String table) {
+    public InverseJoinColumn(String name, String referencedColumnName, boolean unique, String table) {
         this(name,referencedColumnName,table);
         this.unique = unique;
     }
 
-    public JoinColumn(String name, String referencedColumnName, boolean unique, boolean nullable,
-            boolean insertable, boolean updatable, String columnDefinition, String table, Fetch fetch) {
+    public InverseJoinColumn(String name, String referencedColumnName, boolean unique, boolean nullable,
+                             boolean insertable, boolean updatable, String columnDefinition, String table, Fetch fetch) {
         this(name,referencedColumnName,table);
         this.unique = unique;
         this.nullable = nullable;
@@ -48,33 +48,34 @@ public final class JoinColumn extends Node {
         this.fetch = fetch;
     }
 
-    public JoinColumn(String name) {
+    public InverseJoinColumn(String name) {
         this(name,null,null);
     }
 
-    public JoinColumn fetch(ORM.Fetch fetch) {
-        return new JoinColumn(name,referencedColumnName,unique,nullable,insertable,
+    public InverseJoinColumn fetch(ORM.Fetch fetch) {
+        return new InverseJoinColumn(name,referencedColumnName,unique,nullable,insertable,
                 updatable,columnDefinition,table, fetch);
     }
 
-    public JoinColumn unique() {
-        return new JoinColumn(name,referencedColumnName,true,nullable,insertable,
+    public InverseJoinColumn unique() {
+        return new InverseJoinColumn(name,referencedColumnName,true,nullable,insertable,
                 updatable,columnDefinition,table, fetch);
     }
 
-    public JoinColumn definition(String columnDefinition) {
-        return new JoinColumn(name,referencedColumnName,unique,nullable,insertable,
+    public InverseJoinColumn definition(String columnDefinition) {
+        return new InverseJoinColumn(name,referencedColumnName,unique,nullable,insertable,
                 updatable,columnDefinition,table, fetch);
     }
 
-    public JoinColumn notNull() {
-        return new JoinColumn(name,referencedColumnName,unique,false,insertable,
+    public InverseJoinColumn notNull() {
+        return new InverseJoinColumn(name,referencedColumnName,unique,false,insertable,
                 updatable,columnDefinition,table, fetch);
     }
+
 
     @Override
     public void appendElement(Document root, Element parent) {
-        Element basic = root.createElement("join-column");
+        Element basic = root.createElement("inverse-join-column");
         basic.setAttribute("name",name);
 
         if(!"".equals(referencedColumnName))
@@ -105,13 +106,13 @@ public final class JoinColumn extends Node {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof JoinColumn)) {
+        if (!(obj instanceof InverseJoinColumn)) {
             return false;
         }
         if (this == obj) {
             return true;
         }
-        JoinColumn rhs = (JoinColumn) obj;
+        InverseJoinColumn rhs = (InverseJoinColumn) obj;
         return new EqualsBuilder()
                 .append(this.name, rhs.name)
                 .append(this.table, rhs.table)

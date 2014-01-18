@@ -72,8 +72,20 @@ public final class ORM {
         return new JoinColumn(name);
     }
 
+    public static InverseJoinColumn inverseJoinColumn(String name) {
+        return new InverseJoinColumn(name);
+    }
+
     public static JoinColumn joinColumn(String name, String ref, boolean unique, String table) {
         return new JoinColumn(name,ref,unique,table);
+    }
+
+    public static JoinTable joinTable(String name) {
+        return new JoinTable(name);
+    }
+
+    public static JoinTable joinTable(String name, Node... nodes) {
+        return new JoinTable(name).withChildren(nodes);
     }
 
     /**

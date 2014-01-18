@@ -7,13 +7,46 @@ import java.util.Arrays;
 
 
 /**
+ *
+ * <pre>
+ *   &lt;xsd:complexType name="many-to-one"&gt;
+ *    &lt;xsd:annotation&gt;
+ *    &lt;xsd:documentation&gt;
+ *        @Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface ManyToOne {
+ *          Class targetEntity() default void.class;
+ *          CascadeType[] cascade() default {};
+ *          FetchType fetch() default EAGER;
+ *          boolean optional() default true;
+ *          }
+ *      &lt;/xsd:documentation&gt;
+ *    &lt;/xsd:annotation&gt;
+ *    &lt;xsd:sequence&gt;
+ *    &lt;xsd:choice&gt;
+ *      &lt;xsd:sequence&gt;
+ *        &lt;xsd:element name="join-column" type="orm:join-column" minOccurs="0" maxOccurs="unbounded" /&gt;
+ *        &lt;xsd:element name="foreign-key" type="orm:foreign-key" minOccurs="0" /&gt;
+ *      &lt;/xsd:sequence&gt;
+ *      &lt;xsd:element name="join-table" type="orm:join-table" minOccurs="0" /&gt;
+ *    &lt;/xsd:choice&gt;
+ *    &lt;xsd:element name="cascade" type="orm:cascade-type" minOccurs="0" /&gt;
+ *    &lt;/xsd:sequence&gt;
+ *    &lt;xsd:attribute name="name" type="xsd:string" use="required" /&gt;
+ *    &lt;xsd:attribute name="target-entity" type="xsd:string" /&gt;
+ *    &lt;xsd:attribute name="fetch" type="orm:fetch-type" /&gt;
+ *    &lt;xsd:attribute name="optional" type="xsd:boolean" /&gt;
+ *    &lt;xsd:attribute name="access" type="orm:access-type" /&gt;
+ *    &lt;xsd:attribute name="maps-id" type="xsd:string" /&gt;
+ *    &lt;xsd:attribute name="id" type="xsd:boolean" /&gt;
+ *   &lt;/xsd:complexType&gt;
+ * </pre>
+ *
  * @author m410
  */
 public final class ManyToOne  extends Node {
-    private String name; // property name
+    private String name;
     private String mappedBy;
-    private ORM.Cascade[] cascade = {};// should be enum
-    private ORM.Fetch fetch = ORM.Fetch.EAGER; // should be enum
+    private ORM.Cascade[] cascade = {};
+    private ORM.Fetch fetch = ORM.Fetch.EAGER;
     private Class targetEntity = void.class;
     private boolean optional = true;
 
@@ -63,11 +96,21 @@ public final class ManyToOne  extends Node {
     @Override
     public void appendElement(Document root, Element parent) {
         Element id = root.createElement("many-to-one");
+
         id.setAttribute("name",name);
+
+        if(targetEntity != void.class)
+            id.setAttribute("target-entity",targetEntity.getName());
+
         id.setAttribute("fetch",fetch.toString());
         id.setAttribute("optional",Boolean.toString(optional));
-        id.setAttribute("cascade", Arrays.toString(cascade));
-        children.stream().forEach(n->n.appendElement(root,id));
+        // access
+        // maps-id
+        // id
+
+        //children
+        // joinColumn, foreignKey, cascade
+        children.stream().forEach(n -> n.appendElement(root, id));
         parent.appendChild(id);
     }
 }
