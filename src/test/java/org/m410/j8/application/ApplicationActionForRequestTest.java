@@ -8,6 +8,7 @@ import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.fixtures.MyWebApp;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;

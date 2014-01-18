@@ -1,4 +1,4 @@
-package org.m410.j8.application;
+package org.m410.j8.transaction;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Proxy;

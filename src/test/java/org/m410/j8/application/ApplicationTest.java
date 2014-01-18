@@ -7,6 +7,8 @@ import org.junit.runners.JUnit4;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
 import org.m410.j8.fixtures.MyWebApp;
+import org.m410.j8.transaction.ThreadLocalSession;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
 
 import java.io.InputStream;
 import java.util.List;

@@ -1,6 +1,6 @@
 package org.m410.j8.module.jpa;
 
-import org.m410.j8.application.ThreadLocalSessionFactory;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
 import org.m410.j8.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

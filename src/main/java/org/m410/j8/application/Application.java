@@ -8,6 +8,7 @@ import org.m410.j8.controller.Ctlr;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.lang.reflect.Proxy;
 import java.util.List;
 import java.util.Optional;
 
@@ -15,6 +16,9 @@ import com.google.common.collect.ImmutableList;
 import org.m410.j8.servlet.FilterDefinition;
 import org.m410.j8.servlet.ListenerDefinition;
 import org.m410.j8.servlet.ServletDefinition;
+import org.m410.j8.transaction.ThreadLocalSession;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
+import org.m410.j8.transaction.TransactionHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,6 +69,11 @@ abstract public class Application implements ApplicationModule {
     @Override
     public List<? extends ActionDefinition> getActionDefinitions() {
         return actionDefinitions;
+    }
+
+    @Override
+    public List<? extends ThreadLocalSessionFactory> getThreadLocalFactories() {
+        return threadLocalsFactories;
     }
 
     // todo add other web.xml attributes to mvn build, like the orm config.
@@ -173,7 +182,7 @@ abstract public class Application implements ApplicationModule {
      * Used for internal use to wrap actions in a single method function.
      */
     public interface Work {
-        void doWork();
+        Object doWork();
     }
 
     /**
@@ -181,8 +190,8 @@ abstract public class Application implements ApplicationModule {
      *
      * @param work internal closure to wrap the action.
      */
-    public void doWithThreadLocals(Work work) {
-        doWithThreadLocal(threadLocalsFactories, work);
+    public Object doWithThreadLocals(Work work) {
+        return doWithThreadLocal(threadLocalsFactories, work);
     }
 
     /**
@@ -192,16 +201,41 @@ abstract public class Application implements ApplicationModule {
      * @param tlf   list of ThreadLocalFactory objects
      * @param block an internal worker closure.
      */
-    protected void doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block) {
+    protected Object doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block) {
         if (tlf != null && tlf.size() >= 1) {
             ThreadLocalSession session = tlf.get(tlf.size() - 1).make();
             session.start();
-            doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
+            Object result = doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
             session.stop();
+            return result;
         }
         else {
-            block.doWork();
+            return block.doWork();
         }
+    }
+
+    /**
+     * Wrap services in a transaction.  Actions do not have to be transactional, you have
+     * the option to set the transaction boundries at the service level by wrapping its
+     * declaration with this method.
+     *
+     * <pre>
+     *     MyService myService = transactional(MyService.class,new MyServiceImpl());
+     * </pre>
+     *
+     *
+     * @param intrface the Class for the interface that is proxied.
+     * @param instance an instance of the interface that is invoked.
+     * @param methods names of method to wrap in a transaction, if all transaction are
+     *                wrapped in a transaction, leave this empty.
+     * @param <T> the type of the class and instance to proxy
+     * @return a proxy for the instance.
+     */
+    protected <T> T transactional(Class<T> intrface, T instance, String... methods) {
+        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
+        final Class[] interfaces = {intrface};
+        final TransactionHandler<T> handler = new TransactionHandler<>(instance, methods, this);
+        return (T)Proxy.newProxyInstance(loader, interfaces, handler);
     }
 
     /**

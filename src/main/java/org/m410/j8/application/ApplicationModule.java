@@ -1,12 +1,12 @@
 package org.m410.j8.application;
 
 import org.m410.j8.controller.action.ActionDefinition;
-import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.servlet.FilterDefinition;
 import org.m410.j8.servlet.ListenerDefinition;
 import org.m410.j8.servlet.ServletDefinition;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
 
 import java.util.List;
 
@@ -57,7 +57,9 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of thread local factory implementations.
      */
-    List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c);
+    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c);
+
+    List<? extends ThreadLocalSessionFactory> getThreadLocalFactories();
 
     /**
      * Creates the controllers for the application.

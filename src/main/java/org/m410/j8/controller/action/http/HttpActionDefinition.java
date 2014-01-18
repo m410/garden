@@ -12,6 +12,7 @@ import org.m410.j8.controller.action.status.*;
 import org.m410.j8.controller.Ctlr;
 import org.m410.j8.controller.Securable;
 import org.m410.j8.servlet.ServletExtension;
+import org.m410.j8.transaction.TransactionScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -52,6 +53,8 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private final Action action;
     private final HttpMethod httpMethod;
     private final List<String> acceptTypes;
+
+    private final TransactionScope transactionScope = TransactionScope.None;
 
     /**
      * A full constructor setting all parameters of a action definition.  Generally there is no need to

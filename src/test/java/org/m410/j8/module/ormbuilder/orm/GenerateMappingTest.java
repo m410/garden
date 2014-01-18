@@ -28,7 +28,6 @@ public class GenerateMappingTest {
                 .addEntity(account.makeEntity())
                 .make();
 
-        System.out.println("result="+result);
         assertNotNull(result);
 
     }

@@ -1,4 +1,4 @@
-package org.m410.j8.application;
+package org.m410.j8.transaction;
 
 /**
  * Wraps each action request with a thread local session instance.

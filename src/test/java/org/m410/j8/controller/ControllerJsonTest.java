@@ -5,7 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.j8.application.ThreadLocalSessionFactory;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.fixtures.JsonController;
 import org.m410.j8.fixtures.MyWebApp;

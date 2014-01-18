@@ -9,6 +9,7 @@ import static org.junit.Assert.*;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.configuration.ConfigurationFactory;
 import org.m410.j8.fixtures.MyWebApp;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -42,6 +43,7 @@ public class ApplicationThreadLocalTest {
     public void wrapWithOneThreadLocal() {
         Application.Work work = () -> {
             assertEquals("local", MyThreadLocal.get());
+            return null;
         };
 
         List<ThreadLocalSessionFactory> factories = new ArrayList<>();
@@ -54,6 +56,7 @@ public class ApplicationThreadLocalTest {
         Application.Work work = () -> {
             assertEquals("local2", MyThreadLocal.get());
             assertEquals("local3", My2ThreadLocal.get());
+            return null;
         };
 
         List<ThreadLocalSessionFactory> factories = new ArrayList<>();

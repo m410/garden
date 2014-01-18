@@ -2,9 +2,13 @@ package org.m410.j8.module.jpa;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.j8.application.ApplicationModule;
-import org.m410.j8.application.ThreadLocalSessionFactory;
+import org.m410.j8.transaction.ThreadLocalSessionFactory;
 import org.m410.j8.configuration.Configuration;
 
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Arrays;
 import java.util.List;
 
 /**

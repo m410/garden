@@ -53,6 +53,7 @@ public class M410Filter implements Filter {
                     log.debug("ActOn({})", action);
                     webapp.doWithThreadLocals(() -> {
                         wrapExceptions(() -> chain.doFilter(req, res));
+                        return null;
                     });
                     break;
                 case ActionStatus.ACT_ON_ASYNC:

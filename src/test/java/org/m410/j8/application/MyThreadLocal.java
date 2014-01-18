@@ -1,5 +1,7 @@
 package org.m410.j8.application;
 
+import org.m410.j8.transaction.ThreadLocalSession;
+
 /**
  * Document Me..
  *
