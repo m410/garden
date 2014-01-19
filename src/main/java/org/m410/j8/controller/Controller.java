@@ -8,12 +8,13 @@ import org.m410.j8.controller.action.http.HttpMethod;
 import org.m410.j8.controller.action.http.Response;
 import org.m410.j8.controller.action.ws.WebSocket;
 import org.m410.j8.controller.action.ws.WsActionDefinition;
+import org.m410.j8.transaction.TransactionScope;
 
 /**
  * This is the default implementation of a the Ctlr interface.
  * <p>
  * To create your own application controller add a class like this.
-
+ * <p>
  * <pre>
  * public class MyController extends Controller {
  *     public MyController() { super("basepath"); }
@@ -27,7 +28,7 @@ import org.m410.j8.controller.action.ws.WsActionDefinition;
  *     Action view = req -&gt; respond().withModel("name","value").withView("/view.jsp");
  * }
  * </pre>
- *
+ * <p>
  * The Controller class has a private constructor so you have to write one of your own and
  * call one of the super class constructors that sets the base path expression.
  * <p>
@@ -36,7 +37,7 @@ import org.m410.j8.controller.action.ws.WsActionDefinition;
  * <p>
  * In the example above the get methods returns an Action definition, using a sub path expression
  * and an action class.  The Action classes are defined as closures at the bottom of the example.
-  * <p>
+ * <p>
  * Each Action must return a response instance.
   * <p>
  * By default, each action is wrapped in a transaction.  If you're using the
@@ -48,10 +49,9 @@ import org.m410.j8.controller.action.ws.WsActionDefinition;
  *
  * todo document contentType and ssl in constructor.
  *
+ * @author Michael Fortin
  * @see org.m410.j8.controller.action.PathExpr
  * @see org.m410.j8.controller.action.http.Action
- *
- * @author Michael Fortin
  */
 public abstract class Controller implements Ctlr {
 
@@ -74,6 +74,7 @@ public abstract class Controller implements Ctlr {
     protected PathExpr pathExpr;
     protected boolean useSsl = false;
     protected String[] contentTypes = {};
+    protected TransactionScope defaultTransactionScope = TransactionScope.Action;
 
     /**
      * private constructor so you must implement a path.
@@ -85,8 +86,8 @@ public abstract class Controller implements Ctlr {
     /**
      * Creates a controller with the base path expression.
      *
-     * @see org.m410.j8.controller.action.PathExpr
      * @param pathExpr a path expression.
+     * @see org.m410.j8.controller.action.PathExpr
      */
     protected Controller(PathExpr pathExpr) {
         this.pathExpr = pathExpr;
@@ -94,6 +95,7 @@ public abstract class Controller implements Ctlr {
 
     /**
      * Creates a controller with the base path expression.
+     *
      * @param pathExpr a base path.
      */
     protected Controller(String pathExpr) {
@@ -103,24 +105,24 @@ public abstract class Controller implements Ctlr {
     /**
      * This returns a WebSocket Definition, with takes a WebSocket class with the
      * handler implementations.
-     *
+     * <p/>
      * todo not implemented yet.
      * Note: can't be intercepted.  Don't know how to authorize
      *
      * @param path the path expression
-     * @param act the action
+     * @param act  the action
      * @return a new action definition.
      */
     protected final WsActionDefinition ws(String path, WebSocket act) {
-        return new WsActionDefinition(pathExpr.append(path),act, this,
-                Securable.State.Optional,new String[0],false);
+        return new WsActionDefinition(pathExpr.append(path), act, this,
+                Securable.State.Optional, new String[0], false);
     }
 
     /**
      * a basic get action.
-      * <p>
+     * <p/>
      * Typically used like:
-     *
+     * <p/>
      * <pre>
      *  public List&gt;ActionDefinition&gt; actions() {
      *       return ImmutableList.of(get("", home));
@@ -129,7 +131,7 @@ public abstract class Controller implements Ctlr {
      * </pre>
      *
      * @param path the action path expression
-     * @param act the action implementation.
+     * @param act  the action implementation.
      * @return an action definition
      */
     protected final HttpActionDefinition get(String path, Action act) {
@@ -140,7 +142,7 @@ public abstract class Controller implements Ctlr {
      * A post action definition.
      *
      * @param path the path expression
-     * @param act the action
+     * @param act  the action
      * @return a new action definition.
      */
     protected final HttpActionDefinition post(String path, Action act) {
@@ -151,7 +153,7 @@ public abstract class Controller implements Ctlr {
      * create a put action definition.
      *
      * @param path the path expression
-     * @param act the action
+     * @param act  the action
      * @return a new action definition.
      */
     protected final HttpActionDefinition put(String path, Action act) {
@@ -162,7 +164,7 @@ public abstract class Controller implements Ctlr {
      * a delete action definition.
      *
      * @param path the path expression
-     * @param act the action
+     * @param act  the action
      * @return a new action definition.
      */
     protected final HttpActionDefinition delete(String path, Action act) {
@@ -172,15 +174,18 @@ public abstract class Controller implements Ctlr {
     /**
      * A generic action definition builder called by all other methods named with
      * by the http method. You may call this directly but the convenience methods
-     * are shorter and more readable.
+     * are shorter and more readable.  This will also set some default values for the
+     * action definition.  It will set the ssl state to Optional, any accept content
+     * type, any roles, and transactional scope of none.
      *
-     * @param method the http method.
-     * @param action an action.
+     * @param method   the http method.
+     * @param action   an action.
      * @param pathExpr the path expression.
      * @return a new action definition.
      */
     protected HttpActionDefinition act(HttpMethod method, Action action, PathExpr pathExpr) {
-        return new HttpActionDefinition(this, action, pathExpr, method);
+        return new HttpActionDefinition(this, action, pathExpr, method, Securable.State.Optional,
+                new String[]{}, new String[]{}, defaultTransactionScope);
     }
 
     /**

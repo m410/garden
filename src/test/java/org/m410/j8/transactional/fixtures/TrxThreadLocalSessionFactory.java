@@ -1,4 +1,4 @@
-package org.m410.j8.transactional;
+package org.m410.j8.transactional.fixtures;
 
 import org.m410.j8.transaction.ThreadLocalSessionFactory;
 

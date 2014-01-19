@@ -2,6 +2,7 @@ package org.m410.j8.servlet;
 
 import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.status.*;
+import org.m410.j8.transaction.TransactionScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.m410.j8.application.Application;
@@ -49,37 +50,49 @@ public class M410Filter implements Filter {
                     String path = ((Forward)status).getPath();
                     request.getRequestDispatcher(path).forward(request,response);
                     break;
+
                 case ActionStatus.ACT_ON:
-                    log.debug("ActOn({})", action);
-                    webapp.doWithThreadLocals(() -> {
-                        wrapExceptions(() -> chain.doFilter(req, res));
-                        return null;
-                    });
+                    log.debug("ActOn({},{})", action, action.getTransactionScope());
+
+                    if(action.getTransactionScope() == TransactionScope.ActionAndView)
+                        webapp.doWithThreadLocals(() -> {
+                            wrapExceptions(() -> chain.doFilter(req, res));
+                            return null;
+                        });
+                    else
+                        chain.doFilter(req, res);
+
                     break;
+
                 case ActionStatus.ACT_ON_ASYNC:
                     log.debug("ActOnAsync({})", action);
                     chain.doFilter(req, res);
                     break;
+
                 case ActionStatus.REDIRECT_TO_SECURE:
                     final String path1 = ((RedirectToSecure) status).getPath();
                     log.debug("RedirectToSecure({})", path1);
                     response.sendRedirect(path1);
                     break;
+
                 case ActionStatus.REDIRECT_TO_AUTH:
                     RedirectToAuth redirectAuth = (RedirectToAuth) status;
                     log.debug("RedirectToAuthenticate({},{})", redirectAuth.getPath(), redirectAuth.getLastView());
                     request.getSession().setAttribute("last_view", redirectAuth.getLastView());
                     response.sendRedirect(redirectAuth.getPath());
                     break;
+
                 case ActionStatus.DISPATCH_TO:
                     final String path2 = ((DispatchTo) status).getPath();
                     log.debug("DispatchTo({})", path2);
                     req.getRequestDispatcher(path2).forward(req, res);
                     break;
+
                 case ActionStatus.FORBIDDEN:
                     log.debug("Forbidden({})", request.getRequestURI());
                     response.sendError(403, "Forbidden, Not Authorized to view this resource");
                     break;
+
                 default:
                     throw new RuntimeException("Unknown status:" + status);
             }

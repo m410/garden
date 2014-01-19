@@ -13,10 +13,12 @@ import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.action.http.HttpMethod;
 import org.m410.j8.controller.Securable;
+import org.m410.j8.transaction.TransactionScope;
 
 
 import javax.servlet.http.HttpServletRequest;
 
+import java.security.Principal;
 import java.util.List;
 
 import static org.junit.Assert.*;
@@ -46,15 +48,19 @@ public class ActionStatusTest {
 
     @Test
     public void testActOn() {
-        Action action = (args) -> { return null; };
+        Action action = (args) -> null;
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/path.m410");
         when(request.getMethod()).thenReturn("GET");
+
+        Principal principal = mock(Principal.class);
+        when(request.getUserPrincipal()).thenReturn(principal);
 
         assertEquals(ActOn.getInstance(), ad.status(request));
     }
@@ -64,7 +70,8 @@ public class ActionStatusTest {
         Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -79,7 +86,8 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -94,7 +102,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.State.Only, new String[]{}, new String[]{});
+                Securable.State.Only, new String[]{}, new String[]{}, TransactionScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -115,7 +123,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.State.Optional, new String[]{}, new String[]{});
+                Securable.State.Optional, new String[]{}, new String[]{}, TransactionScope.None);
 
 
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -134,7 +142,8 @@ public class ActionStatusTest {
         final Action action = (args) -> { return null; };
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
-        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get);
+        HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
 
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -155,7 +164,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.State.Optional, new String[]{}, new String[]{});
+                Securable.State.Optional, new String[]{}, new String[]{}, TransactionScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");

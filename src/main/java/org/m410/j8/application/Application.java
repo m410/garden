@@ -19,6 +19,7 @@ import org.m410.j8.servlet.ServletDefinition;
 import org.m410.j8.transaction.ThreadLocalSession;
 import org.m410.j8.transaction.ThreadLocalSessionFactory;
 import org.m410.j8.transaction.TransactionHandler;
+import org.m410.j8.transaction.TransactionScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -160,7 +161,18 @@ abstract public class Application implements ApplicationModule {
                 .filter((a) -> a instanceof HttpActionDefinition)
                 .filter((a) -> ((HttpActionDefinition)a).doesRequestMatchAction(req))
                 .findFirst()
-                .ifPresent((a) -> ((HttpActionDefinition)a).apply(req, res)
+                .ifPresent((a) -> {
+                    final HttpActionDefinition definition = (HttpActionDefinition) a;
+
+                    if(definition.getTransactionScope() == TransactionScope.Action)
+                        doWithThreadLocals(()->{
+                            definition.apply(req, res);
+                            return null;
+                        });
+                    else
+                        definition.apply(req, res);
+
+                }
             );
     }
 

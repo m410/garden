@@ -8,6 +8,7 @@ import org.m410.j8.controller.action.http.Action;
 import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.action.http.HttpMethod;
+import org.m410.j8.transaction.TransactionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -40,7 +41,8 @@ public class ControllerFileDownloadTest implements MockServletInput {
                 .withContentType("application/json")
                 .asStream((out) -> out.write("hi".getBytes()));
 
-        HttpActionDefinition ad = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
         ad.apply(request, response);
 
         verify(response).getOutputStream();

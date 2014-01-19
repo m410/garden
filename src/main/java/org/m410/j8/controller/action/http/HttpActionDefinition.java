@@ -54,7 +54,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private final HttpMethod httpMethod;
     private final List<String> acceptTypes;
 
-    private final TransactionScope transactionScope = TransactionScope.None;
+    private final TransactionScope transactionScope;
 
     /**
      * A full constructor setting all parameters of a action definition.  Generally there is no need to
@@ -70,10 +70,11 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      *          types.
      * @param roles The roles this action will accept.  This only applies if the controller implements
      *          the Authentication interface.
+     * @param transactionScope the transactional scope for the action request.
      */
     public HttpActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
-                                Securable.State useSsl, String[] acceptTypes,
-                                String[] roles) {
+                                Securable.State useSsl, String[] acceptTypes, String[] roles,
+                                TransactionScope transactionScope) {
         this.controller = controller;
         this.action = action;
         this.pathExpr = pathExpr;
@@ -82,26 +83,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         this.useAuthentication = controller instanceof Authorizable;
         this.acceptTypes = ImmutableList.<String>builder().addAll(Arrays.asList(acceptTypes)).build();
         this.roles = ImmutableList.<String>builder().addAll(Arrays.asList(roles)).build();
-    }
-
-    /**
-     * Creates a new instance of a action definition with some default values.  Authorize, authenticate,
-     * ssl are all false, and contentTypes and roles are empty.
-     *
-     * @param controller A back reference to the controller holding the action.
-     * @param action The action to call.
-     * @param pathExpr The path expression for the controller and action.
-     * @param httpMethod The Http Method to accept on this definition.
-     */
-    public HttpActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod) {
-        this.controller = controller;
-        this.action = action;
-        this.pathExpr = pathExpr;
-        this.httpMethod = httpMethod;
-        this.useSsl = Securable.State.Optional;
-        this.useAuthentication = false;
-        this.acceptTypes = ImmutableList.of();
-        this.roles = ImmutableList.of();
+        this.transactionScope = transactionScope;
     }
 
     /**
@@ -112,7 +94,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition accept(String... contentTypes) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
-                useSsl,contentTypes, roles.toArray(new String[roles.size()]));
+                useSsl,contentTypes, roles.toArray(new String[roles.size()]),transactionScope);
     }
 
     /**
@@ -123,7 +105,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition roles(String... roles) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
-                useSsl , acceptTypes.toArray(new String[acceptTypes.size()]), roles);
+                useSsl , acceptTypes.toArray(new String[acceptTypes.size()]), roles,transactionScope);
     }
 
     /**
@@ -133,7 +115,19 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition ssl(Securable.State ssl) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,ssl,
-                acceptTypes.toArray(new String[acceptTypes.size()]), roles.toArray(new String[roles.size()]));
+                acceptTypes.toArray(new String[acceptTypes.size()]), roles.toArray(new String[roles.size()]),
+                transactionScope);
+    }
+
+    /**
+     *
+     * @param transactionScope the scope of the transaction
+     * @return a new HttpActionDefinition
+     */
+    public HttpActionDefinition transaction(TransactionScope transactionScope) {
+        return new HttpActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
+                acceptTypes.toArray(new String[acceptTypes.size()]), roles.toArray(new String[roles.size()]),
+                transactionScope);
 
     }
 
@@ -207,6 +201,10 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     @Override
     public ActionProtocol getType() {
         return DEF_ACTION_PROTOCOL;
+    }
+
+    public TransactionScope getTransactionScope() {
+        return transactionScope;
     }
 
     @Override

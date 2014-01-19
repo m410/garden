@@ -6,6 +6,7 @@ import org.junit.runners.JUnit4;
 import org.m410.j8.controller.Securable;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.controller.Ctlr;
+import org.m410.j8.transaction.TransactionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -30,7 +31,8 @@ public class ActionDefinitionTest {
         when(request.getMethod()).thenReturn("GET");
 
         Action a = (args) -> Response.respond();
-        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
         assertTrue(ad.doesRequestMatchAction(request));
 
         verify(request).getContextPath();
@@ -46,7 +48,8 @@ public class ActionDefinitionTest {
         when(request.getMethod()).thenReturn("GET");
 
         Action a = (args) -> Response.respond();
-        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
         assertTrue(ad.doesRequestMatchAction(request));
 
         verify(request).getContextPath();
@@ -62,7 +65,8 @@ public class ActionDefinitionTest {
         when(request.getMethod()).thenReturn("GET");
 
         Action a = (args) -> Response.respond();
-        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
         assertTrue(ad.doesRequestMatchAction(request));
 
         verify(request).getContextPath();
@@ -79,7 +83,8 @@ public class ActionDefinitionTest {
             throw new RuntimeException("I was called");
         };
 
-        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
         try {
             ad.apply(request, response);
@@ -94,16 +99,20 @@ public class ActionDefinitionTest {
     @Test
     public void actionDefinitionsEqual() {
         Action action = (args) -> { return null; };
-        HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
-        HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
+        HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
+        HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
         assertEquals(ad1,ad2);
     }
 
     @Test
     public void actionDefinitionsDontEqual() {
         Action action = (args) -> { return null; };
-        HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET);
-        HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr("persons"), HttpMethod.GET);
+        HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
+        HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr("persons"), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
         assertNotEquals(ad1, ad2);
     }
 
@@ -117,7 +126,7 @@ public class ActionDefinitionTest {
 
         Action action = (args) -> { return null; };
         HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
-                HttpMethod.GET, Securable.State.Optional, new String[]{"application/json"}, new String[0]);
+                HttpMethod.GET, Securable.State.Optional, new String[]{"application/json"}, new String[0], TransactionScope.None);
 
         boolean match = a.doesRequestMatchAction(request);
         assertFalse(match);
@@ -138,7 +147,7 @@ public class ActionDefinitionTest {
 
         Action action = (args) -> { return null; };
         HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
-                HttpMethod.GET, Securable.State.Optional, new String[]{"application/json"}, new String[0]);
+                HttpMethod.GET, Securable.State.Optional, new String[]{"application/json"}, new String[0], TransactionScope.None);
 
         boolean match = a.doesRequestMatchAction(request);
         assertTrue(match);
@@ -159,8 +168,10 @@ public class ActionDefinitionTest {
 
         HttpServletResponse response = mock(HttpServletResponse.class);
         Action a = (args) -> Response.respond();
-        HttpActionDefinition ad1 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET);
-        HttpActionDefinition ad2 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT);
+        HttpActionDefinition ad1 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
+        HttpActionDefinition ad2 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT,
+                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
         assertTrue(ad2.doesRequestMatchAction(request));
         assertFalse(ad1.doesRequestMatchAction(request));

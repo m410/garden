@@ -1,4 +1,4 @@
-package org.m410.j8.transactional;
+package org.m410.j8.transactional.fixtures;
 
 import org.m410.j8.transaction.ThreadLocalSession;
 
@@ -11,6 +11,10 @@ public class TrxSession implements ThreadLocalSession {
 
     public static int getCallCount() {
         return callCount;
+    }
+
+    public static void resetCount() {
+        callCount = 0;
     }
 
     @Override

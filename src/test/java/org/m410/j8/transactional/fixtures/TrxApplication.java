@@ -1,12 +1,11 @@
-package org.m410.j8.transactional;
+package org.m410.j8.transactional.fixtures;
 
+import com.google.common.collect.ImmutableList;
 import org.m410.j8.application.Application;
 import org.m410.j8.configuration.Configuration;
 import org.m410.j8.controller.Ctlr;
-import org.m410.j8.module.jpa.JpaModule;
 import org.m410.j8.transaction.ThreadLocalSessionFactory;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -16,13 +15,17 @@ public class TrxApplication extends Application {
 
     MyService myService = transactional(MyService.class, new MyServiceImpl());
 
+    public MyService getMyService() {
+        return myService;
+    }
+
     @Override
     public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
-        return Arrays.asList(new TrxThreadLocalSessionFactory());
+        return ImmutableList.of(new TrxThreadLocalSessionFactory());
     }
 
     @Override
     public List<? extends Ctlr> makeControllers(Configuration c) {
-        return Arrays.asList();
+        return ImmutableList.of(new TrxController(myService));
     }
 }

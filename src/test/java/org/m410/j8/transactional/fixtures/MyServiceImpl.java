@@ -1,4 +1,4 @@
-package org.m410.j8.transactional;
+package org.m410.j8.transactional.fixtures;
 
 import java.util.Arrays;
 import java.util.List;

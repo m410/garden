@@ -3,11 +3,15 @@ package org.m410.j8.servlet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.j8.controller.Securable;
 import org.m410.j8.controller.action.http.HttpActionDefinition;
 import org.m410.j8.controller.action.PathExpr;
 import org.m410.j8.application.Application;
 import org.m410.j8.controller.action.http.HttpMethod;
 import org.m410.j8.fixtures.MyWebApp;
+import org.m410.j8.transaction.TransactionScope;
+import org.m410.j8.transactional.fixtures.TrxApplication;
+import org.m410.j8.transactional.fixtures.TrxSession;
 
 
 import javax.servlet.FilterChain;
@@ -19,6 +23,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
@@ -31,7 +36,8 @@ public class M410FilterTest {
     public void testForward() throws ServletException, IOException {
         Application application = new MyWebApp() {
             @Override public Optional<HttpActionDefinition> actionForRequest(HttpServletRequest request) {
-                return Optional.of(new HttpActionDefinition(null, null,new PathExpr("json"), HttpMethod.GET));
+                return Optional.of(new HttpActionDefinition(null, null,new PathExpr("json"), HttpMethod.GET,
+                        Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None));
             }
         };
 
@@ -58,6 +64,5 @@ public class M410FilterTest {
         verify(request,times(4)).getRequestURI();
 
         verify(request).getRequestDispatcher("/json.m410");
-
     }
 }
