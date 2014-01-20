@@ -8,7 +8,7 @@ import org.w3c.dom.Element;
  *
  *   &lt;xsd:annotationgt;
  *     &lt;xsd:documentationgt;
- *       @Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface OneToMany {
+ *       Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface OneToMany {
  *          Class targetEntity() default void.class;
  *          CascadeType[] cascade() default {};
  *          FetchType fetch() default LAZY;

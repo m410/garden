@@ -12,7 +12,7 @@ import java.util.Arrays;
  *  &lt;xsd:complexType name="many-to-many"gt;
  *    &lt;xsd:annotationgt;
  *    &lt;xsd:documentationgt;
- *      @Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface ManyToMany {
+ *      Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface ManyToMany {
  *      Class targetEntity() default void.class;
  *      CascadeType[] cascade() default {};
  *      FetchType fetch() default LAZY;

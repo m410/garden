@@ -12,7 +12,7 @@ import java.util.Arrays;
  *   &lt;xsd:complexType name="many-to-one"&gt;
  *    &lt;xsd:annotation&gt;
  *    &lt;xsd:documentation&gt;
- *        @Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface ManyToOne {
+ *        Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface ManyToOne {
  *          Class targetEntity() default void.class;
  *          CascadeType[] cascade() default {};
  *          FetchType fetch() default EAGER;
@@ -78,6 +78,12 @@ public final class ManyToOne  extends Node {
         this.mappedBy = mappedBy;
     }
 
+    public ManyToOne(String name, Class targetEntity) {
+        this();
+        this.name = name;
+        this.targetEntity = targetEntity;
+    }
+
     public ManyToOne(String name, ORM.Cascade[] cascade, ORM.Fetch fetch) {
         this();
         this.name = name;
@@ -98,6 +104,9 @@ public final class ManyToOne  extends Node {
         Element id = root.createElement("many-to-one");
 
         id.setAttribute("name",name);
+
+        if(mappedBy != null)
+            id.setAttribute("mapped-by",mappedBy);
 
         if(targetEntity != void.class)
             id.setAttribute("target-entity",targetEntity.getName());

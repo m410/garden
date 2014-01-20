@@ -10,7 +10,7 @@ import org.w3c.dom.Element;
  *  &lt;xsd:complexType name="one-to-one"gt;
  *    &lt;xsd:annotationgt;
  *    &lt;xsd:documentationgt;
- *        @Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface OneToOne {
+ *        Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface OneToOne {
  *        Class targetEntity() default void.class;
  *        CascadeType[] cascade() default {};
  *        FetchType fetch() default EAGER;

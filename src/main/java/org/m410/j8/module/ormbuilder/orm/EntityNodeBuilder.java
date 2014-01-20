@@ -45,8 +45,8 @@ public final class EntityNodeBuilder {
         return append(new Version(id), new Node[0]);
     }
 
-    public EntityNodeBuilder manyToOne(String name, Node... nodes) {
-        return append(new ManyToOne(name),nodes);
+    public <T> EntityNodeBuilder manyToOne(String name, Class<T> target, Node... nodes) {
+        return append(new ManyToOne(name,target),nodes);
     }
 
     public <T> EntityNodeBuilder manyToOne(String name, Class<T> target, String mappedBy) {

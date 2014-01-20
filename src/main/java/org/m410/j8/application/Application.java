@@ -201,6 +201,8 @@ abstract public class Application implements ApplicationModule {
      * Wraps action invocations with a thread local context.
      *
      * @param work internal closure to wrap the action.
+     * @return when it's called by the filter or an action this can and should return null, when
+     *  it's called to wrap a service call, it should be the the result of the method invocation.
      */
     public Object doWithThreadLocals(Work work) {
         return doWithThreadLocal(threadLocalsFactories, work);
@@ -212,6 +214,7 @@ abstract public class Application implements ApplicationModule {
      *
      * @param tlf   list of ThreadLocalFactory objects
      * @param block an internal worker closure.
+     * @return in most cases it will be null, except when wrapping the call to a service method.
      */
     protected Object doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block) {
         if (tlf != null && tlf.size() >= 1) {

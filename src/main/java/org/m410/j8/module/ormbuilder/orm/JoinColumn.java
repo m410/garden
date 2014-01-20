@@ -78,7 +78,7 @@ public final class JoinColumn extends Node {
         basic.setAttribute("name",name);
 
         if(!"".equals(referencedColumnName))
-            basic.setAttribute("referencedColumnName",referencedColumnName);
+            basic.setAttribute("referenced-column-name",referencedColumnName);
 
         basic.setAttribute("unique",String.valueOf(unique));
         basic.setAttribute("nullable",String.valueOf(nullable));

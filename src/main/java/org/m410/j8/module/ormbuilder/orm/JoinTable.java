@@ -15,7 +15,7 @@ import java.util.Arrays;
  *  &lt;xsd:complexType name="join-table"&gt;
  *    &lt;xsd:annotation&gt;
  *    &lt;xsd:documentation&gt;
- *      @Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface JoinTable {
+ *      Target({METHOD, FIELD}) @Retention(RUNTIME) public @interface JoinTable {
  *        String name() default "";
  *        String catalog() default "";
  *        String schema() default "";

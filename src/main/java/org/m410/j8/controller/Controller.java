@@ -105,7 +105,7 @@ public abstract class Controller implements Ctlr {
     /**
      * This returns a WebSocket Definition, with takes a WebSocket class with the
      * handler implementations.
-     * <p/>
+     * <p>
      * todo not implemented yet.
      * Note: can't be intercepted.  Don't know how to authorize
      *
@@ -120,9 +120,9 @@ public abstract class Controller implements Ctlr {
 
     /**
      * a basic get action.
-     * <p/>
+     * <p>
      * Typically used like:
-     * <p/>
+     * <p>
      * <pre>
      *  public List&gt;ActionDefinition&gt; actions() {
      *       return ImmutableList.of(get("", home));
