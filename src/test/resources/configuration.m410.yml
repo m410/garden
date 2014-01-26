@@ -1,7 +1,7 @@
 version: 0.1.0
 application:
   name: &name demo-jpa
-  organization: org.m410.j8.demo
+  organization: org.m410.garden.demo
   version: "1.0"
   author: Michael Fortin
   description: &desc A simple  JPA Scala demo  based website.
@@ -9,7 +9,7 @@ build:
   packageSource: true
 persistence:
   - name: m410-jpa
-    organization: org.m410.j8.module
+    organization: org.m410.garden.module
     version: 0.1.0
     properties:
       hibernate.dialect: org.hibernate.dialect.H2Dialect
@@ -20,7 +20,7 @@ persistence:
       hibernate.hbm2ddl.auto: update
 modules:
   - name: m410-jetty8
-    organization: org.m410.j8.module
+    organization: org.m410.garden.module
     version: 0.2.0
 logging:
   appenders:
