@@ -14,7 +14,7 @@ public final class Attributes extends Node {
 
 
     Attributes() {
-        super(1,1);
+        super(1,2);
     }
 
     @Override

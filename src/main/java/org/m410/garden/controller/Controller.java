@@ -105,7 +105,7 @@ public abstract class Controller implements Ctlr {
     /**
      * This returns a WebSocket Definition, with takes a WebSocket class with the
      * handler implementations.
-     * <p>
+     *
      * todo not implemented yet.
      * Note: can't be intercepted.  Don't know how to authorize
      *

@@ -20,63 +20,78 @@ public final class EntityNodeBuilder {
 
     public EntityNodeBuilder id(String id, Node... nodes) {
         final Id node = new Id(id);
-        return append(node, nodes);
+        return appendAttribute(node, nodes);
     }
 
     public EntityNodeBuilder id(String id) {
-        return append(new Id(id), new Node[0]);
+        return appendAttribute(new Id(id), new Node[0]);
     }
 
     public EntityNodeBuilder basic(String id, Node... nodes) {
         final Basic node = new Basic(id);
-        return append(node, nodes);
+        return appendAttribute(node, nodes);
     }
 
     public EntityNodeBuilder basic(String id) {
-        return append(new Basic(id), new Node[0]);
+        return appendAttribute(new Basic(id), new Node[0]);
     }
 
     public EntityNodeBuilder version(String id, Node... nodes) {
         final Version node = new Version(id);
-        return append(node, nodes);
+        return appendAttribute(node, nodes);
     }
 
     public EntityNodeBuilder version(String id) {
-        return append(new Version(id), new Node[0]);
+        return appendAttribute(new Version(id), new Node[0]);
+    }
+
+    public EntityNodeBuilder namedQuery(String name,String query) {
+        return appendEntity(new NamedQuery(name, query), new Node[0]);
+    }
+
+    //    calista
+    public <T> EntityNodeBuilder elementCollection(String name,Class<T> target, Node... nodes) {
+        return appendAttribute(new ElementCollection(name, target), nodes);
     }
 
     public <T> EntityNodeBuilder manyToOne(String name, Class<T> target, Node... nodes) {
-        return append(new ManyToOne(name,target),nodes);
+        return appendAttribute(new ManyToOne(name, target), nodes);
     }
 
     public <T> EntityNodeBuilder manyToOne(String name, Class<T> target, String mappedBy) {
-        return append(new ManyToOne(name, target, mappedBy),new Node[]{});
+        return appendAttribute(new ManyToOne(name, target, mappedBy), new Node[]{});
     }
 
     public <T> EntityNodeBuilder oneToMany(String name, Class<T> target, String mappedBy) {
-        return append(new OneToMany(name, target, mappedBy),new Node[]{});
+        return appendAttribute(new OneToMany(name, target, mappedBy), new Node[]{});
     }
 
     public <T> EntityNodeBuilder oneToMany(String name, Class<T> target, Node... nodes) {
-        return append(new OneToMany(name, target), nodes);
+        return appendAttribute(new OneToMany(name, target), nodes);
     }
 
     public <T> EntityNodeBuilder manyToMany(String name, Class<T> target, String mappedBy, Node... nodes) {
-        return append(new ManyToMany(name, target, mappedBy),nodes);
+        return appendAttribute(new ManyToMany(name, target, mappedBy), nodes);
 
     }
 
     public <T> EntityNodeBuilder oneToOne(String name, Class<T> target, String mappedBy) {
-        return append(new OneToOne(name, target, mappedBy),new Node[]{});
+        return appendAttribute(new OneToOne(name, target, mappedBy), new Node[]{});
     }
 
     public <T> EntityNodeBuilder oneToOne(String name, Class<T> target, Node... nodes) {
-        return append(new OneToOne(name, target),nodes);
+        return appendAttribute(new OneToOne(name, target), nodes);
     }
 
-    private EntityNodeBuilder append(Node node, Node[] children) {
+    private EntityNodeBuilder appendAttribute(Node node, Node[] children) {
         attributes.addChild(node);
         Arrays.asList(children).stream().forEach(node::addChild);
+        return this;
+    }
+
+    private EntityNodeBuilder appendEntity(Node node, Node[] children) {
+        Arrays.asList(children).stream().forEach(node::addChild);
+        entityNode.addChild(node);
         return this;
     }
 

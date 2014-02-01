@@ -34,6 +34,7 @@ public final class ORM {
      *
      * @param entityClass the class of the entity to map.
      * @param tableName the database table name it maps too.
+     * @param <T> the class type
      * @return an entity node.
      */
     public static <T> EntityNodeBuilder entity(Class<T> entityClass, String tableName) {
@@ -86,6 +87,9 @@ public final class ORM {
 
     public static JoinTable joinTable(String name, Node... nodes) {
         return new JoinTable(name).withChildren(nodes);
+    }
+    public static CollectionTable collectionTable(String name, Node... nodes) {
+        return new CollectionTable(name).withChildren(nodes);
     }
 
     /**
