@@ -7,6 +7,8 @@ import org.m410.garden.controller.action.flash.Flash;
 import org.m410.garden.controller.action.flash.FlashImpl;
 import org.m410.garden.controller.action.NotAPostException;
 import org.m410.garden.controller.action.http.direction.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
@@ -22,6 +24,7 @@ import java.util.Map;
  * @author Michael Fortin
  */
 public final class Response {
+    private static final Logger log = LoggerFactory.getLogger(Response.class);
 
     public static final String CONTENT_TYPE_MULTIPART_FORM = "multipart/form-data";
     public static final String CONTENT_TYPE_FORM = "application/x-www-form-urlencoded";
@@ -152,7 +155,8 @@ public final class Response {
      * @return a new Response.
      */
     public Response withModel(Map<String, Object> mod) {
-        return new Response(headers, mod, session, flash, direction, invalidateSession, status);
+        Map<String, Object> m = ImmutableMap.<String, Object>builder().putAll(mod).putAll(model).build();
+        return new Response(headers, m, session, flash, direction, invalidateSession, status);
     }
 
     public Response withStatus(int status) {
@@ -166,8 +170,8 @@ public final class Response {
      * @return a new Response object.
      */
     public Response withModel(String name, Object value) {
-        Map<String, Object> mod = ImmutableSortedMap.of(name, value);
-        return new Response(headers, mod, session, flash, direction, invalidateSession, status);
+        Map<String, Object> m = ImmutableMap.<String, Object>builder().put(name,value).putAll(model).build();
+        return new Response(headers, m, session, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -176,7 +180,8 @@ public final class Response {
      * @return a new Response.
      */
     public Response withSession(Map<String, Object> sess) {
-        return new Response(headers, model, sess, flash, direction, invalidateSession, status);
+        Map<String,Object> combined = ImmutableMap.<String,Object>builder().putAll(session).putAll(sess).build();
+        return new Response(headers, model, combined, flash, direction, invalidateSession, status);
     }
 
     /**
@@ -186,12 +191,7 @@ public final class Response {
      * @return a new Response.
      */
     public Response withSession(String name, Object value) {
-        Map<String,Object> newSess = new HashMap<>();
-        newSess.put(name, value);
-        Map<String,Object> combined = ImmutableMap.<String,Object>builder()
-                .putAll(session)
-                .putAll(newSess)
-                .build();
+        Map<String,Object> combined = ImmutableMap.<String,Object>builder().putAll(session).put(name, value).build();
         return new Response(headers, model, combined, flash, direction, invalidateSession, status);
     }
 
@@ -367,6 +367,7 @@ public final class Response {
      * @param response the servlet response.
      */
     public void handleResponse(HttpServletRequest request, HttpServletResponse response) {
+        log.debug("response:{}",this);
         response.setStatus(status);
         response.setContentType(contentType);
 

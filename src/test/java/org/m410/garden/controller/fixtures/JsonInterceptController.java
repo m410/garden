@@ -18,7 +18,7 @@ public final class JsonInterceptController extends Controller {
 
     @Override
     public Response intercept(ActionRequest actionRequest, Action action) {
-        return action.action(actionRequest).withContentType("text/plain");
+        return action.execute(actionRequest).withContentType("text/plain");
     }
 
     public JsonInterceptController() {

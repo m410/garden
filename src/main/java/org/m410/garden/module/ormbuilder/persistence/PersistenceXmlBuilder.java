@@ -51,9 +51,9 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         persistUnit.setAttribute("name",definition.getName());
         persistUnit.setAttribute("transaction-type","RESOURCE_LOCAL");
 
-//        Element provider = doc.createElement("provider");
-//        provider.setTextContent("org.hibernate.ejb.HibernatePersistence");
-//        persistUnit.appendChild(provider);
+        Element provider = doc.createElement("provider");
+        provider.setTextContent("org.hibernate.jpa.HibernatePersistenceProvider");
+        persistUnit.appendChild(provider);
 
 //        Element mappingFile = doc.createElement("mapping-file");
 //        mappingFile.setTextContent("/META-INF/orm.xml");

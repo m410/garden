@@ -2,9 +2,10 @@ package org.m410.garden.controller.action.http;
 
 import com.google.common.collect.ImmutableMap;
 import org.apache.commons.io.IOUtils;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.m410.garden.controller.action.Identity;
 import org.m410.garden.controller.action.NotAPostException;
 import org.m410.garden.controller.action.PathExpr;
-import org.m410.garden.controller.action.UserPrincipal;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
@@ -20,17 +21,17 @@ import java.util.Map;
  *
  * @author Michael Fortin
  */
-public class ActionRequestDefaultImpl implements ActionRequest {
+public final class ActionRequestDefaultImpl implements ActionRequest {
 
-    private HttpServletRequest servletRequest;
-    private PathExpr pathExpr;
+    private final HttpServletRequest servletRequest;
+    private final PathExpr pathExpr;
+    private final Identity identity;
 
-    private ActionRequestDefaultImpl() {
-    }
 
     public ActionRequestDefaultImpl(HttpServletRequest servletRequest, PathExpr pathExpr) {
         this.servletRequest = servletRequest;
         this.pathExpr = pathExpr;
+        this.identity = new Identity(servletRequest);
     }
 
     @Override
@@ -39,8 +40,8 @@ public class ActionRequestDefaultImpl implements ActionRequest {
     }
 
     @Override
-    public UserPrincipal userPrincipal() {
-        return new UserPrincipal(servletRequest);
+    public Identity identity() {
+        return identity;
     }
 
     @Override
@@ -110,5 +111,15 @@ public class ActionRequestDefaultImpl implements ActionRequest {
         catch (IOException e) {
             throw new NotAPostException(e);
         }
+    }
+
+    @Override
+    public String toString() {
+        return new ToStringBuilder(this)
+                .append("identity",identity())
+                .append("url",urlParameters())
+                .append("request",requestParameters())
+                .append("session",session())
+                .toString();
     }
 }

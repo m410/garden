@@ -8,5 +8,13 @@ import javax.servlet.http.HttpSession;
  * @author Michael Fortin
  */
 public interface Flash {
+
+    public static enum Type {
+        Success,
+        Warning,
+        Alert,
+        Error
+    }
+
     FlashSession forSession(HttpSession session);
 }

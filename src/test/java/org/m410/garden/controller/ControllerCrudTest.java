@@ -4,10 +4,10 @@ import com.google.common.collect.ImmutableSortedMap;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.garden.controller.action.Identity;
 import org.m410.garden.controller.action.http.ActionRequest;
 import org.m410.garden.controller.action.http.RequestProperties;
 import org.m410.garden.controller.action.http.Response;
-import org.m410.garden.controller.action.UserPrincipal;
 import org.m410.garden.fixtures.MyController;
 import org.m410.garden.fixtures.MyService;
 import org.m410.garden.fixtures.MyServiceDaoImpl;
@@ -26,7 +26,7 @@ public class ControllerCrudTest {
 
     ActionRequest mockRequest = new ActionRequest() {
         @Override public boolean isActiveSession() { return false; }
-        @Override public UserPrincipal userPrincipal() { return null; }
+        @Override public Identity identity() { return null; }
         @Override public Map<String, Object> session() { return null; }
         @Override public RequestProperties requestProperties() { return null; }
         @Override public Map<String, String> requestHeaders() { return null; }
@@ -41,7 +41,7 @@ public class ControllerCrudTest {
     public void testGetByUrlParameter() {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
-        Response response = controller.httpGetAction.action(mockRequest);
+        Response response = controller.httpGetAction.execute(mockRequest);
 
         assertNotNull(response);
         assertNotNull(response.getModel());
@@ -53,7 +53,7 @@ public class ControllerCrudTest {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 
-        Response response = controller.httpGetAction.action(mockRequest);
+        Response response = controller.httpGetAction.execute(mockRequest);
 
         assertNotNull(response);
         assertNotNull(response.getModel());
@@ -65,7 +65,7 @@ public class ControllerCrudTest {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 
-        Response response = controller.httpPostAction.action(mockRequest);
+        Response response = controller.httpPostAction.execute(mockRequest);
 
         assertNotNull(response);
         assertNotNull(response.getModel());
@@ -77,7 +77,7 @@ public class ControllerCrudTest {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 
-        Response response = controller.httpPutAction.action(mockRequest);
+        Response response = controller.httpPutAction.execute(mockRequest);
 
         assertNotNull(response);
         assertNotNull(response.getModel());
@@ -89,7 +89,7 @@ public class ControllerCrudTest {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 
-        Response response = controller.httpDeleteAction.action(mockRequest);
+        Response response = controller.httpDeleteAction.execute(mockRequest);
 
         assertNotNull(response);
         assertNotNull(response.getModel());

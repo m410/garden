@@ -11,6 +11,7 @@ import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.status.*;
 import org.m410.garden.controller.Ctlr;
 import org.m410.garden.controller.Securable;
+import org.m410.garden.module.auth.AuthorizationProvider;
 import org.m410.garden.servlet.ServletExtension;
 import org.m410.garden.transaction.TransactionScope;
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * This is an action and it's meta data.  It includes it path expression, http method
@@ -132,7 +134,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     public void apply(HttpServletRequest request, HttpServletResponse response) {
-        log.debug("actDef:{}",this);
+        log.debug("action definition:{}",this);
         final ActionRequestDefaultImpl actionRequest = new ActionRequestDefaultImpl(request, pathExpr);
         controller.intercept(actionRequest, action).handleResponse(request, response);
     }
@@ -153,8 +155,13 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
             else if(useSsl == Securable.State.Only && !req.isSecure())
                 return new RedirectToSecure(req.getRequestURI());
 
-            else if(useAuthentication && req.getUserPrincipal() == null)
-                return new RedirectToAuth("/auth",req.getRequestURI());
+            else if(useAuthentication &&
+                    (req.getSession(false) == null ||
+                    req.getSession(false).getAttribute(AuthorizationProvider.SESSION_KEY) == null))
+                // should use req.getUserPrincipal() == null
+                // todo this needs to be configurable somehow
+                // todo needs a reference to the authorizationProvider?
+                return new RedirectToAuth("/authorize",req.getRequestURI());
 
             //todo need to check user roles
 //            else if(useAuthorization && (req.getUserPrincipal() == null))

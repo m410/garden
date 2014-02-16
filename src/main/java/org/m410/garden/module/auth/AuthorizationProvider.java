@@ -8,12 +8,14 @@ import java.util.Optional;
  */
 public interface AuthorizationProvider {
 
-    default String loginUri() {
+    public static final String SESSION_KEY = "m410-garden-auth";
+
+    default String loginBaseUri() {
         return "/authorize";
     }
 
-    default String logoutUri() {
-        return "/authorize";
+    default String successUri() {
+        return "/";
     }
 
     Optional<User> authorize(Map<String,String> parameters);

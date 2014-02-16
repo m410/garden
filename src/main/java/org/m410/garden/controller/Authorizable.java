@@ -3,6 +3,7 @@ package org.m410.garden.controller;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.http.ActionRequest;
 import org.m410.garden.controller.action.http.Response;
+import org.slf4j.LoggerFactory;
 
 import static org.m410.garden.controller.action.http.Response.*;
 
@@ -18,7 +19,7 @@ import java.util.Optional;
  *
  * @author Michael Fortin
  */
-public interface Authorizable extends Intercept{
+public interface Authorizable extends Intercept {
 
     /**
      * A list of roles that an authenticated user must have in the UserPrincipal object
@@ -37,12 +38,14 @@ public interface Authorizable extends Intercept{
      *      controller like a pragma header.
      */
     default Response intercept(ActionRequest actionRequest, ActionDefinition action) {
-        if(!actionRequest.userPrincipal().isAnonymous()) {
-            final List<String> userRoles = Arrays.asList(actionRequest.userPrincipal().getUserRoles());
+        LoggerFactory.getLogger(getClass()).warn("#### Authorizable:{}", actionRequest.identity());
+
+        if(!actionRequest.identity().isAnonymous()) {
+            final List<String> userRoles = Arrays.asList(actionRequest.identity().getUserRoles());
             final Optional<String> any = action.getAuthorizedRoles().stream().filter(userRoles::contains).findAny();
 
             if(any.isPresent()) {
-                return action.getAction().action(actionRequest);
+                return action.getAction().execute(actionRequest);
             }
             else {
                 return respond().withStatus(ERROR_FORBIDDEN);

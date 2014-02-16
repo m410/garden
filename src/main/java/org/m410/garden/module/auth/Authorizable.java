@@ -39,12 +39,12 @@ public interface Authorizable extends Intercept{
      *      controller like a pragma header.
      */
     default Response intercept(ActionRequest actionRequest, ActionDefinition action) {
-        if(!actionRequest.userPrincipal().isAnonymous()) {
-            final List<String> userRoles = Arrays.asList(actionRequest.userPrincipal().getUserRoles());
+        if(!actionRequest.identity().isAnonymous()) {
+            final List<String> userRoles = Arrays.asList(actionRequest.identity().getUserRoles());
             final Optional<String> any = action.getAuthorizedRoles().stream().filter(userRoles::contains).findAny();
 
             if(any.isPresent()) {
-                return action.getAction().action(actionRequest);
+                return action.getAction().execute(actionRequest);
             }
             else {
                 return respond().withStatus(ERROR_FORBIDDEN);

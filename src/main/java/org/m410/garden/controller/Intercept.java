@@ -3,6 +3,7 @@ package org.m410.garden.controller;
 import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.ActionRequest;
 import org.m410.garden.controller.action.http.Response;
+import org.slf4j.LoggerFactory;
 
 /**
  * Wraps every controller action call with an interceptor.
@@ -21,6 +22,7 @@ public interface Intercept {
      *      controller like a pragma header.
      */
     default Response intercept(ActionRequest actionRequest, Action action) {
-        return action.action(actionRequest);
+        LoggerFactory.getLogger(getClass()).warn("#### Intercept:{}", actionRequest.identity());
+        return action.execute(actionRequest);
     }
 }

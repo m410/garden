@@ -1,6 +1,6 @@
 package org.m410.garden.controller.action.http;
 
-import org.m410.garden.controller.action.UserPrincipal;
+import org.m410.garden.controller.action.Identity;
 
 import java.io.InputStream;
 import java.util.Map;
@@ -32,9 +32,9 @@ public interface ActionRequest {
      * information when available.
      *
      * @return a UserPrincipal, never null. To see if there is an authenticated
-     * user check {@link org.m410.garden.controller.action.UserPrincipal#isAnonymous()}
+     * user check {@link org.m410.garden.controller.action.Identity#isAnonymous()}
      */
-    UserPrincipal userPrincipal();
+    Identity identity();
 
     /**
      * session parameters.  If there is no session, this return an empty map.

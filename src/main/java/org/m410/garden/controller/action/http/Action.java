@@ -7,5 +7,5 @@ package org.m410.garden.controller.action.http;
  * @author Michael Fortin
  */
 public interface Action {
-    public Response action(ActionRequest args);
+    public Response execute(ActionRequest args);
 }

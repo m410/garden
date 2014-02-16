@@ -45,7 +45,7 @@ public class ActionRequestTest implements MockServletInput {
         assertNotNull(ar);
         assertTrue(ar.isActiveSession());
 
-        verify(request).getSession(false);
+        verify(request,times(3)).getSession(false);
     }
 
     @Test
@@ -67,7 +67,7 @@ public class ActionRequestTest implements MockServletInput {
 
         verify(session).getAttributeNames();
         verify(session).getAttribute("name");
-        verify(request,times(3)).getSession(false);
+        verify(request,times(5)).getSession(false);
     }
 
 
@@ -128,7 +128,7 @@ public class ActionRequestTest implements MockServletInput {
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
-        assertNotNull(ar.userPrincipal());
+        assertNotNull(ar.identity());
     }
 
     @Test

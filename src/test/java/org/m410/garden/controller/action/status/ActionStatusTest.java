@@ -13,13 +13,17 @@ import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.controller.Securable;
+import org.m410.garden.module.auth.AuthorizationProvider;
 import org.m410.garden.transaction.TransactionScope;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import java.security.Principal;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -54,10 +58,15 @@ public class ActionStatusTest {
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
                 Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
+        HttpSession httpSession = mock(HttpSession.class);
+        when(httpSession.getAttribute(AuthorizationProvider.SESSION_KEY)).thenReturn("anything");
+
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/path.m410");
         when(request.getMethod()).thenReturn("GET");
+        when(request.getSession(false)).thenReturn(httpSession);
+        when(request.getSession(false)).thenReturn(httpSession);
 
         Principal principal = mock(Principal.class);
         when(request.getUserPrincipal()).thenReturn(principal);
@@ -125,14 +134,15 @@ public class ActionStatusTest {
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
                 Securable.State.Optional, new String[]{}, new String[]{}, TransactionScope.None);
 
-
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/path.m410");
+        when(request.getSession(false)).thenReturn(null);
 
         final RedirectToAuth expected = new RedirectToAuth("/","/path");
         assertEquals(expected, ad.status(request));
 
+        verify(request).getSession(false);
         verify(request).getContextPath();
         verify(request,times(3)).getRequestURI();
     }
