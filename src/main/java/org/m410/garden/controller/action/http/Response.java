@@ -367,7 +367,6 @@ public final class Response {
      * @param response the servlet response.
      */
     public void handleResponse(HttpServletRequest request, HttpServletResponse response) {
-        log.debug("response:{}",this);
         response.setStatus(status);
         response.setContentType(contentType);
 

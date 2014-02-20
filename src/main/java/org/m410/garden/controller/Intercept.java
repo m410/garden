@@ -22,7 +22,6 @@ public interface Intercept {
      *      controller like a pragma header.
      */
     default Response intercept(ActionRequest actionRequest, Action action) {
-        LoggerFactory.getLogger(getClass()).warn("#### Intercept:{}", actionRequest.identity());
         return action.execute(actionRequest);
     }
 }
