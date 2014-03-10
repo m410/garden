@@ -6,10 +6,10 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.garden.controller.Authorizable;
+import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.status.*;
-import org.m410.garden.controller.Ctlr;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.module.auth.AuthorizationProvider;
 import org.m410.garden.servlet.ServletExtension;
@@ -21,7 +21,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 
 /**
  * This is an action and it's meta data.  It includes it path expression, http method
@@ -45,7 +44,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private static final Logger log = LoggerFactory.getLogger(HttpActionDefinition.class);
     private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.HTTP;
 
-    private final Ctlr controller;
+    private final HttpCtrl controller;
     private final PathExpr pathExpr;
     private final Securable.State useSsl;
     private final List<String> roles;
@@ -54,7 +53,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
 
     private final Action action;
     private final HttpMethod httpMethod;
-    private final List<String> acceptTypes;
+    private final List<String> contentTypes;
 
     private final TransactionScope transactionScope;
 
@@ -74,7 +73,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      *          the Authentication interface.
      * @param transactionScope the transactional scope for the action request.
      */
-    public HttpActionDefinition(Ctlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
+    public HttpActionDefinition(HttpCtrl controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
                                 Securable.State useSsl, String[] acceptTypes, String[] roles,
                                 TransactionScope transactionScope) {
         this.controller = controller;
@@ -83,7 +82,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         this.httpMethod = httpMethod;
         this.useSsl = useSsl;
         this.useAuthentication = controller instanceof Authorizable;
-        this.acceptTypes = ImmutableList.<String>builder().addAll(Arrays.asList(acceptTypes)).build();
+        this.contentTypes = ImmutableList.<String>builder().addAll(Arrays.asList(acceptTypes)).build();
         this.roles = ImmutableList.<String>builder().addAll(Arrays.asList(roles)).build();
         this.transactionScope = transactionScope;
     }
@@ -94,7 +93,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @param contentTypes An array of content types or an empty array for all types.
      * @return a new ActionDefinition
      */
-    public HttpActionDefinition accept(String... contentTypes) {
+    public HttpActionDefinition contentTypes(String... contentTypes) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
                 useSsl,contentTypes, roles.toArray(new String[roles.size()]),transactionScope);
     }
@@ -107,7 +106,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition roles(String... roles) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
-                useSsl , acceptTypes.toArray(new String[acceptTypes.size()]), roles,transactionScope);
+                useSsl , contentTypes.toArray(new String[contentTypes.size()]), roles,transactionScope);
     }
 
     /**
@@ -117,7 +116,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition ssl(Securable.State ssl) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,ssl,
-                acceptTypes.toArray(new String[acceptTypes.size()]), roles.toArray(new String[roles.size()]),
+                contentTypes.toArray(new String[contentTypes.size()]), roles.toArray(new String[roles.size()]),
                 transactionScope);
     }
 
@@ -128,7 +127,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      */
     public HttpActionDefinition transaction(TransactionScope transactionScope) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
-                acceptTypes.toArray(new String[acceptTypes.size()]), roles.toArray(new String[roles.size()]),
+                contentTypes.toArray(new String[contentTypes.size()]), roles.toArray(new String[roles.size()]),
                 transactionScope);
 
     }
@@ -142,7 +141,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     public boolean doesRequestMatchAction(HttpServletRequest req) {
         return pathExpr.doesPathMatch(req) &&
                 httpMethod.toString().equalsIgnoreCase(req.getMethod()) &&
-                (acceptTypes.size() == 0 || acceptTypes.contains(req.getContentType()));
+                (contentTypes.size() == 0 || contentTypes.contains(req.getContentType()));
     }
 
     public ActionStatus status(HttpServletRequest req) {
@@ -176,7 +175,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     @Override
-    public Ctlr getController() {
+    public HttpCtrl getController() {
         return controller;
     }
 
@@ -221,7 +220,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
             return new CompareToBuilder()
                     .append(this.getPathExpr(), that.getPathExpr())
                     .append(this.httpMethod, that.httpMethod)
-                    .append(this.acceptTypes, that.acceptTypes)
+                    .append(this.contentTypes, that.contentTypes)
                     .toComparison();
         }
         else {
@@ -236,7 +235,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
                 .append(DEF_ACTION_PROTOCOL)
                 .append(pathExpr)
                 .append(httpMethod)
-                .append(acceptTypes)
+                .append(contentTypes)
                 .hashCode();
     }
 
@@ -252,7 +251,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         return new EqualsBuilder()
                 .append(this.pathExpr, rhs.pathExpr)
                 .append(this.httpMethod, rhs.httpMethod)
-                .append(this.acceptTypes, rhs.acceptTypes)
+                .append(this.contentTypes, rhs.contentTypes)
                 .isEquals();
     }
 
@@ -261,7 +260,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         return new ToStringBuilder(this)
                 .append("path", pathExpr != null ? pathExpr.toText() : null)
                 .append("method", httpMethod)
-                .append("contentTypes", acceptTypes)
+                .append("contentTypes", contentTypes)
                 .toString();
     }
 }

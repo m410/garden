@@ -1,6 +1,7 @@
 package org.m410.garden.controller;
 
 import org.m410.garden.controller.action.ActionDefinition;
+import org.m410.garden.controller.action.http.HttpActionDefinition;
 
 import java.util.List;
 
@@ -9,7 +10,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public interface Ctlr extends Intercept {
+public interface HttpCtrl extends Intercept {
 
     /**
      * All controllers must implement an action and add it to it's to this list.
@@ -19,6 +20,6 @@ public interface Ctlr extends Intercept {
      *
      * @return a list of action definitions.
      */
-    List<? extends ActionDefinition> actions();
+    List<? extends HttpActionDefinition> actions();
 
 }

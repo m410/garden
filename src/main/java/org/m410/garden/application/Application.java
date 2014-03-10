@@ -1,9 +1,9 @@
 package org.m410.garden.application;
 
+import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.configuration.Configuration;
-import org.m410.garden.controller.Ctlr;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -47,7 +47,7 @@ abstract public class Application implements ApplicationModule {
 
     private List<? extends ThreadLocalSessionFactory> threadLocalsFactories;
     private List<?> services;
-    private List<? extends ActionDefinition> actionDefinitions;
+    private List<? extends HttpActionDefinition> actionDefinitions;
     private List<ServletDefinition> servletDefinitions;
     private List<FilterDefinition> filterDefinitions;
     private List<ListenerDefinition> listenerDefinitions;
@@ -157,23 +157,17 @@ abstract public class Application implements ApplicationModule {
      */
     public void doRequest(HttpServletRequest req, HttpServletResponse res) {
         log.debug("method={}, req={}", req.getMethod(), req.getRequestURI());
-        actionDefinitions.stream()
-                .filter((a) -> a instanceof HttpActionDefinition)
-                .filter((a) -> ((HttpActionDefinition)a).doesRequestMatchAction(req))
-                .findFirst()
-                .ifPresent((a) -> {
-                    final HttpActionDefinition definition = (HttpActionDefinition) a;
-
-                    if(definition.getTransactionScope() == TransactionScope.Action)
-                        doWithThreadLocals(()->{
+        actionDefinitions.stream().filter((a) -> a.doesRequestMatchAction(req)).findFirst()
+                .ifPresent((definition) -> {
+                    if (definition.getTransactionScope() == TransactionScope.Action)
+                        doWithThreadLocals(() -> {
                             definition.apply(req, res);
                             return null;
                         });
                     else
                         definition.apply(req, res);
 
-                }
-            );
+                });
     }
 
     /**
@@ -282,10 +276,10 @@ abstract public class Application implements ApplicationModule {
         services = makeServices(configuration);
         log.debug("services: {}", services);
 
-        List<? extends Ctlr> controllers = makeControllers(configuration);
+        List<? extends HttpCtrl> controllers = makeControllers(configuration);
         log.debug("controllers: {}", controllers);
 
-        ImmutableList.Builder<ActionDefinition> b = ImmutableList.builder();
+        ImmutableList.Builder<HttpActionDefinition> b = ImmutableList.builder();
         controllers.stream().forEach((c) -> b.addAll(c.actions()));
         actionDefinitions = b.build();
         log.debug("actionDefinitions: {}", actionDefinitions);

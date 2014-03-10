@@ -31,7 +31,7 @@ public class ControllerJsonTest implements MockServletInput{
     @Before
     public void setup() {
         myApp = new MyWebApp() {
-            @Override public List<? extends Ctlr> makeControllers(Configuration c) {
+            @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
             }
 

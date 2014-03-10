@@ -28,16 +28,16 @@ public final class XmlController extends Controller {
     }
 
     public final Action httpGetAction = (call) -> {
-        final String msg = "<message id=" + call.urlParameters().get("id") + "></message>";
+        final String msg = "<message id=" + call.url().get("id") + "></message>";
         return respond().asXml(msg);
     };
 
     public final Action httpPostAction = (call) -> {
-        return respond().asXml(call.postBodyAsString());
+        return respond().asXml(call.bodyAsString());
     };
 
     public final Action httpPutAction = (call) -> {
-        return respond().asXml(call.postBodyAsString());
+        return respond().asXml(call.bodyAsString());
     };
 
     public final Action httpDeleteAction = (call) -> {

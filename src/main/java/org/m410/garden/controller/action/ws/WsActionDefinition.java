@@ -1,10 +1,11 @@
 package org.m410.garden.controller.action.ws;
 
 import com.google.common.collect.ImmutableList;
+import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.Securable;
+import org.m410.garden.controller.WsCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
-import org.m410.garden.controller.Ctlr;
 import org.m410.garden.controller.action.http.Action;
 
 import java.util.Arrays;
@@ -19,7 +20,7 @@ import java.util.List;
 public final class WsActionDefinition implements ActionDefinition {
     private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.WS;
     private final PathExpr pathExpr;
-    private final Ctlr controller;
+    private final WsCtrl  controller;
 
     private final Securable.State useSsl;
     private final List<String> roles;
@@ -27,7 +28,7 @@ public final class WsActionDefinition implements ActionDefinition {
 
     private WebSocket webSocket;
 
-    public WsActionDefinition(PathExpr pathExpr, WebSocket webSocket, Ctlr controller,
+    public WsActionDefinition(PathExpr pathExpr, WebSocket webSocket, WsCtrl controller,
                               Securable.State ssl, String[] roles, boolean isAuthenticated) {
         this.pathExpr = pathExpr;
         this.controller = controller;
@@ -43,8 +44,8 @@ public final class WsActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public Ctlr getController() {
-        return controller;
+    public HttpCtrl getController() {
+        return null;
     }
 
     @Override

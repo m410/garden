@@ -27,7 +27,7 @@ public class FileUploadController extends Controller {
     }
 
     Action upload = (req) -> {
-        String in = req.postBodyAsString();
+        String in = req.bodyAsString();
         return respond().asText(in);
     };
 }

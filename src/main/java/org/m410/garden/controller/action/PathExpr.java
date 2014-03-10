@@ -45,7 +45,7 @@ import org.m410.garden.servlet.ServletExtension;
  *     <li>/clients/{name}/users/{id:\\d+}</li>
  * </ul>
 
- * Url parameters are available to an in action using the {@link org.m410.garden.controller.action.http.ActionRequest#urlParameters()}
+ * Url parameters are available to an in action using the {@link org.m410.garden.controller.action.http.ActionRequest#url()}
  * argument.
  *
  * @author Michael Fortin

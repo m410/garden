@@ -82,7 +82,7 @@ public class ActionRequestTest implements MockServletInput {
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
-        assertEquals(1, ar.requestHeaders().size());
+        assertEquals(1, ar.headers().size());
 
 
         verify(request).getHeaderNames();
@@ -99,7 +99,7 @@ public class ActionRequestTest implements MockServletInput {
         PathExpr path = new PathExpr("/persons/{id}/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
-        assertEquals(1, ar.urlParameters().size());
+        assertEquals(1, ar.url().size());
 
 
         verify(request).getContextPath();
@@ -117,9 +117,25 @@ public class ActionRequestTest implements MockServletInput {
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
-        assertEquals(1, ar.requestParameters().size());
+        assertEquals(1, ar.request().size());
 
         verify(request).getParameterMap();
+    }
+
+    @Test
+    public void requestParams() {
+        HttpServletRequest request = mock(HttpServletRequest.class);
+        Map<String,String[]> map = new HashMap<>();
+        map.put("one",new String[]{"two"});
+        when(request.getParameterMap()).thenReturn(map);
+
+        PathExpr path = new PathExpr("/persons/12/children");
+        ActionRequest ar = new ActionRequestDefaultImpl(request, path);
+        assertNotNull(ar);
+        assertEquals(1, ar.params().size());
+        assertEquals("two", ar.params().get("one"));
+
+        verify(request,times(2)).getParameterMap();
     }
 
     @Test
@@ -139,7 +155,7 @@ public class ActionRequestTest implements MockServletInput {
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
-        assertNotNull(ar.postBodyAsStream());
+        assertNotNull(ar.bodyAsStream());
 
         verify(request).getInputStream();
     }
@@ -152,7 +168,7 @@ public class ActionRequestTest implements MockServletInput {
         PathExpr path = new PathExpr("/persons/12/children");
         ActionRequest ar = new ActionRequestDefaultImpl(request, path);
         assertNotNull(ar);
-        assertNotNull(ar.postBodyAsString());
+        assertNotNull(ar.bodyAsString());
 
         verify(request).getInputStream();
 

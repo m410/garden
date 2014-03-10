@@ -2,8 +2,8 @@ package org.m410.garden.module.auth;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.controller.Controller;
-import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.http.Action;
+import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -28,7 +28,7 @@ public class AuthorizationController extends Controller {
     }
 
     @Override
-    public List<? extends ActionDefinition> actions() {
+    public List<? extends HttpActionDefinition> actions() {
         return ImmutableList.of(
                 post("", authAction),
                 get("logout", deauthAction)
@@ -37,7 +37,7 @@ public class AuthorizationController extends Controller {
 
     Action authAction = req -> {
         log.info("req:{}",req);
-        Optional<User> authorized = authorizationProvider.authorize(toMap(req.requestParameters()));
+        Optional<User> authorized = authorizationProvider.authorize(toMap(req.request()));
         log.info("login:{}",authorized);
 
         if(authorized.isPresent())

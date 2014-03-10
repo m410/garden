@@ -32,7 +32,7 @@ public final class JsonInterceptController extends Controller {
     }
 
     public final Action httpGetAction = (call) -> {
-        final String msg = "<message id=" + call.urlParameters().get("id") + "></message>";
+        final String msg = "<message id=" + call.url().get("id") + "></message>";
         return respond().asJson(msg);
     };
 

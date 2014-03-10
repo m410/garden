@@ -4,7 +4,7 @@ package org.m410.garden.fixtures;
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.application.Application;
 import org.m410.garden.configuration.Configuration;
-import org.m410.garden.controller.Ctlr;
+import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.module.migration.MigrationModule;
 import org.m410.garden.module.jpa.JpaModule;
 import org.m410.garden.module.ormbuilder.OrmBuilderModule;
@@ -34,7 +34,7 @@ public class MyWebApp extends Application implements JpaModule, MailModule, JmsM
     }
 
     @Override
-    public List<? extends Ctlr> makeControllers(Configuration c) {
+    public List<? extends HttpCtrl> makeControllers(Configuration c) {
         return ImmutableList.of(
                 new MyController(myService)
         );

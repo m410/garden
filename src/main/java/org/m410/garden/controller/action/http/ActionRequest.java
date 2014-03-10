@@ -1,8 +1,10 @@
 package org.m410.garden.controller.action.http;
 
+import org.apache.commons.fileupload.FileItem;
 import org.m410.garden.controller.action.Identity;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -49,28 +51,46 @@ public interface ActionRequest {
      *
      * @return RequestProperties, it's never null.
      */
-    RequestProperties requestProperties();
+    RequestProperties properties();
 
     /**
      * A map of request headers.
      *
      * @return map never null.
      */
-    Map<String, String> requestHeaders();
+    Map<String, String> headers();
 
     /**
      * the parameters embedded in the url as path expressions.
      *
      * @return always returns a map, that may be empty.
      */
-    Map<String, String> urlParameters();
+    Map<String, String> url();
 
     /**
      * The http servlet request parameters.
      *
      * @return map of string and string array values.
      */
-    Map<String, String[]> requestParameters();
+    Map<String, String[]> request();
+
+    /**
+     * This is the same as request, except that it will convert the values in the map from
+     * string arrays to a strings, using the first item found in the string array if
+     * there is more than one.
+     *
+     * @return Always returns a map, if there is not request parameters then it returns an
+     * empty map
+     */
+    Map<String, String> params();
+
+
+    /**
+     * Files updated to the server.
+     *
+     * @return a list of file items or an empty list.
+     */
+    List<FileItem> files();
 
     /**
      * The body of the request as an input stream.
@@ -78,7 +98,8 @@ public interface ActionRequest {
      * @throws org.m410.garden.controller.action.NotAPostException when it's not a post
      * @return an InputStream if the request is a post.
      */
-    InputStream postBodyAsStream();
+    InputStream bodyAsStream();
+
 
     /**
      * The post body as a string.  This is suitable for requests when you know the content of
@@ -87,5 +108,5 @@ public interface ActionRequest {
      * @throws org.m410.garden.controller.action.NotAPostException when it's not a post
      * @return String value of the post.
      */
-    String postBodyAsString();
+    String bodyAsString();
 }

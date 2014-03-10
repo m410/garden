@@ -2,8 +2,8 @@ package org.m410.garden.transactional.fixtures;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.controller.Controller;
-import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.http.Action;
+import org.m410.garden.controller.action.http.HttpActionDefinition;
 
 import java.util.List;
 
@@ -22,7 +22,7 @@ public final class TrxController extends Controller {
     }
 
     @Override
-    public List<? extends ActionDefinition> actions() {
+    public List<? extends HttpActionDefinition> actions() {
         return ImmutableList.of(
                 get("", noneAction).transaction(None),
                 get("service", serviceAction).transaction(None),

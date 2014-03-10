@@ -26,7 +26,7 @@ import static org.m410.garden.controller.action.http.Response.*;
 @RunWith(JUnit4.class)
 public class ControllerFileDownloadTest implements MockServletInput {
 
-    Ctlr controller = () -> { return null; };
+    HttpCtrl controller = () -> { return null; };
 
 
     @Test

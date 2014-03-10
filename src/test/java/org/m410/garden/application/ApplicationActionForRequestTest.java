@@ -6,7 +6,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.configuration.Configuration;
 import org.m410.garden.configuration.ConfigurationFactory;
-import org.m410.garden.controller.Ctlr;
+import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.fixtures.MyWebApp;
 import org.m410.garden.transaction.ThreadLocalSessionFactory;
 
@@ -31,8 +31,8 @@ public class ApplicationActionForRequestTest {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in, "development");
         app = new MyWebApp() {
-            @Override public List<? extends Ctlr> makeControllers(Configuration c) {
-                List<Ctlr> ctrls = new ArrayList<>();
+            @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
+                List<HttpCtrl> ctrls = new ArrayList<>();
                 final MockController mockController = new MockController();
                 ctrls.add(mockController);
                 return ctrls;

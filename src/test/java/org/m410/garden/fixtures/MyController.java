@@ -2,12 +2,12 @@ package org.m410.garden.fixtures;
 
 
 import com.google.common.collect.ImmutableList;
+import org.m410.garden.controller.Controller;
 import org.m410.garden.controller.action.*;
 import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.http.ActionRequest;
 import org.m410.garden.controller.action.http.Response;
-import org.m410.garden.controller.Controller;
 
 import java.util.List;
 
@@ -27,7 +27,7 @@ public final class MyController extends Controller {
     public List<HttpActionDefinition> actions() {
         return ImmutableList.of(
                 get("path", httpGetAction),
-                get("path2", httpGetAction).accept("text/html"),
+                get("path2", httpGetAction).contentTypes("text/html"),
                 post("path", httpPostAction),
                 put("path", httpPutAction),
                 delete("path", httpDeleteAction)
@@ -41,22 +41,22 @@ public final class MyController extends Controller {
     }
 
     public final Action httpGetAction = (call) -> {
-        final String myEntity = myService.get(call.urlParameters().get("id"));
+        final String myEntity = myService.get(call.url().get("id"));
         return respond().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpPostAction = (call) -> {
-        final String myEntity = myService.get(call.urlParameters().get("id"));
+        final String myEntity = myService.get(call.url().get("id"));
         return respond().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpPutAction = (call) -> {
-        final String myEntity = myService.get(call.urlParameters().get("id"));
+        final String myEntity = myService.get(call.url().get("id"));
         return respond().withModel("name", myEntity).withView("/home");
     };
 
     public final Action httpDeleteAction = (call) -> {
-        final String myEntity = myService.get(call.urlParameters().get("id"));
+        final String myEntity = myService.get(call.url().get("id"));
         return respond().withModel("name", myEntity).withView("/home");
     };
 }

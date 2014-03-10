@@ -1,6 +1,8 @@
 package org.m410.garden.controller;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.ImmutableSortedMap;
+import org.apache.commons.fileupload.FileItem;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -14,6 +16,7 @@ import org.m410.garden.fixtures.MyServiceDaoImpl;
 import org.m410.garden.fixtures.MyServiceImpl;
 
 import java.io.InputStream;
+import java.util.List;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -28,12 +31,14 @@ public class ControllerCrudTest {
         @Override public boolean isActiveSession() { return false; }
         @Override public Identity identity() { return null; }
         @Override public Map<String, Object> session() { return null; }
-        @Override public RequestProperties requestProperties() { return null; }
-        @Override public Map<String, String> requestHeaders() { return null; }
-        @Override public Map<String, String> urlParameters() { return ImmutableSortedMap.of("id", "10"); }
-        @Override public Map<String, String[]> requestParameters() { return null; }
-        @Override public InputStream postBodyAsStream() { return null; }
-        @Override public String postBodyAsString() { return null; }
+        @Override public RequestProperties properties() { return null; }
+        @Override public Map<String, String> headers() { return null; }
+        @Override public Map<String, String> url() { return ImmutableSortedMap.of("id", "10"); }
+        @Override public Map<String, String[]> request() { return null; }
+        @Override public Map<String, String> params() { return null; }
+        @Override public InputStream bodyAsStream() { return null; }
+        @Override public String bodyAsString() { return null; }
+        @Override public List<FileItem> files() { return ImmutableList.of(); }
     };
 
 

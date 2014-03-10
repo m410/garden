@@ -1,8 +1,8 @@
 package org.m410.garden.application;
 
+import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.configuration.Configuration;
-import org.m410.garden.controller.Ctlr;
 import org.m410.garden.servlet.FilterDefinition;
 import org.m410.garden.servlet.ListenerDefinition;
 import org.m410.garden.servlet.ServletDefinition;
@@ -67,7 +67,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of controllers
      */
-    List<? extends Ctlr> makeControllers(Configuration c);
+    List<? extends HttpCtrl> makeControllers(Configuration c);
 
     List<? extends ActionDefinition> getActionDefinitions();
 

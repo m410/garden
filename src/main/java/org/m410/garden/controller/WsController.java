@@ -1,13 +1,13 @@
 package org.m410.garden.controller;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import org.m410.garden.controller.action.*;
+import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.controller.action.http.Response;
-
+import org.m410.garden.controller.action.ws.WebSocket;
+import org.m410.garden.controller.action.ws.WsActionDefinition;
 import org.m410.garden.transaction.TransactionScope;
 
 /**
@@ -53,7 +53,7 @@ import org.m410.garden.transaction.TransactionScope;
  * @see org.m410.garden.controller.action.PathExpr
  * @see org.m410.garden.controller.action.http.Action
  */
-public abstract class Controller implements HttpCtrl {
+public abstract class WsController implements WsCtrl {
 
     /**
      * A helper property to set the content type of action definitions.
@@ -79,7 +79,7 @@ public abstract class Controller implements HttpCtrl {
     /**
      * private constructor so you must implement a path.
      */
-    private Controller() {
+    private WsController() {
         this.pathExpr = null;
     }
 
@@ -89,7 +89,7 @@ public abstract class Controller implements HttpCtrl {
      * @param pathExpr a path expression.
      * @see org.m410.garden.controller.action.PathExpr
      */
-    protected Controller(PathExpr pathExpr) {
+    protected WsController(PathExpr pathExpr) {
         this.pathExpr = pathExpr;
     }
 
@@ -98,86 +98,28 @@ public abstract class Controller implements HttpCtrl {
      *
      * @param pathExpr a base path.
      */
-    protected Controller(String pathExpr) {
+    protected WsController(String pathExpr) {
         this.pathExpr = new PathExpr(pathExpr);
     }
 
     /**
-     * a basic get action.
-     * <p>
-     * Typically used like:
-     * <pre>
-     *  public List&gt;ActionDefinition&gt; actions() {
-     *       return ImmutableList.of(get("", home));
-     *  }
-     *  Action home = req -&gt; respond().withView("/index.jsp");
-     * </pre>
+     * This returns a WebSocket Definition, with takes a WebSocket class with the
+     * handler implementations.
      *
-     * @param path the action path expression
-     * @param act  the action implementation.
-     * @return an action definition
-     */
-    protected final HttpActionDefinition get(String path, Action act) {
-        return act(HttpMethod.GET, act, pathExpr.append(path));
-    }
-
-    /**
-     * A post action definition.
+     * todo not implemented yet.
+     * Note: can't be intercepted.  Don't know how to authorize
      *
      * @param path the path expression
      * @param act  the action
      * @return a new action definition.
      */
-    protected final HttpActionDefinition post(String path, Action act) {
-        return act(HttpMethod.POST, act, pathExpr.append(path));
+    protected final WsActionDefinition ws(String path, WebSocket act) {
+        return new WsActionDefinition(pathExpr.append(path), act, this,
+                Securable.State.Optional, new String[0], false);
     }
 
-    /**
-     * create a put action definition.
-     *
-     * @param path the path expression
-     * @param act  the action
-     * @return a new action definition.
-     */
-    protected final HttpActionDefinition put(String path, Action act) {
-        return act(HttpMethod.PUT, act, pathExpr.append(path));
-    }
-
-    /**
-     * a delete action definition.
-     *
-     * @param path the path expression
-     * @param act  the action
-     * @return a new action definition.
-     */
-    protected final HttpActionDefinition delete(String path, Action act) {
-        return act(HttpMethod.DELETE, act, pathExpr.append(path));
-    }
-
-    /**
-     * A generic action definition builder called by all other methods named with
-     * by the http method. You may call this directly but the convenience methods
-     * are shorter and more readable.  This will also set some default values for the
-     * action definition.  It will set the ssl state to Optional, any accept content
-     * type, any roles, and transactional scope of none.
-     *
-     * @param method   the http method.
-     * @param action   an action.
-     * @param pathExpr the path expression.
-     * @return a new action definition.
-     */
-    protected HttpActionDefinition act(HttpMethod method, Action action, PathExpr pathExpr) {
-        return new HttpActionDefinition(this, action, pathExpr, method, Securable.State.Optional,
-                new String[]{}, new String[]{}, defaultTransactionScope);
-    }
-
-    /**
-     * A helper function used by any action to create a response.
-     *
-     * @return a new response.
-     */
-    protected Response respond() {
-        return new Response();
+    protected WebSocket socket() {
+        return new WebSocket();
     }
 
     @Override

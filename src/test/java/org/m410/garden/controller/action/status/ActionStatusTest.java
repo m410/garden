@@ -7,7 +7,6 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.controller.Authorizable;
 import org.m410.garden.controller.Controller;
-import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
@@ -21,9 +20,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 import java.security.Principal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -43,7 +40,7 @@ public class ActionStatusTest {
 
         @Override public List<String> acceptRoles() { return roles; }
         @Override public State secureState() { return secure; }
-        @Override public List<? extends ActionDefinition> actions() { return ImmutableList.of(); }
+        @Override public List<? extends HttpActionDefinition> actions() { return ImmutableList.of(); }
     }
 
     FixtureController controller = new FixtureController();
@@ -174,7 +171,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.State.Optional, new String[]{}, new String[]{}, TransactionScope.None);
+                Securable.State.Optional, new String[]{"USER"}, new String[]{}, TransactionScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");

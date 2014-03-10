@@ -2,8 +2,8 @@ package org.m410.garden.fixtures;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.controller.Authorizable;
-import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.Controller;
+import org.m410.garden.controller.action.http.HttpActionDefinition;
 
 import java.util.List;
 
