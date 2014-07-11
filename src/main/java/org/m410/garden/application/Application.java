@@ -53,15 +53,12 @@ abstract public class Application implements ApplicationModule {
     private List<FilterDefinition> filterDefinitions;
     private List<ListenerDefinition> listenerDefinitions;
 
-    // private List<ActionDefinition> errorRoutes;
-    //
-    // //  todo add error routes by content type
-    // public void errorRouting() {
-    //     errorRouteBuilder()
-    //         .for("application.json", 404).view("/_/errors/404.json")
-    //         .for("application/json", 500).view("/_/errors/500.json")
-    //         .for("application/xml", 500, true).controller(new ErrorRouteController());
-    // }
+
+    //  todo add error routes by content type
+    //  public void errorRouting(Router router) {
+    //      router.for("application.json", 404).view("/_/errors/404.json")
+    //          .for("application/json", 500).view("/_/errors/500.json");
+    //  }
 
 
     @Override
@@ -80,13 +77,8 @@ abstract public class Application implements ApplicationModule {
     }
 
     @Override
-    public List<? extends ActionDefinition> getActionDefinitions() {
+    public List<ActionDefinition> getActionDefinitions() {
         return actionDefinitions;
-    }
-
-    @Override
-    public List<? extends ThreadLocalSessionFactory> getThreadLocalFactories() {
-        return threadLocalsFactories;
     }
 
     // todo add other web.xml attributes to mvn build, like the orm config.
@@ -110,7 +102,6 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of container listeners.
      */
-    @ListenerComponent
     public List<ListenerDefinition> makeListeners(Configuration c) {
         return ImmutableList.of();
     }
@@ -121,7 +112,6 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of filter definitions.
      */
-    @FilterComponent
     public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
                 new FilterDefinition("M410Filter", "org.m410.garden.servlet.M410Filter", "/*")
@@ -138,7 +128,6 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of servlet definitions
      */
-    @ServletComponent
     public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
                 new ServletDefinition("M410Servlet", "org.m410.garden.servlet.M410Servlet", "", "*.m410")
@@ -154,10 +143,10 @@ abstract public class Application implements ApplicationModule {
      *
      * @param c configuration
      * @return a list of service classes.
-     * @see org.m410.garden.application.ApplicationModule#makeControllers(org.m410.garden.configuration.Configuration)
+     * @see org.m410.j8.application.ApplicationModule#makeControllers(org.m410.j8.configuration.Configuration)
      */
-    @ServiceComponent
-    @Override public List<?> makeServices(Configuration c) {
+    @Override
+    public List<?> makeServices(Configuration c) {
         return ImmutableList.of();
     }
 
