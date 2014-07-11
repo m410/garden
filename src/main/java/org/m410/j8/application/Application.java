@@ -48,6 +48,14 @@ abstract public class Application implements ApplicationModule {
     private List<FilterDefinition> filterDefinitions;
     private List<ListenerDefinition> listenerDefinitions;
 
+
+    //  todo add error routes by content type
+    //  public void errorRouting(Router router) {
+    //      router.for("application.json", 404).view("/_/errors/404.json")
+    //          .for("application/json", 500).view("/_/errors/500.json");
+    //  }
+
+
     @Override
     public List<ServletDefinition> getServlets() {
         return servletDefinitions;

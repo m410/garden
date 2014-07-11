@@ -8,4 +8,7 @@ package org.m410.j8.action;
  */
 public interface Action {
     public Response action(ActionRequest args);
+
+
+    // todo need to add an ActionThrows action that looks like this but has throws Exception as part of the method signature
 }
