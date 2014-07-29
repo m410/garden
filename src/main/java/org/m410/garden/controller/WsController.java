@@ -14,7 +14,6 @@ import org.m410.garden.transaction.TransactionScope;
  * This is the default implementation of a the Ctlr interface.
  * <p>
  * To create your own application controller add a class like this.
- * <p>
  * <pre>
  * public class MyController extends Controller {
  *     public MyController() { super("basepath"); }
