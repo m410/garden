@@ -36,7 +36,7 @@ public final class MyController extends Controller {
 
 
     @Override
-    public Response intercept(ActionRequest actionRequest, Action action) {
+    public Response intercept(ActionRequest actionRequest, Action action) throws Exception {
         return super.intercept(actionRequest, action);
     }
 
@@ -60,4 +60,3 @@ public final class MyController extends Controller {
         return respond().withModel("name", myEntity).withView("/home");
     };
 }
-

@@ -41,7 +41,7 @@ public class ControllerTransactionTest implements MockServletInput {
     }
 
     @Test
-    public void testNoTransaction() throws IOException {
+    public void testNoTransaction() throws Exception {
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/");
         when(request.getMethod()).thenReturn("GET");
@@ -57,7 +57,7 @@ public class ControllerTransactionTest implements MockServletInput {
     }
 
     @Test
-    public void testTransactionInService()  throws IOException {
+    public void testTransactionInService()  throws Exception {
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/service");
         when(request.getMethod()).thenReturn("GET");
@@ -71,7 +71,7 @@ public class ControllerTransactionTest implements MockServletInput {
     }
 
     @Test
-    public void testTransactionWithActionAndService()  throws IOException {
+    public void testTransactionWithActionAndService()  throws Exception {
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/action-service");
         when(request.getMethod()).thenReturn("GET");
@@ -85,7 +85,7 @@ public class ControllerTransactionTest implements MockServletInput {
     }
 
     @Test
-    public void testTransactionInAction()  throws IOException {
+    public void testTransactionInAction()  throws Exception {
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/action");
         when(request.getMethod()).thenReturn("GET");
@@ -101,7 +101,7 @@ public class ControllerTransactionTest implements MockServletInput {
     }
 
     @Test
-    public void testTransactionInActionAndView()  throws ServletException, IOException {
+    public void testTransactionInActionAndView()  throws Exception {
         M410Filter filter = new M410Filter();
 
         ServletContext context = mock(ServletContext.class);
@@ -119,7 +119,7 @@ public class ControllerTransactionTest implements MockServletInput {
     }
 
     @Test
-    public void noTransactionWithAction()  throws ServletException, IOException {
+    public void noTransactionWithAction()  throws Exception {
         M410Filter filter = new M410Filter();
 
         ServletContext context = mock(ServletContext.class);

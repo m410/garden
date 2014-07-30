@@ -166,20 +166,24 @@ abstract public class Application implements ApplicationModule {
      * @param req the http servlet request
      * @param res the http servlet response
      */
-    public void doRequest(HttpServletRequest req, HttpServletResponse res) {
+    public void doRequest(HttpServletRequest req, HttpServletResponse res) throws Exception {
         log.debug("method={}, req={}", req.getMethod(), req.getRequestURI());
-        actionDefinitions.stream().filter((a) -> a.doesRequestMatchAction(req)).findFirst()
-                .ifPresent((definition) -> {
-                    if (definition.getTransactionScope() == TransactionScope.Action)
-                        doWithThreadLocals(() -> {
-                            definition.apply(req, res);
-                            return null;
-                        });
-                    else
-                        definition.apply(req, res);
+        Optional optional = actionDefinitions.stream()
+                .filter((a) -> a.doesRequestMatchAction(req))
+                .findFirst();
 
+        if(optional.isPresent()) {
+            HttpActionDefinition definition = (HttpActionDefinition)optional.get();
+
+            if (definition.getTransactionScope() == TransactionScope.Action)
+                doWithThreadLocals(() -> {
+                    definition.apply(req, res);
+                    return null;
                 });
-    }
+            else
+                definition.apply(req, res);
+        }
+   }
 
     /**
      * Finds an action based on the request URI.
@@ -199,7 +203,7 @@ abstract public class Application implements ApplicationModule {
      * Used for internal use to wrap actions in a single method function.
      */
     public interface Work {
-        Object doWork();
+        Object doWork() throws Exception;
     }
 
     /**
@@ -209,7 +213,7 @@ abstract public class Application implements ApplicationModule {
      * @return when it's called by the filter or an action this can and should return null, when
      *  it's called to wrap a service call, it should be the the result of the method invocation.
      */
-    public Object doWithThreadLocals(Work work) {
+    public Object doWithThreadLocals(Work work) throws Exception {
         return doWithThreadLocal(threadLocalsFactories, work);
     }
 
@@ -221,7 +225,8 @@ abstract public class Application implements ApplicationModule {
      * @param block an internal worker closure.
      * @return in most cases it will be null, except when wrapping the call to a service method.
      */
-    protected Object doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block) {
+    protected Object doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block)
+            throws Exception {
         if (tlf != null && tlf.size() >= 1) {
             ThreadLocalSession session = tlf.get(tlf.size() - 1).make();
             session.start();

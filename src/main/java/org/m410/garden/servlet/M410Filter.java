@@ -56,10 +56,15 @@ public class M410Filter implements Filter {
                     log.trace("ActOn({},{})", action, action.getTransactionScope());
 
                     if(action.getTransactionScope() == TransactionScope.ActionAndView)
-                        webapp.doWithThreadLocals(() -> {
-                            wrapExceptions(() -> chain.doFilter(req, res));
-                            return null;
-                        });
+                        try {
+                            webapp.doWithThreadLocals(() -> {
+                                wrapExceptions(() -> chain.doFilter(req, res));
+                                return null;
+                            });
+                        }
+                        catch(Exception e) {
+                            throw new ServletException(e);
+                        }
                     else
                         chain.doFilter(req, res);
 

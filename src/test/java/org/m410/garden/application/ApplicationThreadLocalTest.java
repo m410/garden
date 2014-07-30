@@ -40,7 +40,7 @@ public class ApplicationThreadLocalTest {
     }
 
     @Test
-    public void wrapWithOneThreadLocal() {
+    public void wrapWithOneThreadLocal() throws Exception {
         Application.Work work = () -> {
             assertEquals("local", MyThreadLocal.get());
             return null;
@@ -52,7 +52,7 @@ public class ApplicationThreadLocalTest {
     }
 
     @Test
-    public void wrapWithManyThreadLocal() {
+    public void wrapWithManyThreadLocal() throws Exception {
         Application.Work work = () -> {
             assertEquals("local2", MyThreadLocal.get());
             assertEquals("local3", My2ThreadLocal.get());

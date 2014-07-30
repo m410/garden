@@ -132,7 +132,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
 
     }
 
-    public void apply(HttpServletRequest request, HttpServletResponse response) {
+    public void apply(HttpServletRequest request, HttpServletResponse response) throws Exception {
         log.debug("action definition:{}",this);
         final ActionRequestDefaultImpl actionRequest = new ActionRequestDefaultImpl(request, pathExpr);
         controller.intercept(actionRequest, action).handleResponse(request, response);

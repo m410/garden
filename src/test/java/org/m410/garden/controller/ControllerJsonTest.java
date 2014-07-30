@@ -45,7 +45,7 @@ public class ControllerJsonTest implements MockServletInput{
 
 
     @Test
-    public void testGetJson() throws IOException {
+    public void testGetJson() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/json");
@@ -66,7 +66,7 @@ public class ControllerJsonTest implements MockServletInput{
     }
 
     @Test
-    public void testPostJson() throws IOException {
+    public void testPostJson() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/json");
@@ -88,7 +88,7 @@ public class ControllerJsonTest implements MockServletInput{
     }
 
     @Test
-    public void testPutJson() throws IOException {
+    public void testPutJson() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/json/100");
@@ -110,7 +110,7 @@ public class ControllerJsonTest implements MockServletInput{
     }
 
     @Test
-    public void testDeleteJson() throws IOException {
+    public void testDeleteJson() throws Exception {
         HttpSession session = mock(HttpSession.class);
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getSession()).thenReturn(session);

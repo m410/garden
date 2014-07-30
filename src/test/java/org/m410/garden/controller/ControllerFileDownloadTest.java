@@ -30,7 +30,7 @@ public class ControllerFileDownloadTest implements MockServletInput {
 
 
     @Test
-    public void testDownload() throws IOException {
+    public void testDownload() throws Exception {
         HttpServletResponse response = mock(HttpServletResponse.class);
         final StringBuffer sb = new StringBuffer();
         when(response.getOutputStream()).thenReturn(servletOutputStream(sb));

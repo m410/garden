@@ -42,7 +42,7 @@ public class ControllerFileUploadTest implements MockServletInput{
     }
 
     @Test
-    public void uploadFile() throws IOException {
+    public void uploadFile() throws Exception {
         final String expected = "post text";
 
         HttpServletRequest request = mock(HttpServletRequest.class);

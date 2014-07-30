@@ -43,7 +43,7 @@ public class ControllerCrudTest {
 
 
     @Test
-    public void testGetByUrlParameter() {
+    public void testGetByUrlParameter() throws Exception {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
         Response response = controller.httpGetAction.execute(mockRequest);
@@ -54,7 +54,7 @@ public class ControllerCrudTest {
     }
 
     @Test
-    public void testList() {
+    public void testList() throws Exception {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 
@@ -66,7 +66,7 @@ public class ControllerCrudTest {
     }
 
     @Test
-    public void testCreate() {
+    public void testCreate() throws Exception {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 
@@ -78,7 +78,7 @@ public class ControllerCrudTest {
     }
 
     @Test
-    public void testUpdate() {
+    public void testUpdate() throws Exception {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 
@@ -90,7 +90,7 @@ public class ControllerCrudTest {
     }
 
     @Test
-    public void testDelete() {
+    public void testDelete() throws Exception {
         MyService myService = new MyServiceImpl(new MyServiceDaoImpl());
         MyController controller = new MyController(myService);
 

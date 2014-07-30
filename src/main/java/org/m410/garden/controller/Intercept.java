@@ -21,7 +21,7 @@ public interface Intercept {
      * @return a Response object, this can be modified to add values to every action in the
      *      controller like a pragma header.
      */
-    default Response intercept(ActionRequest actionRequest, Action action) {
+    default Response intercept(ActionRequest actionRequest, Action action) throws Exception {
         return action.execute(actionRequest);
     }
 }

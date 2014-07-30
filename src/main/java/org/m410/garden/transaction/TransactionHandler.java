@@ -33,14 +33,9 @@ public final class TransactionHandler<T> implements InvocationHandler {
             return method.invoke(instance,args);
     }
 
-    protected Object wrapInvocation(Method method, Object[] args) {
+    protected Object wrapInvocation(Method method, Object[] args) throws Exception{
         return application.doWithThreadLocals(() -> {
-            try {
-                return method.invoke(instance,args);
-            }
-            catch (IllegalAccessException  | InvocationTargetException e) {
-                throw new RuntimeException(e);
-            }
+            return method.invoke(instance,args);
         });
     }
 

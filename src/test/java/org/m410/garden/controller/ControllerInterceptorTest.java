@@ -19,7 +19,7 @@ import static org.mockito.Mockito.*;
 public class ControllerInterceptorTest {
 
     @Test
-    public void testIntercept() {
+    public void testIntercept() throws Exception {
         HttpSession session = mock(HttpSession.class);
 
         HttpServletRequest request = mock(HttpServletRequest.class);

@@ -38,7 +38,7 @@ public interface Authorizable extends Intercept{
      * @return a Response object, this can be modified to add values to every action in the
      *      controller like a pragma header.
      */
-    default Response intercept(ActionRequest actionRequest, ActionDefinition action) {
+    default Response intercept(ActionRequest actionRequest, ActionDefinition action) throws Exception {
         if(!actionRequest.identity().isAnonymous()) {
             final List<String> userRoles = Arrays.asList(actionRequest.identity().getUserRoles());
             final Optional<String> any = action.getAuthorizedRoles().stream().filter(userRoles::contains).findAny();

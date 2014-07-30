@@ -17,7 +17,7 @@ import java.util.List;
 public final class JsonInterceptController extends Controller {
 
     @Override
-    public Response intercept(ActionRequest actionRequest, Action action) {
+    public Response intercept(ActionRequest actionRequest, Action action) throws Exception {
         return action.execute(actionRequest).withContentType("text/plain");
     }
 
@@ -37,4 +37,3 @@ public final class JsonInterceptController extends Controller {
     };
 
 }
-

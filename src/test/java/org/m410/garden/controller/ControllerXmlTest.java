@@ -44,7 +44,7 @@ public class ControllerXmlTest implements MockServletInput {
     }
 
     @Test
-    public void testGetXml() throws IOException {
+    public void testGetXml() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/xml");
@@ -62,7 +62,7 @@ public class ControllerXmlTest implements MockServletInput {
     }
 
     @Test
-    public void testPostXml() throws IOException {
+    public void testPostXml() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/xml");
@@ -81,7 +81,7 @@ public class ControllerXmlTest implements MockServletInput {
     }
 
     @Test
-    public void testPutXml() throws IOException {
+    public void testPutXml() throws Exception {
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
         when(request.getRequestURI()).thenReturn("/xml/100");
@@ -99,7 +99,7 @@ public class ControllerXmlTest implements MockServletInput {
     }
 
     @Test
-    public void testDeleteXml() throws IOException {
+    public void testDeleteXml() throws Exception {
 
         HttpSession session = mock(HttpSession.class);
 

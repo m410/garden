@@ -37,7 +37,7 @@ public interface Authorizable extends Intercept {
      * @return a Response object, this can be modified to add values to every action in the
      *      controller like a pragma header.
      */
-    default Response intercept(ActionRequest actionRequest, ActionDefinition action) {
+    default Response intercept(ActionRequest actionRequest, ActionDefinition action) throws Exception{
         LoggerFactory.getLogger(getClass()).warn("#### Authorizable:{}", actionRequest.identity());
 
         if(!actionRequest.identity().isAnonymous()) {
