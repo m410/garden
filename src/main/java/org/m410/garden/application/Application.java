@@ -1,5 +1,6 @@
 package org.m410.garden.application;
 
+import org.m410.garden.application.annotate.*;
 import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
@@ -109,6 +110,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of container listeners.
      */
+    @ListenerComponent
     public List<ListenerDefinition> makeListeners(Configuration c) {
         return ImmutableList.of();
     }
@@ -119,6 +121,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of filter definitions.
      */
+    @FilterComponent
     public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
                 new FilterDefinition("M410Filter", "org.m410.garden.servlet.M410Filter", "/*")
@@ -135,6 +138,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of servlet definitions
      */
+    @ServletComponent
     public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
                 new ServletDefinition("M410Servlet", "org.m410.garden.servlet.M410Servlet", "", "*.m410")
@@ -152,8 +156,8 @@ abstract public class Application implements ApplicationModule {
      * @return a list of service classes.
      * @see org.m410.garden.application.ApplicationModule#makeControllers(org.m410.garden.configuration.Configuration)
      */
-    @Override
-    public List<?> makeServices(Configuration c) {
+    @ServiceComponent
+    @Override public List<?> makeServices(Configuration c) {
         return ImmutableList.of();
     }
 
@@ -165,6 +169,7 @@ abstract public class Application implements ApplicationModule {
      *
      * @param req the http servlet request
      * @param res the http servlet response
+     * @throws Exception everything by default.
      */
     public void doRequest(HttpServletRequest req, HttpServletResponse res) throws Exception {
         log.debug("method={}, req={}", req.getMethod(), req.getRequestURI());
@@ -212,6 +217,7 @@ abstract public class Application implements ApplicationModule {
      * @param work internal closure to wrap the action.
      * @return when it's called by the filter or an action this can and should return null, when
      *  it's called to wrap a service call, it should be the the result of the method invocation.
+     * @throws Exception everything by default.
      */
     public Object doWithThreadLocals(Work work) throws Exception {
         return doWithThreadLocal(threadLocalsFactories, work);
@@ -224,6 +230,7 @@ abstract public class Application implements ApplicationModule {
      * @param tlf   list of ThreadLocalFactory objects
      * @param block an internal worker closure.
      * @return in most cases it will be null, except when wrapping the call to a service method.
+     * @throws Exception everything by default.
      */
     protected Object doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block)
             throws Exception {
@@ -248,7 +255,6 @@ abstract public class Application implements ApplicationModule {
      *     MyService myService = transactional(MyService.class,new MyServiceImpl());
      * </pre>
      *
-     *
      * @param intrface the Class for the interface that is proxied.
      * @param instance an instance of the interface that is invoked.
      * @param methods names of method to wrap in a transaction, if all transaction are
@@ -256,7 +262,9 @@ abstract public class Application implements ApplicationModule {
      * @param <T> the type of the class and instance to proxy
      * @return a proxy for the instance.
      */
+    @SuppressWarnings("unchecked")
     protected <T> T transactional(Class<T> intrface, T instance, String... methods) {
+        // todo this should be moved to a module.
         final ClassLoader loader = Thread.currentThread().getContextClassLoader();
         final Class[] interfaces = {intrface};
         final TransactionHandler<T> handler = new TransactionHandler<>(instance, methods, this);

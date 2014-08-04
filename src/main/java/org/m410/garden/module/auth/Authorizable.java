@@ -37,6 +37,7 @@ public interface Authorizable extends Intercept{
      * @param action the definition of the action.
      * @return a Response object, this can be modified to add values to every action in the
      *      controller like a pragma header.
+     * @throws Exception everything by default.
      */
     default Response intercept(ActionRequest actionRequest, ActionDefinition action) throws Exception {
         if(!actionRequest.identity().isAnonymous()) {
