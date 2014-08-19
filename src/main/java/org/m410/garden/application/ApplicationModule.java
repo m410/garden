@@ -1,5 +1,6 @@
 package org.m410.garden.application;
 
+import org.m410.garden.application.annotate.ThreadLocalComponent;
 import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.configuration.Configuration;
@@ -57,6 +58,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of thread local factory implementations.
      */
+    @ThreadLocalComponent
     List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c);
 
     List<? extends ThreadLocalSessionFactory> getThreadLocalFactories();

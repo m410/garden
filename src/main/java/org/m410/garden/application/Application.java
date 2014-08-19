@@ -10,8 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import java.lang.reflect.Proxy;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.servlet.FilterDefinition;
@@ -188,8 +187,8 @@ abstract public class Application implements ApplicationModule {
     public Optional<HttpActionDefinition> actionForRequest(HttpServletRequest request) {
         return actionDefinitions.stream()
                 .filter((a) -> a instanceof HttpActionDefinition)
-                .filter((a) -> ((HttpActionDefinition)a).doesRequestMatchAction(request))
-                .map((a)->((HttpActionDefinition)a))
+                .filter((a) -> ((HttpActionDefinition) a).doesRequestMatchAction(request))
+                .map((a) -> ((HttpActionDefinition) a))
                 .findFirst();
     }
 
@@ -273,23 +272,24 @@ abstract public class Application implements ApplicationModule {
      * @see org.m410.garden.application.ApplicationModule#init(org.m410.garden.configuration.Configuration)
      * @param configuration the configuration.
      */
-    public void init(Configuration configuration) {
-        threadLocalsFactories = makeThreadLocalFactories(configuration);
+    public void init(final Configuration configuration) {
+        initScan(configuration, ThreadLocalComponent.class, threadLocalsFactories);
         log.debug("threadLocalsFactories: {}", threadLocalsFactories);
 
-        servletDefinitions = makeServlets(configuration);
+        initScan(configuration, ServletComponent.class, servletDefinitions);
         log.debug("servletDefinitions: {}", servletDefinitions);
 
-        filterDefinitions = makeFilters(configuration);
+        initScan(configuration, FilterComponent.class, filterDefinitions);
         log.debug("filterDefinitions: {}", filterDefinitions);
 
-        listenerDefinitions = makeListeners(configuration);
+        initScan(configuration, ListenerComponent.class, listenerDefinitions);
         log.debug("listenerDefinitions: {}", listenerDefinitions);
 
-        services = makeServices(configuration);
+        initScan(configuration, ServiceComponent.class, services);
         log.debug("services: {}", services);
 
-        List<? extends HttpCtrl> controllers = makeControllers(configuration);
+        List<? extends HttpCtrl> controllers = new ArrayList<>();
+        initScan(configuration, ControllerComponent.class, controllers);
         log.debug("controllers: {}", controllers);
 
         ImmutableList.Builder<HttpActionDefinition> b = ImmutableList.builder();
@@ -297,6 +297,22 @@ abstract public class Application implements ApplicationModule {
         actionDefinitions = b.build();
         log.debug("actionDefinitions: {}", actionDefinitions);
 
+    }
+
+    private <T> void initScan(Configuration configuration, Class<T> componentClass, Collection collection) {
+        final Class thisClass = getClass();
+        Arrays.asList(thisClass.getMethods()).stream()
+                .filter(m -> Arrays.asList(m.getDeclaredAnnotations()).stream()
+                        .filter(a -> a.annotationType().equals(componentClass))
+                        .findAny().isPresent())
+                .forEach(threadLocalFactoryList -> {
+                    try {
+                        Object result = threadLocalFactoryList.invoke(this, configuration);
+                        collection.addAll((List) result);
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 
     public void destroy() {

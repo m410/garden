@@ -12,6 +12,7 @@ import org.m410.garden.module.ormbuilder.orm.EntityFactory;
 import org.m410.garden.module.jms.JmsModule;
 import org.m410.garden.module.mail.MailModule;
 
+import java.util.Collection;
 import java.util.List;
 
 
@@ -23,6 +24,23 @@ public class MyWebApp extends Application implements JpaModule, MailModule, JmsM
 
     MyServiceDao myServiceDao = new MyServiceDaoImpl();
     MyService myService = new MyServiceImpl(myServiceDao);
+    // todo trxProxy
+    // todo jpaTrxProxy(MyService.class, new MyServiceImpl())
+    // todo componentService(MailService.class, "mailService")
+
+//    @Override
+//    Collection<ManagedService> managedServices(final Configuration config) {
+//        return ImmutableList.of(new ManagedService() {
+//            void start() {
+//                myService.doStartup();
+//            }
+//
+//            void shutdown() {
+//                myService.doShutdown();
+//            }
+//        });
+//    }
+
 
     @Override
     public List<?> makeServices(Configuration c) {

@@ -25,11 +25,11 @@ public class ApplicationLoader {
      * @return an instance of the Application class.
      */
     @SuppressWarnings("unchecked")
-    public Application load() {
+    public Application load(String env) {
         ClassLoader appClassLoader = getClass().getClassLoader();
 
         try {
-            Configuration config = ConfigurationFactory.runtime("development");
+            Configuration config = ConfigurationFactory.runtime(env);
             String projectApplicationClass = config.getApplication().getApplicationClass();
 
             Class appClass = appClassLoader.loadClass(projectApplicationClass);
