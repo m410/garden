@@ -1,9 +1,11 @@
 package org.m410.garden.application;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.garden.application.annotate.ControllerComponent;
 import org.m410.garden.configuration.Configuration;
 import org.m410.garden.configuration.ConfigurationFactory;
 import org.m410.garden.controller.HttpCtrl;
@@ -36,11 +38,6 @@ public class ApplicationActionForRequestTest {
                 final MockController mockController = new MockController();
                 ctrls.add(mockController);
                 return ctrls;
-            }
-
-            @Override
-            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
-                return null;
             }
         };
         app.init(conf);

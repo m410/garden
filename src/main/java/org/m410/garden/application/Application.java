@@ -45,12 +45,12 @@ import org.slf4j.LoggerFactory;
 abstract public class Application implements ApplicationModule {
     private static final Logger log = LoggerFactory.getLogger(Application.class);
 
-    private List<? extends ThreadLocalSessionFactory> threadLocalsFactories;
-    private List<?> services;
-    private List<? extends HttpActionDefinition> actionDefinitions;
-    private List<ServletDefinition> servletDefinitions;
-    private List<FilterDefinition> filterDefinitions;
-    private List<ListenerDefinition> listenerDefinitions;
+    private List<ThreadLocalSessionFactory> threadLocalsFactories = new ArrayList<>();
+    private List<Object> services = new ArrayList<>();
+    private List<? extends HttpActionDefinition> actionDefinitions = new ArrayList<>();
+    private List<ServletDefinition> servletDefinitions = new ArrayList<>();
+    private List<FilterDefinition> filterDefinitions = new ArrayList<>();
+    private List<ListenerDefinition> listenerDefinitions = new ArrayList<>();
 
 
     //  todo add error routes by content type
@@ -101,6 +101,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of container listeners.
      */
+    @ListenerComponent
     public List<ListenerDefinition> makeListeners(Configuration c) {
         return ImmutableList.of();
     }
@@ -111,6 +112,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of filter definitions.
      */
+    @FilterComponent
     public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
                 new FilterDefinition("M410Filter", "org.m410.garden.servlet.M410Filter", "/*")
@@ -127,6 +129,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of servlet definitions
      */
+    @ServletComponent
     public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
                 new ServletDefinition("M410Servlet", "org.m410.garden.servlet.M410Servlet", "", "*.m410")
@@ -177,6 +180,11 @@ abstract public class Application implements ApplicationModule {
                 definition.apply(req, res);
         }
    }
+
+    @Override
+    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+        return ImmutableList.of();
+    }
 
     /**
      * Finds an action based on the request URI.
@@ -274,22 +282,28 @@ abstract public class Application implements ApplicationModule {
      */
     public void init(final Configuration configuration) {
         initScan(configuration, ThreadLocalComponent.class, threadLocalsFactories);
+        threadLocalsFactories.addAll(makeThreadLocalFactories(configuration));
         log.debug("threadLocalsFactories: {}", threadLocalsFactories);
 
         initScan(configuration, ServletComponent.class, servletDefinitions);
+        servletDefinitions.addAll(makeServlets(configuration));
         log.debug("servletDefinitions: {}", servletDefinitions);
 
         initScan(configuration, FilterComponent.class, filterDefinitions);
+        filterDefinitions.addAll(makeFilters(configuration));
         log.debug("filterDefinitions: {}", filterDefinitions);
 
         initScan(configuration, ListenerComponent.class, listenerDefinitions);
+        listenerDefinitions.addAll(makeListeners(configuration));
         log.debug("listenerDefinitions: {}", listenerDefinitions);
 
         initScan(configuration, ServiceComponent.class, services);
+        services.addAll(makeServices(configuration));
         log.debug("services: {}", services);
 
-        List<? extends HttpCtrl> controllers = new ArrayList<>();
+        List<HttpCtrl> controllers = new ArrayList<>();
         initScan(configuration, ControllerComponent.class, controllers);
+        controllers.addAll(makeControllers(configuration));
         log.debug("controllers: {}", controllers);
 
         ImmutableList.Builder<HttpActionDefinition> b = ImmutableList.builder();
@@ -297,6 +311,7 @@ abstract public class Application implements ApplicationModule {
         actionDefinitions = b.build();
         log.debug("actionDefinitions: {}", actionDefinitions);
 
+        // todo call any initComponents, like db migrations here
     }
 
     private <T> void initScan(Configuration configuration, Class<T> componentClass, Collection collection) {

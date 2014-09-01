@@ -32,11 +32,6 @@ public class ControllerFileUploadTest implements MockServletInput{
             @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
             }
-
-            @Override
-            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
-                return null;
-            }
         };
         myApp.init(null);
     }
