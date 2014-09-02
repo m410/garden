@@ -47,7 +47,7 @@ abstract public class Application implements ApplicationModule {
 
     private List<ThreadLocalSessionFactory> threadLocalsFactories = new ArrayList<>();
     private List<Object> services = new ArrayList<>();
-    private List<? extends HttpActionDefinition> actionDefinitions = new ArrayList<>();
+    private List<HttpActionDefinition> actionDefinitions = new ArrayList<>();
     private List<ServletDefinition> servletDefinitions = new ArrayList<>();
     private List<FilterDefinition> filterDefinitions = new ArrayList<>();
     private List<ListenerDefinition> listenerDefinitions = new ArrayList<>();
@@ -76,7 +76,7 @@ abstract public class Application implements ApplicationModule {
     }
 
     @Override
-    public List<ActionDefinition> getActionDefinitions() {
+    public List<HttpActionDefinition> getActionDefinitions() {
         return actionDefinitions;
     }
 
@@ -145,7 +145,6 @@ abstract public class Application implements ApplicationModule {
      *
      * @param c configuration
      * @return a list of service classes.
-     * @see org.m410.j8.application.ApplicationModule#makeControllers(org.m410.j8.configuration.Configuration)
      */
     @Override
     public List<?> makeServices(Configuration c) {
@@ -180,6 +179,11 @@ abstract public class Application implements ApplicationModule {
                 definition.apply(req, res);
         }
    }
+
+    @Override
+    public List<? extends ThreadLocalSessionFactory> getThreadLocalFactories() {
+        return threadLocalsFactories;
+    }
 
     @Override
     public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {

@@ -4,6 +4,7 @@ import org.m410.garden.application.annotate.ThreadLocalComponent;
 import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.configuration.Configuration;
+import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.servlet.FilterDefinition;
 import org.m410.garden.servlet.ListenerDefinition;
 import org.m410.garden.servlet.ServletDefinition;
@@ -70,7 +71,7 @@ public interface ApplicationModule {
      */
     List<? extends HttpCtrl> makeControllers(Configuration c);
 
-    List<? extends ActionDefinition> getActionDefinitions();
+    List<? extends HttpActionDefinition> getActionDefinitions();
 
     /**
      * Creates the application services.
