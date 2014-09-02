@@ -1,5 +1,6 @@
 package org.m410.garden.application;
 
+import com.google.common.collect.ImmutableList;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -29,13 +30,7 @@ public class ApplicationThreadLocalTest {
     public void setup() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in, "development");
-        app = new MyWebApp(){
-
-            @Override
-            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
-                return null;
-            }
-        };
+        app = new MyWebApp();
         app.init(conf);
     }
 

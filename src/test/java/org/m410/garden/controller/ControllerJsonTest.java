@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.garden.application.annotate.ControllerComponent;
 import org.m410.garden.transaction.ThreadLocalSessionFactory;
 import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.fixtures.JsonController;
@@ -33,11 +34,6 @@ public class ControllerJsonTest implements MockServletInput{
         myApp = new MyWebApp() {
             @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
-            }
-
-            @Override
-            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
-                return null;
             }
         };
         myApp.init(null);

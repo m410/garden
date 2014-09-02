@@ -26,12 +26,7 @@ public class ApplicationTest {
     public void applicationLoad() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         Configuration conf = ConfigurationFactory.fromInputStream(in,"development");
-        Application app = new MyWebApp() {
-            @Override
-            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
-                return null;
-            }
-        };
+        Application app = new MyWebApp();
         app.init(conf);
         assertNotNull(app);
     }
@@ -44,7 +39,7 @@ public class ApplicationTest {
 
             @Override
             public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(Configuration c) {
-                return null;
+                return ImmutableList.of();
             }
         };
         app.init(conf);
