@@ -1,0 +1,8 @@
+#
+# just a temporary placeholder
+#
+
+modules:
+  - name: m410-jpa
+    org: org.m410.garden.hibernate
+    version: "0.1"
