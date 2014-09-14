@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
  */
 @RunWith(JUnit4.class)
 public class ConfigurationDefinitionTest {
-    final String configFile = "configuration.m410.yml";
+    final String configFile = "garden.fab.xml";
 
     @Before
     public void setup() {

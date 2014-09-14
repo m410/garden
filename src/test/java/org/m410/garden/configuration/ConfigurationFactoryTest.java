@@ -15,7 +15,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(JUnit4.class)
 public class ConfigurationFactoryTest {
-    final String configFile = "configuration.m410.yml";
+    final String configFile = "garden.fab.xml";
 
 
     @Test

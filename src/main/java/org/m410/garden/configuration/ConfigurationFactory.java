@@ -10,8 +10,8 @@ import java.util.Map;
 /**
  */
 public class ConfigurationFactory {
-    public static final String  configFile = "configuration.m410.yml";
-    public static final String  altConfigFile = "/configuration.m410.yml";
+    public static final String  configFile = "garden.fab.yml";
+    public static final String  altConfigFile = "/garden.fab.yml";
 
     public static Configuration runtime(String env) {
         InputStream in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(configFile);

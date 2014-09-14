@@ -26,7 +26,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 
 /**
- * Creates the persistence xml with the configuration properties set in the configuration.m410.yml
+ * Creates the persistence xml with the configuration properties set in the garden.fab.xml
  *
  * @author Michael Fortin
  */

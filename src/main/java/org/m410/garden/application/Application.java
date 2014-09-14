@@ -273,7 +273,7 @@ abstract public class Application implements ApplicationModule {
 
     /**
      * Initializes the application with the application configuration defined in the
-     * configuration.m410.yml file.
+     * garden.fab.xml file.
      *
      * It initialized the thread locals, servlets, servlet filters, container listeners,
      * services, controllers and actions, in that order.
