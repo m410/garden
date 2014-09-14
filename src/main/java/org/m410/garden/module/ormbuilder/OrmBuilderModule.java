@@ -25,7 +25,7 @@ public interface OrmBuilderModule {
     /**
      * Creates the builder with the injected application configuration.
      *
-     * @param configuration the garden.fab.xml file once serialized.
+     * @param configuration the garden.fab.yml file once serialized.
      * @return the builder for the application.
      */
     default OrmXmlBuilder configureBuilder(Configuration configuration) {

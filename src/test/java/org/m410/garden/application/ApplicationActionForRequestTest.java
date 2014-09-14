@@ -25,7 +25,7 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(JUnit4.class)
 public class ApplicationActionForRequestTest {
-    final String configFile = "garden.fab.xml";
+    final String configFile = "garden.fab.yml";
     Application app;
 
     @Before

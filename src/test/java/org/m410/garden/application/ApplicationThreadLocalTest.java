@@ -23,7 +23,7 @@ import static org.junit.Assert.assertTrue;
  */
 @RunWith(JUnit4.class)
 public class ApplicationThreadLocalTest {
-    final String configFile = "garden.fab.xml";
+    final String configFile = "garden.fab.yml";
     Application app;
 
     @Before
