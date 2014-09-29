@@ -335,6 +335,6 @@ abstract public class Application implements ApplicationModule {
     }
 
     public void destroy() {
-        threadLocalsFactories.stream().forEach((tlf) -> tlf.shutdown());
+        threadLocalsFactories.stream().forEach(ThreadLocalSessionFactory::shutdown);
     }
 }

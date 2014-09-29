@@ -1,6 +1,9 @@
 package org.m410.garden.servlet;
 
 import javax.servlet.DispatcherType;
+import javax.servlet.Filter;
+import javax.servlet.FilterRegistration;
+import javax.servlet.ServletContext;
 import java.util.EnumSet;
 
 /**
@@ -39,5 +42,16 @@ public final class FilterDefinition {
 
     public String[] urlPatterns() {
         return urlPatterns;
+    }
+
+    public void configure(ServletContext servletContext) {
+        FilterRegistration.Dynamic d = servletContext.addFilter(getName(), getClassName());
+        d.addMappingForUrlPatterns(dispatchTypes(), matchAfter(), urlPatterns());
+    }
+
+    public void configure(ServletContext servletContext, Filter f) {
+        ((ProxyFilter)f).setDelegateName(getClassName());
+        FilterRegistration.Dynamic d = servletContext.addFilter(getName(), f);
+        d.addMappingForUrlPatterns(dispatchTypes(), matchAfter(), urlPatterns());
     }
 }

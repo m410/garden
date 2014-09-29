@@ -23,21 +23,9 @@ public class ApplicationContextListener implements ServletContextListener {
         ApplicationModule app = ServletContextAppFactory.forEnvironment(env);
         servletContext.setAttribute(SCOPE_NAME, app);
 
-        app.getListeners().stream().forEach((l) -> {
-            // need to know what type of listener so it can be proxied
-            servletContext.addListener(l.getClassName());
-        });
-
-        app.getFilters().stream().forEach((s) -> {
-            FilterRegistration.Dynamic d = servletContext.addFilter(s.getName(), s.getClassName());
-            d.addMappingForUrlPatterns(s.dispatchTypes(), s.matchAfter(), s.urlPatterns());
-        });
-
-        app.getServlets().stream().forEach((s) -> {
-            ServletRegistration.Dynamic d = servletContext.addServlet(s.getName(), s.getClassName());
-            d.addMapping(s.mappings());
-        });
-
+        app.getListeners().stream().forEach((l) -> l.configure(servletContext));
+        app.getFilters().stream().forEach((s) -> s.configure(servletContext));
+        app.getServlets().stream().forEach((s) -> s.configure(servletContext));
     }
 
     @Override

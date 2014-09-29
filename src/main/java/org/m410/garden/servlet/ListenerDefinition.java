@@ -1,5 +1,8 @@
 package org.m410.garden.servlet;
 
+import javax.servlet.ServletContext;
+import java.util.EventListener;
+
 /**
  * Create a listener class and adds it the the servlet container at runtime.
  *
@@ -21,5 +24,15 @@ public final class ListenerDefinition {
 
     public String getClassName() {
         return className;
+    }
+
+    public void configure(ServletContext servletContext) {
+        servletContext.addListener(getClassName());
+    }
+
+    public void configure(ServletContext servletContext, EventListener proxyListener) {
+        // todo need to know what type of listener so it can be proxied
+        ((ProxyListener)proxyListener).setDelegateClass(getClassName());
+        servletContext.addListener(proxyListener);
     }
 }

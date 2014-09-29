@@ -1,6 +1,10 @@
 package org.m410.garden.servlet;
 
 
+import javax.servlet.Servlet;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletRegistration;
+
 /**
  * Servlet definition embedded into the application class the get initialized and
  * added to the servlet container at runtime.
@@ -34,5 +38,16 @@ public final class ServletDefinition {
 
     public String[] mappings() {
         return mappings;
+    }
+
+    public void configure(ServletContext servletContext) {
+        ServletRegistration.Dynamic d = servletContext.addServlet(getName(), getClassName());
+        d.addMapping(mappings());
+    }
+
+    public void configure(ServletContext servletContext, Servlet s) {
+        ((ProxyServlet)s).setDelegateName(getClassName());
+        ServletRegistration.Dynamic d = servletContext.addServlet(getName(), s);
+        d.addMapping(mappings());
     }
 }

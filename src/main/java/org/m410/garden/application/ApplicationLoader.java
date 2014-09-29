@@ -22,7 +22,8 @@ public class ApplicationLoader {
 
     /**
      * Creates a new instance of the application class in a new classloader.
-     * @return an instance of the Application class.
+     * @return An instance of the Application class.
+     * @param env The environment name.
      */
     @SuppressWarnings("unchecked")
     public Application load(String env) {
