@@ -30,9 +30,16 @@ public final class ListenerDefinition {
         servletContext.addListener(getClassName());
     }
 
-    public void configure(ServletContext servletContext, EventListener proxyListener) {
+    public void configure(ServletContext servletContext, EventListener f) {
         // todo need to know what type of listener so it can be proxied
-        ((ProxyListener)proxyListener).setDelegateClass(getClassName());
-        servletContext.addListener(proxyListener);
+//        ((ProxyListener)proxyListener).setDelegateClass(getClassName());
+
+        try {
+            f.getClass().getMethod("setDelegateName",String.class).invoke(f,getClassName());
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+        servletContext.addListener(f);
     }
 }

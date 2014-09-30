@@ -4,6 +4,8 @@ package org.m410.garden.servlet;
 import javax.servlet.Servlet;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletRegistration;
+import java.util.Arrays;
+import java.util.stream.Collectors;
 
 /**
  * Servlet definition embedded into the application class the get initialized and
@@ -21,7 +23,10 @@ public final class ServletDefinition {
     public ServletDefinition(String name, String className, String... mappings) {
         this.name = name;
         this.className = className;
-        this.mappings = mappings;
+        this.mappings = Arrays.asList(mappings).stream()
+                .filter(s->s!=null && !"".equals(s))
+                .collect(Collectors.toList())
+                .toArray(new String[1]);
     }
 
     public String getParams() {
@@ -46,8 +51,22 @@ public final class ServletDefinition {
     }
 
     public void configure(ServletContext servletContext, Servlet s) {
-        ((ProxyServlet)s).setDelegateName(getClassName());
+//        ((ProxyServlet)s).setDelegateName(getClassName());
+
+        try {
+            s.getClass().getMethod("setDelegateName",String.class).invoke(s,getClassName());
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+
+        System.out.println("### className="+getClassName());
         ServletRegistration.Dynamic d = servletContext.addServlet(getName(), s);
-        d.addMapping(mappings());
+        System.out.println("### d="+d);
+        System.out.println("### mappings="+ Arrays.toString(mappings()));
+
+        if(d!=null)
+            d.addMapping(mappings());
     }
 }

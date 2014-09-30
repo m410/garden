@@ -4,7 +4,10 @@ import javax.servlet.DispatcherType;
 import javax.servlet.Filter;
 import javax.servlet.FilterRegistration;
 import javax.servlet.ServletContext;
+import java.lang.reflect.InvocationTargetException;
+import java.util.Arrays;
 import java.util.EnumSet;
+import java.util.stream.Collectors;
 
 /**
  * Used by the application to add filters to the application at runtime.
@@ -21,7 +24,10 @@ public final class FilterDefinition {
     public FilterDefinition(String name, String className, String... urlPatterns) {
         this.name = name;
         this.className = className;
-        this.urlPatterns = urlPatterns;
+        this.urlPatterns = Arrays.asList(urlPatterns).stream()
+                .filter(s->s!=null && !"".equals(s))
+                .collect(Collectors.toList())
+                .toArray(new String[1]);
     }
 
     public String getName() {
@@ -50,8 +56,16 @@ public final class FilterDefinition {
     }
 
     public void configure(ServletContext servletContext, Filter f) {
-        ((ProxyFilter)f).setDelegateName(getClassName());
+//        ((ProxyFilter)f).setDelegateName(getClassName());
+        try {
+            f.getClass().getMethod("setDelegateName",String.class).invoke(f,getClassName());
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         FilterRegistration.Dynamic d = servletContext.addFilter(getName(), f);
-        d.addMappingForUrlPatterns(dispatchTypes(), matchAfter(), urlPatterns());
+
+        if(d!=null)
+            d.addMappingForUrlPatterns(dispatchTypes(), matchAfter(), urlPatterns());
     }
 }
