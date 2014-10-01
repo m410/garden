@@ -60,11 +60,7 @@ public final class ServletDefinition {
             throw new RuntimeException(e);
         }
 
-
-        System.out.println("### className="+getClassName());
         ServletRegistration.Dynamic d = servletContext.addServlet(getName(), s);
-        System.out.println("### d="+d);
-        System.out.println("### mappings="+ Arrays.toString(mappings()));
 
         if(d!=null)
             d.addMapping(mappings());

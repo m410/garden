@@ -55,9 +55,9 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         provider.setTextContent("org.hibernate.jpa.HibernatePersistenceProvider");
         persistUnit.appendChild(provider);
 
-//        Element mappingFile = doc.createElement("mapping-file");
-//        mappingFile.setTextContent("/META-INF/orm.xml");
-//        persistUnit.appendChild(mappingFile);
+        Element mappingFile = doc.createElement("mapping-file");
+        mappingFile.setTextContent("META-INF/orm.xml");
+        persistUnit.appendChild(mappingFile);
 
         Element propertiesElem = doc.createElement("properties");
         definition.getProperties().forEach((k,v)->{

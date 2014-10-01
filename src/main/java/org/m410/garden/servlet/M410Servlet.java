@@ -13,10 +13,10 @@ import java.io.IOException;
  *
  * @author Michael Fortin
  */
-public class M410Servlet extends HttpServlet {
+public final class M410Servlet extends HttpServlet {
 
     @Override
-    protected void service(HttpServletRequest request, HttpServletResponse response)
+    public void service(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         try {
             ((Application) request.getServletContext().getAttribute("application"))
