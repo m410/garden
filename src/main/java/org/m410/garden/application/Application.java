@@ -336,5 +336,19 @@ abstract public class Application implements ApplicationModule {
 
     public void destroy() {
         threadLocalsFactories.stream().forEach(ThreadLocalSessionFactory::shutdown);
+
+        final Class thisClass = getClass();
+        Arrays.asList(thisClass.getMethods()).stream()
+                .filter(m -> Arrays.asList(m.getDeclaredAnnotations()).stream()
+                        .filter(a -> a.annotationType().equals(Shutdown.class))
+                        .findAny().isPresent())
+                .forEach(shutdownMethod -> {
+                    try {
+                        Object result = shutdownMethod.invoke(this);
+                    }
+                    catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
     }
 }

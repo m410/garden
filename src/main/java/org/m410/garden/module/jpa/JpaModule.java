@@ -16,9 +16,11 @@ import java.util.List;
 public interface JpaModule extends ApplicationModule {
 
     @ThreadLocalComponent
-    default List<? extends ThreadLocalSessionFactory<?>> makeJpaThreadLoca(Configuration c) {
+    default List<? extends ThreadLocalSessionFactory<?>> makeJpaThreadLocal(Configuration c) {
         return ImmutableList.of(
                 new HibernatePersistence(c)
         );
     }
+
+
 }
