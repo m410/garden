@@ -1,1 +1,8 @@
 # modules
+modules:
+  - name: garden-orm
+    org: org.m410.garden
+    version: "0.1"
+
+bundles:
+  - {name: garden-orm, org: org.m410.garden, version: 0.1-SNAPSHOT}
