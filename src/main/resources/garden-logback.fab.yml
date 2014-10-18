@@ -1,1 +1,13 @@
 # modules
+modules:
+  - name: garden-logback
+    org: org.m410.garden
+    version: "0.1"
+
+bundles:
+  - {name: garden-logback, org: org.m410.garden, version: 0.1-SNAPSHOT}
+
+dependencies:
+  - { scope: compile, org: ch.qos.logback, name: logback-classic, rev: 1.1.2, transitive=true }
+  - { scope: compile, org: ch.qos.logback, name: logback-core, rev: 1.1.2, transitive=true }
+  - { scope: compile, org: org.slf4j, name: slf4j-api, rev: 1.7.7}
