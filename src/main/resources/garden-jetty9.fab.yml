@@ -1,4 +1,12 @@
+modules:
+  - name: garden-jetty9
+    org: org.m410.garden
+    version: "0.1"
+
 dependencies:
   - {scope: jetty9, name: jetty-all, org: org.eclipse.jetty.aggregate, rev: 9.2.3.v20140905}
   - {scope: jetty9, name: javax.websocket-api, org: javax.websocket, rev: "1.1"}
   - {scope: jetty9, name: javax.servlet-api, org: javax/servlet, rev: 3.1.0}
+
+bundles:
+  - {name: garden-jetty9, org: org.m410.garden, version: 0.1-SNAPSHOT}
