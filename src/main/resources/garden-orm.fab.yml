@@ -1,8 +1,11 @@
 # modules
 modules:
   - name: garden-orm
-    org: org.m410.garden
-    version: "0.1"
+    organization: org.m410.garden
+    version: "0.1-SNAPSHOT"
 
 bundles:
-  - {name: garden-orm, org: org.m410.garden, version: 0.1-SNAPSHOT}
+  - name: garden-orm
+    org: org.m410.garden
+    version: 0.1-SNAPSHOT
+    url: file:/Users/m410/Projects/m410.org/garden/garden-orm/target/garden-orm-0.1-SNAPSHOT.jar
