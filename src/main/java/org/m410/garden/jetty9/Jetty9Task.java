@@ -87,7 +87,7 @@ public class Jetty9Task implements Task {
                 webAppContextClass.getMethod("setContextPath",String.class).invoke(webAppContext,"/");
                 webAppContextClass.getMethod("setInitParameter",String.class,String.class).invoke(webAppContext,"m410-env",env);
 
-                Class proxyClass = loader.loadClass("org.m410.fab.garden.support.ProxyServletContainerListener");
+                Class proxyClass = loader.loadClass("org.m410.garden.jetty9.internal.ProxyServletContainerListener");
                 Object listener = proxyClass.newInstance();
                 listener = proxyClass.getMethod("withApplicationClassName",String.class).invoke(listener,applicationClass);
                 listener = proxyClass.getMethod("withLoaderClassName",String.class).invoke(listener,appLoaderClass);

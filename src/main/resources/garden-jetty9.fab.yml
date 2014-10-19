@@ -1,7 +1,7 @@
 modules:
   - name: garden-jetty9
-    org: org.m410.garden
-    version: "0.1"
+    organization: org.m410.garden
+    version: "0.1-SNAPSHOT"
 
 dependencies:
   - {scope: jetty9, name: jetty-all, org: org.eclipse.jetty.aggregate, rev: 9.2.3.v20140905}
@@ -9,4 +9,7 @@ dependencies:
   - {scope: jetty9, name: javax.servlet-api, org: javax/servlet, rev: 3.1.0}
 
 bundles:
-  - {name: garden-jetty9, org: org.m410.garden, version: 0.1-SNAPSHOT}
+  - name: garden-jetty9
+    org: org.m410.garden
+    version: 0.1-SNAPSHOT
+    url: file:/Users/m410/Projects/m410.org/garden/garden-jetty9/target/garden-jetty9-0.1-SNAPSHOT.jar
