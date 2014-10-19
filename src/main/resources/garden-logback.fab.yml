@@ -1,11 +1,14 @@
 # modules
 modules:
   - name: garden-logback
-    org: org.m410.garden
+    organization: org.m410.garden
     version: "0.1"
 
 bundles:
-  - {name: garden-logback, org: org.m410.garden, version: 0.1-SNAPSHOT}
+  - name: garden-logback
+    org: org.m410.garden
+    version: 0.1-SNAPSHOT
+    url: file:/Users/m410/Projects/m410.org/garden/garden-logback/target/garden-logback-0.1-SHAPSHOT.jar
 
 dependencies:
   - { scope: compile, org: ch.qos.logback, name: logback-classic, rev: 1.1.2, transitive=true }
