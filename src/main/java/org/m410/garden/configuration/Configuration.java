@@ -123,13 +123,22 @@ public class Configuration {
                 }).collect(Collectors.<ModuleDefinition>toList());
 
 
-        configuration.logging = LoggingDefinition.fromMap(
-                (Map<String, Object>)c.getOrDefault("logging", new HashMap<String, Object>())
+        configuration.logging = LoggingDefinition.fromMap(loggingMap(c)
+//                (Map<String, Object>)c.getOrDefault("logging", new HashMap<String, Object>())
         );
 
         return configuration;
     }
 
+    private static Map loggingMap(Map<String,Object> c) {
+        Object logRef = c.get("logging");
+        if(logRef == null)
+            return new HashMap();
+        if(logRef instanceof Map)
+            return (Map)logRef;
+        else
+            return (Map)((List)logRef).get(0);
+    }
     // for later versions
     // dependencies
     // repositories

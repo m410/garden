@@ -8,7 +8,7 @@ application:
 build:
   packageSource: true
 persistence:
-  - name: m410-jpa
+  - name: garden-jpa
     organization: org.m410.garden.module
     version: 0.1.0
     properties:

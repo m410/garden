@@ -37,7 +37,7 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
         PersistenceDefinition definition = configuration.getPersistence().stream().filter((d)->{
-            return d.getName().equalsIgnoreCase("m410-jpa");
+            return d.getName().equalsIgnoreCase("garden-jpa");
         }).findAny().orElseThrow(() -> new RuntimeException("JPA persistence configuration not found"));
 
         Document doc = docBuilder.newDocument();

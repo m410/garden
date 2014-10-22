@@ -46,7 +46,7 @@ public class ConfigurationDefinitionTest {
         assertEquals(1, configuration.getPersistence().size());
 
         PersistenceDefinition p = configuration.getPersistence().get(0);
-        assertEquals("m410-jpa",p.getName());
+        assertEquals("garden-jpa",p.getName());
         assertNotNull(p.getProperties());
         assertEquals(6,p.getProperties().size());
     }
