@@ -91,7 +91,8 @@ public final class ContextJavaCompiler {
                 StringBuilder sb = new StringBuilder();
                 for (Diagnostic diagnostic : diagnostics.getDiagnostics()) {
                     System.out.format("Error on line %d in %s\n", diagnostic.getLineNumber(), diagnostic);
-                    sb.append(diagnostic.getMessage(Locale.getDefault()));
+                    sb.append(diagnostic.toString());
+                    sb.append(System.getProperty("line.separator"));
                 }
                 message = sb.toString();
             }
@@ -99,6 +100,18 @@ public final class ContextJavaCompiler {
 
         public boolean isOk() {
             return ok;
+        }
+
+        public String getMessage() {
+            return message;
+        }
+
+        @Override
+        public String toString() {
+            return "Status{" +
+                    "ok=" + ok +
+                    ", message='" + message + '\'' +
+                    '}';
         }
     }
 

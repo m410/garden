@@ -32,14 +32,8 @@ public class LocalDevClassLoader extends URLClassLoader {
         if(runPath != null)
             urls.addAll(runPath);
 
-//        System.out.println("CLASSPATH: " + urls);
-        for (URL url : urls)
-            System.out.println("    " + url);
-
         return urls.toArray(new URL[urls.size()]);
     }
-
-
 
     void dumpThreadClasspath() {
         ClassLoader classloader = this;

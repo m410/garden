@@ -54,7 +54,7 @@ public class Jetty9Task implements Task {
         jettyClasspath.add(new File("/Users/m410/.m2/repository/org/eclipse/jetty/aggregate/jetty-all/9.2.3.v20140905/jetty-all-9.2.3.v20140905.jar").toURI().toURL());
         jettyClasspath.add(new File("/Users/m410/.m2/repository/javax/websocket/javax.websocket-api/1.1/javax.websocket-api-1.1.jar").toURI().toURL());
         jettyClasspath.add(new File("/Users/m410/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar").toURI().toURL());
-        jettyClasspath.add(new File("/Users/m410/.m2/repository/org/m410/fabricate/garden/fab-java-garden-project/0.1-SNAPSHOT/fab-java-garden-project-0.1-SNAPSHOT.jar").toURI().toURL());
+        jettyClasspath.add(new File("/Users/m410/.m2/repository/org/m410/garden/garden-jetty9/0.1-SNAPSHOT/garden-jetty9-0.1-SNAPSHOT.jar").toURI().toURL());
 
         new DeligateApp(jettyClasspath, context.getBuild().getWebappDir(), context.environment());
     }

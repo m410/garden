@@ -231,13 +231,15 @@ public final class ProxyServletContainerListener implements ServletContextListen
     @Override
     public void onChange(ReloadingEvent reloadingEvent) {
         if(reloadingEvent.isRelease()) {
-            try {
-                this.application.getClass().getMethod("destroy").invoke(this.application);
+            if (this.application != null) {
+                try {
+                    this.application.getClass().getMethod("destroy").invoke(this.application);
+                }
+                catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
+                    e.printStackTrace();
+                }
+                this.application = null;
             }
-            catch (IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
-                e.printStackTrace();
-            }
-            this.application = null;
         }
         else {
             this.application = reloadingEvent.getApplication();
