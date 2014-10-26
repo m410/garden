@@ -56,13 +56,13 @@ public final class FilterDefinition {
     }
 
     public void configure(ServletContext servletContext, Filter f) {
-//        ((ProxyFilter)f).setDelegateName(getClassName());
         try {
             f.getClass().getMethod("setDelegateName",String.class).invoke(f,getClassName());
         }
         catch (Exception e) {
             throw new RuntimeException(e);
         }
+
         FilterRegistration.Dynamic d = servletContext.addFilter(getName(), f);
 
         if(d!=null)

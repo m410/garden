@@ -101,7 +101,6 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of container listeners.
      */
-    @ListenerComponent
     public List<ListenerDefinition> makeListeners(Configuration c) {
         return ImmutableList.of();
     }
@@ -112,7 +111,6 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of filter definitions.
      */
-    @FilterComponent
     public List<FilterDefinition> makeFilters(Configuration c) {
         return ImmutableList.of(
                 new FilterDefinition("M410Filter", "org.m410.garden.servlet.M410Filter", "/*")
@@ -129,7 +127,6 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of servlet definitions
      */
-    @ServletComponent
     public List<ServletDefinition> makeServlets(Configuration c) {
         return ImmutableList.of(
                 new ServletDefinition("M410Servlet", "org.m410.garden.servlet.M410Servlet", "", "*.m410")
