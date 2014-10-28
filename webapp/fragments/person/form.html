@@ -1,0 +1,38 @@
+<header>
+    <div class="right"></div>
+    <h2>Edit Person</h2>
+</header>
+<form class="css-form">
+    <input type="hidden" data-ng-model="person.id">
+    <input type="hidden" data-ng-model="person.version">
+    <fieldset>
+        <label>
+            <b>User Name</b>
+            <input type="text" data-ng-model="person.userName" required>
+        </label>
+        <label>
+            <b>Password</b>
+            <input type="password" data-ng-model="person.password" required>
+        </label>
+        <label>
+            <b>Roles</b>
+            <input type="checkbox" name="roles" value="ADMIN" >Admin
+            <input type="checkbox" name="roles" value="USER" >User
+        </label>
+        <label>
+            <b>First Name</b>
+            <input type="text" data-ng-model="person.firstName" required>
+        </label>
+        <label>
+            <b>Last Name</b>
+            <input type="text" data-ng-model="person.lastName" required>
+        </label>
+        <label>
+            <b>Email</b>
+            <input type="email" data-ng-model="person.email" required>
+        </label>
+        <br>
+        <button data-ng-click="update()">Update {{person.firstName}} {{person.lastName}}</button>
+        <a href="#/{{person.id}}">Cancel</a>
+    </fieldset>
+</form>

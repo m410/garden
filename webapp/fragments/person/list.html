@@ -1,0 +1,27 @@
+<header>
+    <div class="right"><a data-ui-sref="persons-create" href="#/create">Create New Person</a></div>
+    <h2>List</h2>
+</header>
+<table>
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>First name</th>
+        <th>Last name</th>
+        <th>Email</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-ng-repeat="person in persons">
+        <td><a data-ui-sref="persons-detail({personId:person.id})" href="#/persons/{{person.id}}">{{person.id}}</a></td>
+        <td>{{person.firstName}}</td>
+        <td>{{person.lastName}}</td>
+        <td>{{person.email}}</td>
+        <td>
+            <a data-ui-sref="persons-detail({personId:person.id})" href="#/persons/{{person.id}}">View</a>
+            <a data-ui-sref="persons-delete({personId:person.id})" href="#/persons/{{person.id}}/delete" onclick="return confirm('Are you sure?');">Delete</a>
+        </td>
+    </tr>
+    </tbody>
+</table>

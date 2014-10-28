@@ -1,0 +1,46 @@
+body {background-color:#eee}
+pre.home {background: #ffeeee;padding:4px}
+nav ul {list-style: none;padding:0;margin:0;width: 100%;margin-top:4em}
+nav ul li {display:inline-block;text-align: center;width:16%}
+a {text-decoration: none;color:#666}
+a:active { color: #f99600; }
+a.active { color: #f99600; font-weight: bold}
+a:hover { color: #f99600; text-decoration: underline}
+label {display:inline-block}
+label>b {display:block}
+
+.article-band {background-color: white; padding-top:1em;border-bottom:1px solid #ccc}
+.header-band {border-bottom:1px solid #ccc;}
+.footer-band {margin-top:1em;}
+.logo {padding: 1em 0}
+.box {margin:0 10px}
+.eapps-link {background-color: white;line-height: 0;padding: 0;margin: 0}
+
+header div.right {float:right;text-align: right;padding:0 10px}
+
+.css-form input.ng-invalid.ng-dirty {
+    border: 1px solid #FA787E;
+}
+
+.css-form input.ng-valid.ng-dirty {
+    border: 1px solid #78FA89;
+}
+
+dl { }
+dt { float: left; clear: left; width: 100px; text-align: right; }
+dt:after { content: ":"; }
+dd { margin: 0 0 0 110px; padding: 0 0 0.5em 0; }
+
+
+.reveal-animation.ng-enter {
+    -webkit-animation: enter_sequence 1s linear;
+    animation: enter_sequence 1s linear;
+}
+@-webkit-keyframes enter_sequence {
+    from { opacity:0; }
+    to { opacity:1; }
+}
+@keyframes enter_sequence {
+    from { opacity:0; }
+    to { opacity:1; }
+}

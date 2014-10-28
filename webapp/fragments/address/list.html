@@ -1,0 +1,28 @@
+
+<header>
+    <div class="right"><a data-ng-click="add()">Add</a></div>
+    <h3>Addresses</h3>
+</header>
+<table>
+    <thead>
+    <tr>
+        <th>ID</th>
+        <th>Street</th>
+        <th>City</th>
+        <th>State</th>
+        <th>Zip</th>
+        <th>&nbsp;</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr data-ng-repeat="address in addresses">
+        <td>{{address.id}}</td>
+        <td>{{address.street}}</td>
+        <td>{{address.city}}</td>
+        <td>{{address.state}}</td>
+        <td>{{address.postalCode}}</td>
+        <td><a data-ng-click="edit(address.id)">Edit</a> |
+            <a data-ng-click="delete(address.id)">Delete</a></td>
+    </tr>
+    </tbody>
+</table>

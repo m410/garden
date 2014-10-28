@@ -1,0 +1,19 @@
+<header>
+    <div class="right"><a href="#/{{person.id}}/edit">Edit</a></div>
+    <h2>Detail</h2>
+</header>
+<dl>
+    <dt>id</dt>
+    <dd>{{person.id}}</dd>
+    <dt>User Name</dt>
+    <dd>{{person.userName}}</dd>
+    <dt>Password</dt>
+    <dd>{{person.password}}</dd>
+    <dt>Roles</dt>
+    <dd>{{person.roles}}</dd>
+    <dt>Full Name</dt>
+    <dd>{{person.firstName}} {{person.lastName}}</dd>
+    <dt>Email</dt>
+    <dd>{{person.email}}</dd>
+</dl>
+<div ui-view="addresses"  class="reveal-animation"></div>

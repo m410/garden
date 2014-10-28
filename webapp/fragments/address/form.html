@@ -1,0 +1,13 @@
+<form>
+    <input type="hidden"  data-ng-model="address.id">
+    <fieldset>
+    <h3>Form</h3>
+    <label><b>Street</b><input type="text" class="text" data-ng-model="address.street" required></label>
+    <label><b>Apt</b><input type="text" class="text" data-ng-model="address.street2"required></label>
+    <label><b>City</b><input type="text" class="text" data-ng-model="address.city" required></label>
+    <label><b>State</b><input type="text" class="text"  data-ng-model="address.state" required></label>
+    <label><b>Postal Code</b><input type="text" class="text" data-ng-model="address.postalCode" required></label>
+    <button data-ng-click="save(address)">Save New Address</button>
+    <button data-ng-click="cancel()">Cancel</button>
+</fieldset>
+</form>

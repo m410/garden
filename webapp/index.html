@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]> <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!-->
+<html class="no-js"> <!--<![endif]-->
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>m410: java web framework</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width">
+    <link rel="stylesheet" href="_/css/resets.css">
+    <link rel="stylesheet" href="_/css/layout.css">
+    <link rel="stylesheet" href="_/css/typography.css">
+    <link rel="stylesheet" href="_/css/style.css">
+    <scriptsrc="_/js/vendor/respond.min.js"></script>
+    <!--[if lt IE 9]> <scriptsrc="_/js/vendor/html5shiv.js"></script> <![endif]-->
+</head>
+<body data-ng-app="garden.app">
+<div class="header-band">
+    <header class="container row">
+        <div class="col span_4">
+            <img class="logo" src="_/images/m410_logo.png" alt=""/>
+        </div>
+        <div class="col span_8">
+            <nav>
+                <ul>
+                    <li><a href="#/">Home</a></li>
+                    <li><a class="active" data-ui-sref="persons">People app</a></li>
+                    <li><a href="http://m410.org/javadoc/current" target="_blank">JavaDoc</a></li>
+                    <li><a href="http://github.com/m410/m410-mvc" target="_blank">Other Docs</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+</div>
+<div class="article-band">
+    <article class="container row">
+        <div data-ui-view class="reveal-animation"></div>
+    </article>
+</div>
+<div class="footer-band">
+    <footer class="container row">
+        <div class="col span_12">
+            <p>Licensed under
+                <a href="http://www.apache.org/licenses/LICENSE-2.0" target="_blank">Apache License 2.0</a>
+            </p>
+        </div>
+    </footer>
+</div>
+<script type="text/javascript" src="_/js/vendor/jquery-2.1.0.min.js"></script>
+<script type="text/javascript" src="_/js/vendor/angular.js"></script>
+
+<script type="text/javascript" src="_/js/vendor/angular-resource.js"></script>
+<script type="text/javascript" src="_/js/vendor/angular-route.js"></script>
+
+<script type="text/javascript" src="_/js/vendor/angular-ui-router.js"></script>
+<script type="text/javascript" src="_/js/vendor/angular-animate.js"></script>
+
+
+<script type="text/javascript" src="app/services.js"></script>
+<script type="text/javascript" src="app/controllers.js"></script>
+<script type="text/javascript" src="app/app.js"></script>
+</body>
+</html>
