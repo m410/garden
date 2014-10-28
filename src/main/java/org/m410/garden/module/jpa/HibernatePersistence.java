@@ -34,7 +34,7 @@ public class HibernatePersistence implements ThreadLocalSessionFactory<JpaThread
         log.debug("class classloader res: {}" , this.getClass().getClassLoader().getResource("META-INF/persistence.xml"));
 
         // todo get entityManager name from configuration
-
+        // todo replace with org.hibernate.jpa.HibernatePersistenceProvider
         final org.hibernate.ejb.HibernatePersistence persistence = new org.hibernate.ejb.HibernatePersistence();
         entityManagerFactory = persistence.createEntityManagerFactory("garden-jpa", new HashMap());
         log.info("Created EntityManagerFactory: {}", entityManagerFactory);

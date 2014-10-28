@@ -12,18 +12,6 @@ reflection overkill, annotation overkill
 ### Prerequisites
 
   * You must have Java 8 ea JDK installed and set as the default.
-  * You'll need Maven 3, It might work with earlier version, but I haven't tried
-
-Check out the bootstrap app with this maven command.
-
-    > mvn archetype:generate\
-       -DarchetypeRepository=http://repo.m410.org/content/repositories/releases\
-       -DarchetypeGroupId=org.m410.garden.arch\
-       -DarchetypeArtifactId=m410-garden-bootstrap\
-       -DarchetypeVersion=0.2.0\
-       -DgroupId=<your_group>\
-       -DartifactId=<your_artifact>\
-       -Dversion=<your_version>
 
 There is not much functionality available beyond the what's in the demonstration app. So documentation is
 light for now.
