@@ -1,0 +1,43 @@
+archetype:
+  version: 0.1-SHAPSHOT
+  name: java-lib
+  organization: org.m410.fab
+  base_config: file:/Users/m410/Projects/m410.org/fabricate/fab-java-lib-project/src/main/resources/java-lib.fab.yml
+
+application:
+  name: demo-lib
+  org: org.m410.demo
+  version: "0.1"
+  description: Sample java library
+
+dependencies:
+  - { scope: compile, org: org.apache.commons, name: commons-lang3, rev: 3.3.2 }
+
+modules:
+  - name: garden-junit
+    organization: org.m410.garden
+    version: "0.1"
+    base_config: file:/Users/m410/Projects/m410.org/fabricate/fab-junit/src/main/resources/fab-junit.fab.yml
+
+  
+# this shouldn't be nessacary
+#build:
+#  cacheDir: .fab
+#  defaultEnvironment: development
+#  defaultCommand: build
+#  lang: java
+#  langVersion: "1.8"
+#  compilerArgs: -ea
+#  targetDir: target
+#  webappDir: webapp
+#  sourceDir: src/java
+#  sourceOutputDir: target/classes
+#  resourceDir: src/resources
+#  testDir: test/java
+#  testOutputDir: target/test-classes
+#  testResourceDir: test/resources
+#  vcs:
+#  packageSource: false
+#  packageDocs: false
+#  packageName:
+#
