@@ -1,4 +1,4 @@
-package org.m410.garden.logback.internal;
+package org.m410.garden.logback;
 
 
 import org.m410.fabricate.builder.BuildContext;

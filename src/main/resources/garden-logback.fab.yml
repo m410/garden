@@ -3,12 +3,23 @@ modules:
   - name: garden-logback
     organization: org.m410.garden
     version: "0.1"
+    appenders:
+      - name: STDOUT
+        appender class: ch.qos.logback.core.ConsoleAppender
+        layout: ch.qos.logback.classic.encoder.PatternLayoutEncoder
+        pattern: "%-4relative [%thread] %-5level %class - %msg%n"
+    logger:
+      - name: org.m410
+        level: TRACE
+    root:
+      level: DEBUG
+      ref: [STDOUT]
 
 bundles:
   - name: garden-logback
     org: org.m410.garden
     version: 0.1-SNAPSHOT
-    url: file:/Users/m410/Projects/m410.org/garden/garden-logback/target/garden-logback-0.1-SHAPSHOT.jar
+    url: file:/Users/m410/Projects/m410.org/garden/garden-logback/target/garden-logback-0.1-SNAPSHOT.jar
 
 dependencies:
   - { scope: compile, org: ch.qos.logback, name: logback-classic, rev: 1.1.2, transitive=true }

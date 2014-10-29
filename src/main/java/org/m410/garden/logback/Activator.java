@@ -1,7 +1,6 @@
 package org.m410.garden.logback;
 
 import org.m410.fabricate.service.FabricateService;
-import org.m410.garden.logback.internal.LogbackXmlTask;
 import org.osgi.framework.*;
 
 /**
@@ -14,13 +13,11 @@ public class Activator implements BundleActivator {
         FabricateService fabricateService = (FabricateService) context.getService(fabricateServiceReference);
 
         fabricateService.addCommandModifier(command -> {
-            if(command.getName().equalsIgnoreCase("build")) {
+            if (command.getName().equalsIgnoreCase("build")) {
                 command.getSteps().stream()
-                        .filter(m->m.getName().equals("generate-resources"))
+                        .filter(m -> m.getName().equals("generate-resources"))
                         .findFirst()
-                        .ifPresent(m->{
-                            m.append(new LogbackXmlTask());
-                        });
+                        .ifPresent(m -> m.append(new LogbackXmlTask()));
             }
         });
     }
