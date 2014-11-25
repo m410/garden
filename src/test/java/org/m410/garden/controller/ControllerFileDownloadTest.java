@@ -13,8 +13,6 @@ import org.m410.garden.transaction.TransactionScope;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import java.io.IOException;
-
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
 import static org.m410.garden.controller.action.http.Response.*;
@@ -42,7 +40,7 @@ public class ControllerFileDownloadTest implements MockServletInput {
                 .asStream((out) -> out.write("hi".getBytes()));
 
         HttpActionDefinition ad = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET,
-                Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
         ad.apply(request, response);
 
         verify(response).getOutputStream();

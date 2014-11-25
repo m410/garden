@@ -48,7 +48,7 @@ import org.m410.garden.transaction.TransactionScope;
  * @see org.m410.garden.controller.action.PathExpr
  * @see org.m410.garden.controller.action.http.Action
  */
-public abstract class Controller implements HttpCtrl {
+public abstract class Controller implements HttpCtrl, Securable {
 
     /**
      * A helper property to set the content type of action definitions.
@@ -162,7 +162,7 @@ public abstract class Controller implements HttpCtrl {
      * @return a new action definition.
      */
     protected HttpActionDefinition act(HttpMethod method, Action action, PathExpr pathExpr) {
-        return new HttpActionDefinition(this, action, pathExpr, method, Securable.State.Optional,
+        return new HttpActionDefinition(this, action, pathExpr, method, Securable.Ssl.Optional,
                 new String[]{}, new String[]{}, defaultTransactionScope);
     }
 

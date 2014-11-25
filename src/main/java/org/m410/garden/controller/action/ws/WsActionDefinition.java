@@ -22,14 +22,14 @@ public final class WsActionDefinition implements ActionDefinition {
     private final PathExpr pathExpr;
     private final WsCtrl  controller;
 
-    private final Securable.State useSsl;
+    private final Securable.Ssl useSsl;
     private final List<String> roles;
     private final boolean isAuthenticated;
 
     private WebSocket webSocket;
 
     public WsActionDefinition(PathExpr pathExpr, WebSocket webSocket, WsCtrl controller,
-                              Securable.State ssl, String[] roles, boolean isAuthenticated) {
+                              Securable.Ssl ssl, String[] roles, boolean isAuthenticated) {
         this.pathExpr = pathExpr;
         this.controller = controller;
         this.webSocket = webSocket;
@@ -54,7 +54,7 @@ public final class WsActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public Securable.State getSsl() {
+    public Securable.Ssl getSsl() {
         return useSsl;
     }
 

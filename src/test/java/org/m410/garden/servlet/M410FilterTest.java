@@ -35,7 +35,7 @@ public class M410FilterTest {
         Application application = new MyWebApp() {
             @Override public Optional<HttpActionDefinition> actionForRequest(HttpServletRequest request) {
                 return Optional.of(new HttpActionDefinition(null, null,new PathExpr("json"), HttpMethod.GET,
-                        Securable.State.Optional, new String[]{},new String[]{}, TransactionScope.None));
+                        Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None));
             }
         };
 

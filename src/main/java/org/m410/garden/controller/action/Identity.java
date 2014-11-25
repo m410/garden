@@ -3,12 +3,11 @@ package org.m410.garden.controller.action;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.m410.garden.module.auth.AuthorizationProvider;
-import org.m410.garden.module.auth.User;
+import org.m410.garden.controller.auth.AuthorizationProvider;
+import org.m410.garden.controller.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.Serializable;
-import java.security.Principal;
 import java.util.Optional;
 
 /**

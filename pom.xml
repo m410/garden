@@ -136,8 +136,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.m410.garden.module</groupId>
-            <artifactId>garden-jpa</artifactId>
+            <groupId>org.m410.garden</groupId>
+            <artifactId>garden-jpa-lib</artifactId>
             <version>0.2.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>

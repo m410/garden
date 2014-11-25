@@ -2,10 +2,6 @@ package org.m410.garden.controller;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.garden.controller.action.PathExpr;
-import org.m410.garden.controller.action.http.Action;
-import org.m410.garden.controller.action.http.HttpActionDefinition;
-import org.m410.garden.controller.action.http.HttpMethod;
-import org.m410.garden.controller.action.http.Response;
 import org.m410.garden.controller.action.ws.WebSocket;
 import org.m410.garden.controller.action.ws.WsActionDefinition;
 import org.m410.garden.transaction.TransactionScope;
@@ -48,7 +44,7 @@ import org.m410.garden.transaction.TransactionScope;
  * @see org.m410.garden.controller.action.PathExpr
  * @see org.m410.garden.controller.action.http.Action
  */
-public abstract class WsController implements WsCtrl {
+public abstract class WsController implements WsCtrl, Securable {
 
     /**
      * A helper property to set the content type of action definitions.
@@ -110,7 +106,7 @@ public abstract class WsController implements WsCtrl {
      */
     protected final WsActionDefinition ws(String path, WebSocket act) {
         return new WsActionDefinition(pathExpr.append(path), act, this,
-                Securable.State.Optional, new String[0], false);
+                Securable.Ssl.Optional, new String[0], false);
     }
 
     protected WebSocket socket() {

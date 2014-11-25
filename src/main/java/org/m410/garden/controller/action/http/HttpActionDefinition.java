@@ -5,13 +5,13 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.m410.garden.controller.Authorizable;
+import org.m410.garden.controller.auth.Authorizable;
 import org.m410.garden.controller.HttpCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.status.*;
 import org.m410.garden.controller.Securable;
-import org.m410.garden.module.auth.AuthorizationProvider;
+import org.m410.garden.controller.auth.AuthorizationProvider;
 import org.m410.garden.servlet.ServletExtension;
 import org.m410.garden.transaction.TransactionScope;
 import org.slf4j.Logger;
@@ -46,7 +46,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
 
     private final HttpCtrl controller;
     private final PathExpr pathExpr;
-    private final Securable.State useSsl;
+    private final Securable.Ssl useSsl;
     private final List<String> roles;
 
     private final boolean useAuthentication;
@@ -74,7 +74,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @param transactionScope the transactional scope for the action request.
      */
     public HttpActionDefinition(HttpCtrl controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
-                                Securable.State useSsl, String[] acceptTypes, String[] roles,
+                                Securable.Ssl useSsl, String[] acceptTypes, String[] roles,
                                 TransactionScope transactionScope) {
         this.controller = controller;
         this.action = action;
@@ -88,12 +88,12 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     /**
-     * Returns a new Action definition with the updated content types.
+     * Returns a new Action definition with the updated acceptable content types.
      *
      * @param contentTypes An array of content types or an empty array for all types.
      * @return a new ActionDefinition
      */
-    public HttpActionDefinition contentTypes(String... contentTypes) {
+    public HttpActionDefinition accept(String... contentTypes) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,
                 useSsl,contentTypes, roles.toArray(new String[roles.size()]),transactionScope);
     }
@@ -114,7 +114,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @param ssl the acceptable ssl states
      * @return a new HttpActionDefinition
      */
-    public HttpActionDefinition ssl(Securable.State ssl) {
+    public HttpActionDefinition ssl(Securable.Ssl ssl) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,ssl,
                 contentTypes.toArray(new String[contentTypes.size()]), roles.toArray(new String[roles.size()]),
                 transactionScope);
@@ -151,7 +151,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
             if(!req.getRequestURI().endsWith(SERVLET_EXT))
                 return new Forward(req.getRequestURI());
 
-            else if(useSsl == Securable.State.Only && !req.isSecure())
+            else if(useSsl == Securable.Ssl.Only && !req.isSecure())
                 return new RedirectToSecure(req.getRequestURI());
 
             else if(useAuthentication &&
@@ -190,7 +190,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     @Override
-    public Securable.State getSsl() {
+    public Securable.Ssl getSsl() {
         return useSsl;
     }
 

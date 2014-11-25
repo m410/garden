@@ -2,7 +2,6 @@ package org.m410.garden.application;
 
 import org.m410.garden.application.annotate.*;
 import org.m410.garden.controller.HttpCtrl;
-import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.configuration.Configuration;
 
@@ -282,28 +281,28 @@ abstract public class Application implements ApplicationModule {
      * @param configuration the configuration.
      */
     public void init(final Configuration configuration) {
-        initScan(configuration, ThreadLocalComponent.class, threadLocalsFactories);
+        assemble(configuration, ThreadLocalComponent.class, threadLocalsFactories);
         threadLocalsFactories.addAll(makeThreadLocalFactories(configuration));
         log.debug("threadLocalsFactories: {}", threadLocalsFactories);
 
-        initScan(configuration, ServletComponent.class, servletDefinitions);
+        assemble(configuration, ServletComponent.class, servletDefinitions);
         servletDefinitions.addAll(makeServlets(configuration));
         log.debug("servletDefinitions: {}", servletDefinitions);
 
-        initScan(configuration, FilterComponent.class, filterDefinitions);
+        assemble(configuration, FilterComponent.class, filterDefinitions);
         filterDefinitions.addAll(makeFilters(configuration));
         log.debug("filterDefinitions: {}", filterDefinitions);
 
-        initScan(configuration, ListenerComponent.class, listenerDefinitions);
+        assemble(configuration, ListenerComponent.class, listenerDefinitions);
         listenerDefinitions.addAll(makeListeners(configuration));
         log.debug("listenerDefinitions: {}", listenerDefinitions);
 
-        initScan(configuration, ServiceComponent.class, services);
+        assemble(configuration, ServiceComponent.class, services);
         services.addAll(makeServices(configuration));
         log.debug("services: {}", services);
 
         List<HttpCtrl> controllers = new ArrayList<>();
-        initScan(configuration, ControllerComponent.class, controllers);
+        assemble(configuration, ControllerComponent.class, controllers);
         controllers.addAll(makeControllers(configuration));
         log.debug("controllers: {}", controllers);
 
@@ -312,20 +311,36 @@ abstract public class Application implements ApplicationModule {
         actionDefinitions = b.build();
         log.debug("actionDefinitions: {}", actionDefinitions);
 
-        // todo call any initComponents, like db migrations here
+        initComponents(configuration, Startup.class);
     }
 
-    private <T> void initScan(Configuration configuration, Class<T> componentClass, Collection collection) {
+    protected <T> void assemble(Configuration configuration, Class<T> componentClass, Collection collection) {
         final Class thisClass = getClass();
         Arrays.asList(thisClass.getMethods()).stream()
                 .filter(m -> Arrays.asList(m.getDeclaredAnnotations()).stream()
                         .filter(a -> a.annotationType().equals(componentClass))
                         .findAny().isPresent())
-                .forEach(threadLocalFactoryList -> {
+                .forEach(component -> {
                     try {
-                        Object result = threadLocalFactoryList.invoke(this, configuration);
+                        Object result = component.invoke(this, configuration);
                         collection.addAll((List) result);
                     } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                });
+    }
+
+    protected <T> void initComponents(Configuration configuration, Class<T> componentClass) {
+        final Class thisClass = getClass();
+        Arrays.asList(thisClass.getMethods()).stream()
+                .filter(m -> Arrays.asList(m.getDeclaredAnnotations()).stream()
+                        .filter(a -> a.annotationType().equals(componentClass))
+                        .findAny().isPresent())
+                .forEach(component -> {
+                    try {
+                        component.invoke(this, configuration);
+                    }
+                    catch (Exception e) {
                         throw new RuntimeException(e);
                     }
                 });

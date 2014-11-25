@@ -27,7 +27,7 @@ public final class MyController extends Controller {
     public List<HttpActionDefinition> actions() {
         return ImmutableList.of(
                 get("path", httpGetAction),
-                get("path2", httpGetAction).contentTypes("text/html"),
+                get("path2", httpGetAction).accept("text/html"),
                 post("path", httpPostAction),
                 put("path", httpPutAction),
                 delete("path", httpDeleteAction)
