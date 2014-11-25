@@ -17,6 +17,7 @@ package org.m410.garden.orm;
 
 import org.m410.fabricate.builder.BuildContext;
 import org.m410.fabricate.builder.Task;
+import org.m410.fabricate.config.Module;
 import org.m410.fabricate.util.ReflectConfigFileBuilder;
 
 import java.io.File;
@@ -25,6 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 /**
@@ -52,27 +54,45 @@ public final class OrmXmlTask implements Task {
 
     @Override
     public void execute(BuildContext context) throws Exception {
-        Collection<File> classpath = Arrays.asList(
-                context.getClasspath()
-                        .get("compile")
-                        .split(System.getProperty("path.separator")))
-                .stream()
-                .map(File::new)
-                .collect(Collectors.toList());
-        classpath.add(Paths.get(context.getBuild().getSourceOutputDir()).toFile());
 
-        final String sourceOut = context.getBuild().getSourceOutputDir();
-        final Path outputPath = FileSystems.getDefault().getPath(sourceOut,"META-INF/orm.xml");
-        final File file = FileSystems.getDefault().getPath(sourceOut,"META-INF").toFile();
+        // have to check for config param to run it.
+        Module jpa = context.getModules().stream().filter(m->m.getName().equals("garden-jpa")).findFirst().get();
+        final Map<String, Object> props = jpa.getProperties();
 
-        if(!file.exists() && !file.mkdirs())
-            throw new RuntimeException("Could not make META-INF directories");
+        if(props.containsKey("orm-builder") && isTrue(props.get("orm-builder"))) {
 
-        new ReflectConfigFileBuilder(ormXmlClassName)
-                .withClasspath(classpath)
-                .withPath(outputPath)
-                .withEnv(context.environment())
-                .withAppCreated(true)
-                .make();
+            Collection<File> classpath = Arrays.asList(
+                    context.getClasspath()
+                            .get("compile")
+                            .split(System.getProperty("path.separator")))
+                    .stream()
+                    .map(File::new)
+                    .collect(Collectors.toList());
+            classpath.add(Paths.get(context.getBuild().getSourceOutputDir()).toFile());
+
+            final String sourceOut = context.getBuild().getSourceOutputDir();
+            final Path outputPath = FileSystems.getDefault().getPath(sourceOut,"META-INF/orm.xml");
+            final File file = FileSystems.getDefault().getPath(sourceOut,"META-INF").toFile();
+
+            if(!file.exists() && !file.mkdirs())
+                throw new RuntimeException("Could not make META-INF directories");
+
+            new ReflectConfigFileBuilder(ormXmlClassName)
+                    .withClasspath(classpath)
+                    .withPath(outputPath)
+                    .withEnv(context.environment())
+                    .withAppCreated(true)
+                    .make();
+        }
+
+    }
+
+    protected boolean isTrue(Object o) {
+        if(o instanceof Boolean)
+            return (Boolean)o;
+        else if(o instanceof String)
+            return Boolean.valueOf((String)o);
+        else
+            return false;
     }
 }
