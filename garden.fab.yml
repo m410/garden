@@ -26,6 +26,7 @@ persistence:
     organization: org.m410.garden
     version: "0.1"
     base_config: file:/Users/m410/Projects/m410.org/garden/garden-jpa/src/main/resources/garden-jpa.fab.yml
+    user_orm_builder: true
     properties:
       hibernate.dialect: org.hibernate.dialect.H2Dialect
       hibernate.connection.driver_class: org.h2.Driver
@@ -34,25 +35,21 @@ persistence:
       hibernate.connection.url: jdbc:h2:~/Documents/demo-angular;AUTO_SERVER=TRUE
       hibernate.hbm2ddl.auto: update
 
-# test:
-#   - name: garden-junit
-#     organization: org.m410.garden
-#     version: "0.1"
-#     base_config: file:/Users/m410/Projects/m410.org/fabricate/fab-junit/src/main/resources/fab-junit.fab.yml
-
 modules:
-  - name: garden-junit
-    organization: org.m410.garden
-    version: "0.1"
-    base_config: file:/Users/m410/Projects/m410.org/fabricate/fab-junit/src/main/resources/fab-junit.fab.yml
   - name: garden-jetty9
     organization: org.m410.garden
     version: "0.1"
     base_config: file:/Users/m410/Projects/m410.org/garden/garden-jetty9/src/main/resources/garden-jetty9.fab.yml
-  - name: garden-orm
+  # - name: garden-orm
+  #   organization: org.m410.garden
+  #   version: "0.1"
+  #   base_config: file:/Users/m410/Projects/m410.org/garden/garden-orm/src/main/resources/garden-orm.fab.yml
+
+testing:
+  - name: garden-junit
     organization: org.m410.garden
     version: "0.1"
-    base_config: file:/Users/m410/Projects/m410.org/garden/garden-orm/src/main/resources/garden-orm.fab.yml
+    base_config: file:/Users/m410/Projects/m410.org/fabricate/fab-junit/src/main/resources/fab-junit.fab.yml
 
 logging:
   - name: garden-logback
