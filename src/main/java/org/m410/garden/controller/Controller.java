@@ -39,10 +39,6 @@ import org.m410.garden.transaction.TransactionScope;
  * <p>
  * Each Action must return a response instance.
   * <p>
- * By default, each action is wrapped in a transaction.  If you're using the
- * {@link org.m410.garden.module.jpa.JpaModule}, the entity manager for the request is accessible
- * with the JpaThreadLocal.get() method.
-  * <p>
  * Missing from this release is action discrimination based on content type, securing with ssl,
  * and role based authorization.
  *

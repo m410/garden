@@ -5,7 +5,7 @@
     <artifactId>garden</artifactId>
     <version>0.2.0-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>m410 MVC</name>
+    <name>Garden MVC</name>
     <url>http://m410.org</url>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -133,6 +133,12 @@
             <groupId>org.mockito</groupId>
             <artifactId>mockito-all</artifactId>
             <version>1.9.5</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.m410.garden.module</groupId>
+            <artifactId>garden-jpa</artifactId>
+            <version>0.2.0-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

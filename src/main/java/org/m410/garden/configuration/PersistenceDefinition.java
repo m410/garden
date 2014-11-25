@@ -1,6 +1,8 @@
 package org.m410.garden.configuration;
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -12,6 +14,7 @@ public class PersistenceDefinition {
     private String name;
     private String organization;
     private String version;
+    private List<String> classes;
 
     private Map<String, String> properties;
 
@@ -48,6 +51,14 @@ public class PersistenceDefinition {
         this.properties = properties;
     }
 
+    public List<String> getClasses() {
+        return classes;
+    }
+
+    public void setClasses(List<String> classes) {
+        this.classes = classes;
+    }
+
     @SuppressWarnings("unchecked")
     public static PersistenceDefinition fromMap(Map<String, Object> val) {
         PersistenceDefinition pd = new PersistenceDefinition();
@@ -55,6 +66,7 @@ public class PersistenceDefinition {
         pd.setOrganization((String) val.getOrDefault("organization", "UNKNOWN"));
         pd.setVersion((String) val.getOrDefault("version", "UNKNOWN"));
         pd.setProperties((Map<String, String>) val.getOrDefault("properties", new HashMap<String, String>()));
+        pd.setClasses((List<String>) val.getOrDefault("classes", new ArrayList<String>()));
         return pd;
     }
 }
