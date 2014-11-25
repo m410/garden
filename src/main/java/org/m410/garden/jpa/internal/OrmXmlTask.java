@@ -59,7 +59,7 @@ public final class OrmXmlTask implements Task {
         Module jpa = context.getModules().stream().filter(m->m.getName().equals("garden-jpa")).findFirst().get();
         final Map<String, Object> props = jpa.getProperties();
 
-        if(props.containsKey("orm-builder") && isTrue(props.get("orm-builder"))) {
+        if(props.containsKey("use_orm_builder") && isTrue(props.get("use_orm_builder"))) {
 
             Collection<File> classpath = Arrays.asList(
                     context.getClasspath()
