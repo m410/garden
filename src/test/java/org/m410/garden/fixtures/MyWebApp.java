@@ -46,8 +46,6 @@ public class MyWebApp extends Application
     @Override public List<?> makeServices(Configuration c) {
         return ImmutableList.builder()
                 .addAll(ImmutableList.of(myService))
-                .addAll(JmsModule.super.makeServices(c))
-                .addAll(MailModule.super.makeServices(c))
                 .build();
     }
 

@@ -15,7 +15,7 @@ import java.util.List;
 public interface MailModule extends ApplicationModule {
 
     @ServiceComponent
-    default List<?> makeServices(Configuration c) {
+    default List<?> makeMailService(Configuration c) {
         return ImmutableList.of(new MailService());
     }
 }

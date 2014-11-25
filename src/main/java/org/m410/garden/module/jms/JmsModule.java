@@ -16,7 +16,7 @@ import java.util.List;
 public interface JmsModule extends ApplicationModule {
 
     @ServiceComponent
-    default List<?> makeServices(Configuration c) {
+    default List<?> makeJmsServices(Configuration c) {
         return ImmutableList.of();
     }
 }
