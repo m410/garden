@@ -5,7 +5,7 @@ import java.util.Map;
 /**
  * @author m410
  */
-public interface AuthorizationProvider<T> {
+public interface AuthenticationProvider<T> {
 
     public static final String SESSION_KEY = "m410-garden-auth";
 

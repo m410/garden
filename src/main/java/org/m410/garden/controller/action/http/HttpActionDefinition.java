@@ -11,7 +11,7 @@ import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.status.*;
 import org.m410.garden.controller.Securable;
-import org.m410.garden.controller.auth.AuthorizationProvider;
+import org.m410.garden.controller.auth.AuthenticationProvider;
 import org.m410.garden.servlet.ServletExtension;
 import org.m410.garden.transaction.TransactionScope;
 import org.slf4j.Logger;
@@ -156,7 +156,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
 
             else if(useAuthentication &&
                     (req.getSession(false) == null ||
-                    req.getSession(false).getAttribute(AuthorizationProvider.SESSION_KEY) == null))
+                    req.getSession(false).getAttribute(AuthenticationProvider.SESSION_KEY) == null))
                 // should use req.getUserPrincipal() == null
                 // todo this needs to be configurable somehow
                 // todo needs a reference to the authorizationProvider?

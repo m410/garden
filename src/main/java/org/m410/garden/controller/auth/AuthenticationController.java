@@ -15,16 +15,16 @@ import java.util.Map;
  * @author m410
  */
 // todo fix me, this should be abstract
-public class AuthorizationController extends Controller {
-    static final Logger log = LoggerFactory.getLogger(AuthorizationController.class);
-    protected AuthorizationProvider<User> authorizationProvider;
+public class AuthenticationController extends Controller {
+    static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
+    protected AuthenticationProvider<User> authenticationProvider;
     protected String formView = "/authorize/index.jsp";
     protected String logoutView = "/authorize/index.jsp";
     protected String invalidMessage = "Your user name or password was incorrect";
 
-    public AuthorizationController(AuthorizationProvider<User> authorizationProvider) {
-        super(authorizationProvider.loginBaseUri());
-        this.authorizationProvider = authorizationProvider;
+    public AuthenticationController(AuthenticationProvider<User> authenticationProvider) {
+        super(authenticationProvider.loginBaseUri());
+        this.authenticationProvider = authenticationProvider;
     }
 
     @Override
@@ -37,12 +37,12 @@ public class AuthorizationController extends Controller {
 
     Action authAction = req -> {
         log.info("req:{}",req);
-        AuthorizationStatus<User> authorized = authorizationProvider.authorize(toMap(req.request()));
+        AuthorizationStatus<User> authorized = authenticationProvider.authorize(toMap(req.request()));
         log.info("login:{}",authorized);
 
         if(authorized.isAuthorized())
-            return respond().withSession(AuthorizationProvider.SESSION_KEY,authorized.get())
-                    .asRedirect(authorizationProvider.successUri());
+            return respond().withSession(AuthenticationProvider.SESSION_KEY,authorized.get())
+                    .asRedirect(authenticationProvider.successUri());
         else
             return respond().withModel("invalidMessage",invalidMessage)
                     .withView(formView);

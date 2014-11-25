@@ -5,6 +5,6 @@ package org.m410.garden.controller.auth;
  */
 public interface AuthorizationModule {
 
-    AuthorizationProvider getAuthorizationProvider();
+    AuthenticationProvider getAuthenticationProvider();
 
 }

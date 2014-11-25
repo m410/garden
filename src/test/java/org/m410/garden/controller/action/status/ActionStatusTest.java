@@ -12,7 +12,7 @@ import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.controller.Securable;
-import org.m410.garden.controller.auth.AuthorizationProvider;
+import org.m410.garden.controller.auth.AuthenticationProvider;
 import org.m410.garden.transaction.TransactionScope;
 
 
@@ -55,7 +55,7 @@ public class ActionStatusTest {
                 Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
         HttpSession httpSession = mock(HttpSession.class);
-        when(httpSession.getAttribute(AuthorizationProvider.SESSION_KEY)).thenReturn("anything");
+        when(httpSession.getAttribute(AuthenticationProvider.SESSION_KEY)).thenReturn("anything");
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");

@@ -3,7 +3,7 @@ package org.m410.garden.controller.action;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.m410.garden.controller.auth.AuthorizationProvider;
+import org.m410.garden.controller.auth.AuthenticationProvider;
 import org.m410.garden.controller.auth.User;
 
 import javax.servlet.http.HttpServletRequest;
@@ -26,7 +26,7 @@ public final class Identity implements Serializable {
         if(httpServletRequest.getSession(false) != null) {
             this.user = Optional.ofNullable(
                     (User)httpServletRequest.getSession(false)
-                            .getAttribute(AuthorizationProvider.SESSION_KEY)
+                            .getAttribute(AuthenticationProvider.SESSION_KEY)
             );
         }
         else {
