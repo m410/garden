@@ -1,6 +1,7 @@
 package org.m410.garden.jpa;
 
 import org.m410.fabricate.service.FabricateService;
+import org.m410.garden.jpa.internal.OrmXmlTask;
 import org.m410.garden.jpa.internal.PersistenceXmlTask;
 import org.osgi.framework.*;
 
@@ -20,6 +21,7 @@ public class Activator implements BundleActivator {
                         .findFirst()
                         .ifPresent(m->{
                             m.append(new PersistenceXmlTask());
+                            m.append(new OrmXmlTask());
                         });
             }
         });
