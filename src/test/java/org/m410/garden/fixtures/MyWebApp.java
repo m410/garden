@@ -30,6 +30,5 @@ public class MyWebApp extends Application {
                 new MyController(myService)
         );
     }
-
 }
 
