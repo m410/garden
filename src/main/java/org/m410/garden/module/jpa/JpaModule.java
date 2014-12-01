@@ -21,6 +21,4 @@ public interface JpaModule extends ApplicationModule {
                 new HibernatePersistence(c)
         );
     }
-
-
 }
