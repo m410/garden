@@ -19,7 +19,7 @@ import java.util.stream.Collectors;
  */
 public final class LogbackXmlTask implements Task{
 
-    final String builderName = "org.m410.garden.configuration.LogbackXmlBuilder";
+    final String builderName = "org.m410.garden.module.logback.LogbackXmlBuilder";
 
 
     @Override
