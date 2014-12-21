@@ -1,11 +1,12 @@
 package org.m410.angular.model.person;
 
-import org.m410.garden.module.auth.AuthorizationProvider;
+import org.m410.garden.controller.auth.AuthenticationProvider;
+import org.m410.garden.controller.auth.AuthorizationStatus;
 
 import java.util.List;
 
 
-public interface PersonService extends AuthorizationProvider {
+public interface PersonService extends AuthenticationProvider<Person> {
 
     Person get(Long id);
 
@@ -17,5 +18,4 @@ public interface PersonService extends AuthorizationProvider {
 
     Person findBy(String userName);
 
-//    Optional<Set<ConstraintViolation>> validate(Person p);
 }

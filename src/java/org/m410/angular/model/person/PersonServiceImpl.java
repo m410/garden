@@ -1,6 +1,7 @@
 package org.m410.angular.model.person;
 
-import org.m410.garden.module.auth.User;
+import org.m410.garden.controller.auth.User;
+import org.m410.garden.controller.auth.AuthorizationStatus;
 
 import java.util.List;
 import java.util.Map;
@@ -13,16 +14,13 @@ import java.util.Optional;
 public class PersonServiceImpl implements PersonService {
     private PersonDao personDao;
 
-    @Override
-    public Optional<User> authorize(Map<String,String> params) {
+
+    public AuthorizationStatus<Person> authorize(Map<String,String> params) {
         String username = params.get("userName");
         String password = params.get("password");
-        Optional<Person> person = personDao.findByUserPass(username, password);
-
-        return person.flatMap(p->{
-            String[] roles = p.getRoles().toArray(new String[p.getRoles().size()]);
-            return Optional.of(new User(p.getUserName(),roles));
-        });
+        Optional<Person> optPerson = personDao.findByUserPass(username, password);
+        // need optional constructor for status
+        return AuthorizationStatus.option(optPerson, "Not Found");
     }
 
     public PersonServiceImpl(PersonDao personDao) {

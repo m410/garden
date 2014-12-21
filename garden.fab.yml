@@ -40,10 +40,6 @@ modules:
     organization: org.m410.garden
     version: "0.1"
     base_config: file:/Users/m410/Projects/m410.org/garden/garden-jetty9/src/main/resources/garden-jetty9.fab.yml
-  # - name: garden-orm
-  #   organization: org.m410.garden
-  #   version: "0.1"
-  #   base_config: file:/Users/m410/Projects/m410.org/garden/garden-orm/src/main/resources/garden-orm.fab.yml
 
 testing:
   - name: garden-junit

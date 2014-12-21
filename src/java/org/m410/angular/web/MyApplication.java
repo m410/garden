@@ -8,7 +8,7 @@ import com.google.common.collect.ImmutableList;
 import org.m410.garden.application.Application;
 import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.HttpCtrl;
-import org.m410.garden.module.auth.AuthorizationController;
+import org.m410.garden.controller.auth.AuthenticationController;
 import org.m410.garden.module.jpa.JpaModule;
 import org.m410.garden.module.ormbuilder.OrmBuilderModule;
 import org.m410.garden.module.ormbuilder.orm.EntityFactory;
@@ -31,7 +31,7 @@ public final class MyApplication extends Application implements OrmBuilderModule
                 new HomeController(),
                 new PersonController(personService),
                 new AddressController(addressService,personService),
-                new AuthorizationController(personService)
+                new AuthenticationController<Person>(personService)
         );
     }
 
