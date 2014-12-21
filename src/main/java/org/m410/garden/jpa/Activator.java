@@ -17,11 +17,11 @@ public class Activator implements BundleActivator {
         fabricateService.addCommandModifier(command -> {
             if(command.getName().equalsIgnoreCase("build")) {
                 command.getSteps().stream()
-                        .filter(m->m.getName().equals("generate-resources"))
+                        .filter(m->m.getName().equals("process-classes"))
                         .findFirst()
                         .ifPresent(m->{
-                            m.append(new PersistenceXmlTask());
                             m.append(new OrmXmlTask());
+                            m.append(new PersistenceXmlTask());
                         });
             }
         });
