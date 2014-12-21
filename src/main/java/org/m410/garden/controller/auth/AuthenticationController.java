@@ -15,14 +15,14 @@ import java.util.Map;
  * @author m410
  */
 // todo fix me, this should be abstract
-public class AuthenticationController extends Controller {
+public class AuthenticationController<T> extends Controller {
     static final Logger log = LoggerFactory.getLogger(AuthenticationController.class);
-    protected AuthenticationProvider<User> authenticationProvider;
+    protected AuthenticationProvider<T> authenticationProvider;
     protected String formView = "/authorize/index.jsp";
     protected String logoutView = "/authorize/index.jsp";
     protected String invalidMessage = "Your user name or password was incorrect";
 
-    public AuthenticationController(AuthenticationProvider<User> authenticationProvider) {
+    public AuthenticationController(AuthenticationProvider<T> authenticationProvider) {
         super(authenticationProvider.loginBaseUri());
         this.authenticationProvider = authenticationProvider;
     }
@@ -37,7 +37,7 @@ public class AuthenticationController extends Controller {
 
     Action authAction = req -> {
         log.info("req:{}",req);
-        AuthorizationStatus<User> authorized = authenticationProvider.authorize(toMap(req.request()));
+        AuthorizationStatus<T> authorized = authenticationProvider.authorize(toMap(req.request()));
         log.info("login:{}",authorized);
 
         if(authorized.isAuthorized())

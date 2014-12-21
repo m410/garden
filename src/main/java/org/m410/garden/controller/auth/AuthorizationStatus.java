@@ -1,5 +1,7 @@
 package org.m410.garden.controller.auth;
 
+import java.util.Optional;
+
 /**
  * @author m410
  */
@@ -20,12 +22,19 @@ public class AuthorizationStatus<T> {
         this.authorized = false;
     }
 
-    public AuthorizationStatus<T> accept(T t) {
+    public static <T> AuthorizationStatus<T> accept(T t) {
         return new AuthorizationStatus<>(t);
     }
 
-    public AuthorizationStatus<T> decline(String message) {
+    public static <T> AuthorizationStatus<T> decline(String message) {
         return new AuthorizationStatus<>(message);
+    }
+
+    public static <T> AuthorizationStatus<T> option(Optional<T> t, String message) {
+        if(t.isPresent())
+            return new AuthorizationStatus<T>(t.get());
+        else
+            return new AuthorizationStatus<T>(message);
     }
 
     public boolean isAuthorized() {
