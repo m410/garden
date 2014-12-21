@@ -1,6 +1,8 @@
 package org.m410.garden.module.ormbuilder.orm;
 
+import java.lang.reflect.ParameterizedType;
 import java.util.Arrays;
+import java.util.function.Function;
 
 /**
  * Builder design pattern to create a Entity Node.  This allows you to add top level
@@ -17,6 +19,18 @@ public final class EntityNodeBuilder {
         this.entityNode.addChild(new Table(table));
         this.entityNode.addChild(attributes);
     }
+
+//    public <T, V> EntityNodeBuilder id(Function<T, V> idGetter, Node... nodes) {
+//        final Id node = new Id((new TypeReader<V>(){}).type());
+//        return appendAttribute(node, nodes);
+//    }
+//
+//    abstract class TypeReader<T>{
+//        @SuppressWarnings("unchecked")
+//        public Class<T> type(){
+//            return ((Class) ((ParameterizedType) getClass().getGenericSuperclass()).getActualTypeArguments()[0]);
+//        }
+//    }
 
     public EntityNodeBuilder id(String id, Node... nodes) {
         final Id node = new Id(id);
