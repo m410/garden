@@ -52,15 +52,11 @@ public final class OrmXmlTask implements Task {
 
     @Override
     public void execute(BuildContext context) throws Exception {
-        // have to check for config param to run it.
-        Module jpa = context.getModules().stream().filter(m -> m.getName().equals("garden-jpa")).findFirst().get();
-        final Map<String, Object> props = jpa.getProperties();
+        final String[] dependencies = context.getClasspath()
+                .get("compile")
+                .split(System.getProperty("path.separator"));
 
-        Collection<File> classpath = Arrays.asList(
-                context.getClasspath()
-                        .get("compile")
-                        .split(System.getProperty("path.separator")))
-                .stream()
+        Collection<File> classpath = Arrays.stream(dependencies)
                 .map(File::new)
                 .collect(Collectors.toList());
         classpath.add(Paths.get(context.getBuild().getSourceOutputDir()).toFile());
