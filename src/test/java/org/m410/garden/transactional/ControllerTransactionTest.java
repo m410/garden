@@ -52,8 +52,6 @@ public class ControllerTransactionTest implements MockServletInput {
         app.doRequest(request,response);
         assertEquals(0, TrxSession.getCallCount());
         assertEquals("none",buffer.toString());
-
-
     }
 
     @Test

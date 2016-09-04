@@ -79,6 +79,16 @@ abstract public class Application implements ApplicationModule {
         return actionDefinitions;
     }
 
+    @Override
+    public List<? extends ThreadLocalSessionFactory> getThreadLocalFactories() {
+        return threadLocalsFactories;
+    }
+
+    @Override
+    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+        return ImmutableList.of();
+    }
+
     // todo add other web.xml attributes to mvn build, like the orm config.
 
     /**
@@ -175,16 +185,6 @@ abstract public class Application implements ApplicationModule {
                 definition.apply(req, res);
         }
    }
-
-    @Override
-    public List<? extends ThreadLocalSessionFactory> getThreadLocalFactories() {
-        return threadLocalsFactories;
-    }
-
-    @Override
-    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
-        return ImmutableList.of();
-    }
 
     /**
      * Finds an action based on the request URI.

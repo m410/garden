@@ -99,6 +99,7 @@ public class Configuration {
         this.listenerDefinitions = listenerDefinitions;
     }
 
+    // todo remove yaml, replace with yaml-configuration
     @SuppressWarnings("unchecked")
     public static Configuration fromMap(Map<String, Object> c) {
         Configuration configuration = new Configuration();
