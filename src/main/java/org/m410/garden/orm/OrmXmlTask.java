@@ -15,6 +15,7 @@
  */
 package org.m410.garden.orm;
 
+import org.apache.commons.configuration2.ImmutableConfiguration;
 import org.m410.fabricate.builder.BuildContext;
 import org.m410.fabricate.builder.Task;
 import org.m410.fabricate.config.Module;
@@ -41,7 +42,6 @@ public final class OrmXmlTask implements Task {
 
     final String ormXmlClassName = "org.m410.garden.module.ormbuilder.orm.OrmXmlBuilder";
 
-
     @Override
     public String getName() {
         return "orm-xml";
@@ -57,17 +57,19 @@ public final class OrmXmlTask implements Task {
 
         // have to check for config param to run it.
         Module jpa = context.getModules().stream().filter(m->m.getName().equals("garden-jpa")).findFirst().get();
-        final Map<String, Object> props = jpa.getProperties();
+        final ImmutableConfiguration configuration = jpa.getConfiguration();
 
-        if(props.containsKey("orm-builder") && isTrue(props.get("orm-builder"))) {
+        // todo duplicate of OrmXmlTask in fab-jpa
+        if(configuration.containsKey("orm-builder") && isTrue(configuration.getBoolean("orm-builder"))) {
 
-            Collection<File> classpath = Arrays.asList(
-                    context.getClasspath()
-                            .get("compile")
-                            .split(System.getProperty("path.separator")))
-                    .stream()
+            final String[] compiles = context.getClasspath()
+                    .get("compile")
+                    .split(System.getProperty("path.separator"));
+
+            Collection<File> classpath = Arrays.stream(compiles)
                     .map(File::new)
                     .collect(Collectors.toList());
+
             classpath.add(Paths.get(context.getBuild().getSourceOutputDir()).toFile());
 
             final String sourceOut = context.getBuild().getSourceOutputDir();
@@ -84,7 +86,6 @@ public final class OrmXmlTask implements Task {
                     .withAppCreated(true)
                     .make();
         }
-
     }
 
     protected boolean isTrue(Object o) {
