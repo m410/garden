@@ -49,13 +49,8 @@ public final class PersistenceXmlTask implements Task {
 
     @Override
     public void execute(BuildContext context) throws Exception {
-        Collection<File> mavenProject = Arrays.asList(
-                context.getClasspath()
-                        .get("compile")
-                        .split(System.getProperty("path.separator")))
-                .stream()
-                .map(File::new)
-                .collect(Collectors.toList());
+        final String[] compiles = context.getClasspath().get("compile").split(System.getProperty("path.separator"));
+        Collection<File> mavenProject = Arrays.stream(compiles).map(File::new).collect(Collectors.toList());
 
         final String sourceOut = context.getBuild().getSourceOutputDir();
         final Path outputPath = FileSystems.getDefault().getPath(sourceOut,"META-INF/persistence.xml");
