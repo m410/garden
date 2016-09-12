@@ -1,9 +1,14 @@
 modules(org.m410.garden:garden-jetty9:0.2-SNAPSHOT):
 
 dependencies:
-  - {scope: jetty9, name: jetty-all, org: org.eclipse.jetty.aggregate, rev: 9.2.3.v20140905}
-  - {scope: jetty9, name: javax.websocket-api, org: javax.websocket, rev: "1.1"}
-  - {scope: jetty9, name: javax.servlet-api, org: javax/servlet, rev: 3.1.0}
+#  - {scope: jetty9, name: jetty-all, org: org.eclipse.jetty.aggregate, rev: 9.2.3.v20140905}
+#  - {scope: jetty9, name: javax.websocket-api, org: javax.websocket, rev: "1.1"}
+#  - {scope: jetty9, name: javax.servlet-api, org: javax/servlet, rev: 3.1.0}
+- {scope: jetty9, name: org.eclipse.jetty.aggregate, name: jetty-all, rev: 9.2.3.v20140905 }
+- {scope: jetty9, name: javax.websocket, name: javax.websocket-api, rev: "1.1" }
+- {scope: jetty9, name: javax.servlet, name: javax.servlet-api, rev: 3.1.0 }
+- {scope: jetty9, name: org.m410.garden, name: garden-jetty9, rev: 0.2-SNAPSHOT }
+
 
 bundles:
   - name: garden-jetty9
