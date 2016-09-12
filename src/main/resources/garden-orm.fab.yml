@@ -1,5 +1,5 @@
 # modules
-modules(org.m410.garden:garden-orm:0.1-SNAPSHOT):
+persistence(org.m410.garden:garden-orm:0.1-SNAPSHOT):
 
 bundles:
   - name: garden-orm
