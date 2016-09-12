@@ -18,9 +18,7 @@ import java.util.stream.Collectors;
  * @author Michael Fortin
  */
 public final class LogbackXmlTask implements Task{
-
     final String builderName = "org.m410.garden.module.logback.LogbackXmlBuilder";
-
 
     @Override
     public String getName() {
@@ -34,11 +32,10 @@ public final class LogbackXmlTask implements Task{
 
     @Override
     public void execute(BuildContext context) throws Exception {
-        Collection<File> mavenProject = Arrays.asList(
+        Collection<File> mavenProject = Arrays.stream(
                 context.getClasspath()
                         .get("compile")
                         .split(System.getProperty("path.separator")))
-                .stream()
                 .map(File::new)
                 .collect(Collectors.toList());
 
