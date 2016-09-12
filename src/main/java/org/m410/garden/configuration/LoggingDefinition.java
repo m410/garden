@@ -1,5 +1,7 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+
 import java.util.Map;
 
 /**
@@ -8,8 +10,10 @@ import java.util.Map;
  * @author Michael Fortin
  */
 public class LoggingDefinition {
-    public static LoggingDefinition fromMap(Map<String, Object> appDef) {
+    public static LoggingDefinition fromMap(String name, ImmutableHierarchicalConfiguration appDef) {
         LoggingDefinition ld = new LoggingDefinition();
+        ModuleNameParser parser = new ModuleNameParser(name);
+
         return ld;
     }
 }

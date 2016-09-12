@@ -1,5 +1,7 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,13 +62,25 @@ public class PersistenceDefinition {
     }
 
     @SuppressWarnings("unchecked")
-    public static PersistenceDefinition fromMap(Map<String, Object> val) {
+    public static PersistenceDefinition fromMap(String name, ImmutableHierarchicalConfiguration val) {
         PersistenceDefinition pd = new PersistenceDefinition();
-        pd.setName((String)val.getOrDefault("name","UNKNOWN"));
-        pd.setOrganization((String) val.getOrDefault("organization", "UNKNOWN"));
-        pd.setVersion((String) val.getOrDefault("version", "UNKNOWN"));
-        pd.setProperties((Map<String, String>) val.getOrDefault("properties", new HashMap<String, String>()));
-        pd.setClasses((List<String>) val.getOrDefault("classes", new ArrayList<String>()));
+        ModuleNameParser parser = new ModuleNameParser(name);
+        pd.setName(parser.getName());
+        pd.setOrganization(parser.getOrg());
+        pd.setVersion(parser.getVersion());
+
+        pd.setProperties(val.get(Map.class, "properties", new HashMap<String, Object>()));
+        pd.setClasses(val.getList(String.class, "classes", new ArrayList<>()));
+
         return pd;
+    }
+
+    @Override
+    public String toString() {
+        return "PersistenceDefinition{" +
+               "name='" + name + '\'' +
+               ", organization='" + organization + '\'' +
+               ", version='" + version + '\'' +
+               '}';
     }
 }

@@ -1,5 +1,7 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+
 import java.util.Map;
 
 /**
@@ -72,14 +74,14 @@ public class ApplicationDefinition  {
         this.packageName = packageName;
     }
 
-    public static ApplicationDefinition fromMap(Map<String, Object> map) {
+    public static ApplicationDefinition fromMap(ImmutableHierarchicalConfiguration map) {
         ApplicationDefinition ad = new ApplicationDefinition();
-        ad.setApplicationClass((String)map.getOrDefault("applicationClass","UNKNOWN"));
-        ad.setName((String) map.getOrDefault("name","UNKNOWN"));
-        ad.setPackageName((String) map.getOrDefault("packageName","UNKNOWN"));
-        ad.setVersion((String) map.getOrDefault("version","UNKNOWN"));
-        ad.setAuthor((String) map.getOrDefault("author","UNKNOWN"));
-        ad.setDescription((String) map.getOrDefault("description","UNKNOWN"));
+        ad.setApplicationClass(map.getString("applicationClass","UNKNOWN"));
+        ad.setName(map.getString("name","UNKNOWN"));
+        ad.setPackageName(map.getString("packageName","UNKNOWN"));
+        ad.setVersion(map.getString("version","UNKNOWN"));
+        ad.setAuthor(map.getString("author","UNKNOWN"));
+        ad.setDescription(map.getString("description","UNKNOWN"));
         // todo finish me
         return ad;
     }

@@ -111,9 +111,9 @@
             <version>1.0.13</version>
         </dependency>
         <dependency>
-            <groupId>org.yaml</groupId>
-            <artifactId>snakeyaml</artifactId>
-            <version>1.13</version>
+            <groupId>org.m410</groupId>
+            <artifactId>yaml-configuration</artifactId>
+            <version>0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.slf4j</groupId>

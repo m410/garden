@@ -1,5 +1,7 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+
 import java.util.Map;
 
 /**
@@ -37,8 +39,12 @@ public class ModuleDefinition {
     }
 
 
-    public static ModuleDefinition fromMap(Map<String, Object> val) {
+    public static ModuleDefinition fromMap(String name, ImmutableHierarchicalConfiguration val) {
         ModuleDefinition md = new ModuleDefinition();
+        ModuleNameParser parser = new ModuleNameParser(name);
+        md.setName(parser.getName());
+        md.setOrganization(parser.getOrg());
+        md.setVersion(parser.getVersion());
         return md;
     }
 }

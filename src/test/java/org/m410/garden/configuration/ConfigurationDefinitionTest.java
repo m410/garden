@@ -1,11 +1,15 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
+import org.m410.config.YamlConfiguration;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -25,10 +29,14 @@ public class ConfigurationDefinitionTest {
     }
 
     @Test
-    public void testFromMap() {
-        Map<String,Object> map = new HashMap<>();
-        map.put("version","0.1.1");
-        Configuration ad = Configuration.fromMap(map);
+    public void testFromMap() throws IOException, ConfigurationException {
+        YamlConfiguration configuration = new YamlConfiguration();
+
+        try(InputStreamReader r = new InputStreamReader(getClass().getResourceAsStream("/garden.fab.yml"))) {
+            configuration.read(r);
+        }
+
+        Configuration ad = Configuration.fromMap(configuration);
         assertNotNull(ad);
     }
 

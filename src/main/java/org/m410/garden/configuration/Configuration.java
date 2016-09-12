@@ -1,14 +1,14 @@
 package org.m410.garden.configuration;
 
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.servlet.FilterDefinition;
 import org.m410.garden.servlet.ListenerDefinition;
 import org.m410.garden.servlet.ServletDefinition;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 /**
@@ -99,47 +99,49 @@ public class Configuration {
         this.listenerDefinitions = listenerDefinitions;
     }
 
-    // todo remove yaml, replace with yaml-configuration
     @SuppressWarnings("unchecked")
-    public static Configuration fromMap(Map<String, Object> c) {
+    public static Configuration fromMap(ImmutableHierarchicalConfiguration c) {
         Configuration configuration = new Configuration();
-        configuration.version = (String)c.getOrDefault("version","UNKNOWN");
+        configuration.version = c.getString("version","UNKNOWN");
+        configuration.application = ApplicationDefinition.fromMap(c.immutableConfigurationAt("application"));
+        configuration.build = BuildDefinition.fromMap(c.immutableConfigurationAt("build"));
 
-        configuration.application = ApplicationDefinition.fromMap(
-                (Map<String, Object>)c.getOrDefault("application", new HashMap<String, Object>())
-        );
+        final String[] persistenceModuleName = findName(c, "persistence");
+        final String[] moduleNames = findName(c, "modules");
+        final String[] loggingModuleName = findName(c, "logging");
 
-        configuration.build = BuildDefinition.fromMap(
-                (Map<String, Object>)c.getOrDefault("build", new HashMap<String, Object>())
-        );
+        configuration.persistence = Arrays.stream(persistenceModuleName)
+                .map(n -> PersistenceDefinition.fromMap(n,c.immutableConfigurationAt(n)))
+                .collect(Collectors.toList());
 
-        configuration.persistence = ((List<?>)c.getOrDefault("persistence",new ArrayList()))
-                .stream().map((val) -> {
-                    return PersistenceDefinition.fromMap((Map<String, Object>) val);
-                }).collect(Collectors.<PersistenceDefinition>toList());
+        configuration.modules = Arrays.stream(moduleNames)
+                .map(n -> ModuleDefinition.fromMap(n,c.immutableConfigurationAt(n)))
+                .collect(Collectors.toList());
 
-        configuration.modules = ((List<?>)c.getOrDefault("modules",new ArrayList()))
-                .stream().map((val) -> {
-                    return ModuleDefinition.fromMap((Map<String, Object>) val);
-                }).collect(Collectors.<ModuleDefinition>toList());
-
-
-        configuration.logging = LoggingDefinition.fromMap(loggingMap(c)
-//                (Map<String, Object>)c.getOrDefault("logging", new HashMap<String, Object>())
-        );
+        if(loggingModuleName.length>0)
+            configuration.logging = LoggingDefinition.fromMap(
+                    loggingModuleName[0],
+                    c.immutableConfigurationAt(loggingModuleName[0]));
 
         return configuration;
     }
 
-    private static Map loggingMap(Map<String,Object> c) {
-        Object logRef = c.get("logging");
-        if(logRef == null)
-            return new HashMap();
-        if(logRef instanceof Map)
-            return (Map)logRef;
-        else
-            return (Map)((List)logRef).get(0);
+    private static String[] findName(ImmutableHierarchicalConfiguration c, String prefix) {
+        final Iterator<String> keys = c.getKeys();
+        final List<String> names = new ArrayList<>();
+        final Pattern modulePattern = Pattern.compile("^"+prefix+"\\(.*?\\)$");
+
+        while (keys.hasNext()) {
+            String next = keys.next();
+            final Matcher matcher = modulePattern.matcher(next);
+
+            if(matcher.matches())
+                names.add(next);
+        }
+
+        return names.toArray(new String[names.size()]);
     }
+
     // for later versions
     // dependencies
     // repositories

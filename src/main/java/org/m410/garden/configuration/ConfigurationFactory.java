@@ -1,29 +1,32 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ex.ConfigurationException;
+import org.m410.config.YamlConfiguration;
 import org.m410.garden.controller.action.NotAPostException;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.*;
 import java.nio.file.FileSystems;
-import java.util.Map;
 
 /**
  */
 public class ConfigurationFactory {
-    public static final String  configFile = "garden.fab.yml";
-    public static final String  altConfigFile = "/garden.fab.yml";
+    public static final String RUNTIME_CONFIG = "garden.fab.yml";
+    public static final String RUNTIME_CONFIG_ALT = "/garden.fab.yml";
+    public static final String BUILDTIME_CONFIG = ".fab/config/${env}.yml";
 
     public static Configuration runtime(String env) {
-        InputStream in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(configFile);
+        InputStream in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(RUNTIME_CONFIG);
 
         if (in == null)
-            in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(altConfigFile);
+            in = ConfigurationFactory.class.getClassLoader().getResourceAsStream(RUNTIME_CONFIG_ALT);
 
         return fromInputStream(in, env);
     }
 
     public static Configuration buildtime(String env) {
-        File file = FileSystems.getDefault().getPath(configFile).toFile();
+        String filePath = BUILDTIME_CONFIG.replace("${env}", env);
+        File file = FileSystems.getDefault().getPath(filePath).toFile();
+
         try {
             return fromInputStream(new FileInputStream(file), env);
         }
@@ -34,7 +37,14 @@ public class ConfigurationFactory {
 
     @SuppressWarnings("unchecked")
     public static Configuration fromInputStream(InputStream in, String env) {
-        final Map<String, Object> map = (Map<String, Object>) new Yaml().load(in);
-        return Configuration.fromMap(map);
+        final YamlConfiguration yamlConfiguration = new YamlConfiguration();
+
+        try (InputStreamReader isr = new InputStreamReader(in)){
+            yamlConfiguration.read(isr);
+            return Configuration.fromMap(yamlConfiguration);
+        }
+        catch (ConfigurationException | IOException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

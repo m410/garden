@@ -1,5 +1,7 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+
 import java.util.Map;
 
 /**
@@ -46,9 +48,9 @@ public class BuildDefinition {
         this.packageSource = packageSource;
     }
 
-    public static BuildDefinition fromMap(Map<String, Object> map) {
+    public static BuildDefinition fromMap(ImmutableHierarchicalConfiguration map) {
         BuildDefinition ad = new BuildDefinition();
-        ad.setPackageSource(toBoolean(map.getOrDefault("packageSource","false")));
+        ad.setPackageSource(toBoolean(map.getBoolean("packageSource",Boolean.FALSE)));
         // todo finish me
         return ad;
     }
