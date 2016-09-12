@@ -33,9 +33,7 @@ public final class LogbackXmlTask implements Task{
     @Override
     public void execute(BuildContext context) throws Exception {
         Collection<File> mavenProject = Arrays.stream(
-                context.getClasspath()
-                        .get("compile")
-                        .split(System.getProperty("path.separator")))
+                context.getClasspath().get("compile").split(System.getProperty("path.separator")))
                 .map(File::new)
                 .collect(Collectors.toList());
 
