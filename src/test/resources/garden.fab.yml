@@ -7,21 +7,17 @@ application:
   description: &desc A simple  JPA Scala demo  based website.
 build:
   packageSource: true
-persistence:
-  - name: garden-jpa
-    organization: org.m410.garden.module
-    version: 0.1.0
-    properties:
-      hibernate.dialect: org.hibernate.dialect.H2Dialect
-      hibernate.connection.driver_class: org.h2.Driver
-      hibernate.connection.username: sa
-      hibernate.connection.password: ""
-      hibernate.connection.url: "jdbc:h2:demo"
-      hibernate.hbm2ddl.auto: update
-modules:
-  - name: m410-jetty8
-    organization: org.m410.garden.module
-    version: 0.2.0
+
+persistence(org.m410.garden:garden-jpa:0.2-SNAPSHOT):
+  properties:
+    hibernate.dialect: org.hibernate.dialect.H2Dialect
+    hibernate.connection.driver_class: org.h2.Driver
+    hibernate.connection.username: sa
+    hibernate.connection.password: ""
+    hibernate.connection.url: "jdbc:h2:demo"
+    hibernate.hbm2ddl.auto: update
+
+
 logging:
   appenders:
     - name: STDOUT
