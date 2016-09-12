@@ -19,6 +19,7 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.validation.Schema;
 import javax.xml.validation.SchemaFactory;
 import javax.xml.validation.Validator;
+import java.io.File;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.net.URL;
@@ -36,9 +37,14 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
-        PersistenceDefinition definition = configuration.getPersistence().stream().filter((d)->{
-            return d.getName().equalsIgnoreCase("garden-jpa");
-        }).findAny().orElseThrow(() -> new RuntimeException("JPA persistence configuration not found"));
+
+
+        System.out.println(configuration.getPersistence());
+        PersistenceDefinition definition = configuration.getPersistence()
+                .stream()
+                .filter((d)->d.getName().equalsIgnoreCase("garden-jpa"))
+                .findAny()
+                .orElseThrow(() -> new RuntimeException("JPA persistence configuration not found"));
 
         Document doc = docBuilder.newDocument();
         Element root = doc.createElementNS("http://xmlns.jcp.org/xml/ns/persistence", "persistence");
@@ -101,12 +107,20 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
     }
 
 
+
     public void writeToFile(Path path, Configuration configuration) {
-        try {
-            Files.write(path, make(configuration).getBytes());
+        final File parentDirectory = path.getParent().toFile();
+
+        if( parentDirectory.exists() || parentDirectory.mkdirs()) {
+            try {
+                Files.write(path, make(configuration).getBytes());
+            }
+            catch (Exception e) {
+                throw new RuntimeException("Could not write to path: " + path, e);
+            }
         }
-        catch (Exception e) {
-            throw new RuntimeException("Could not write to path: " + path, e);
+        else {
+            throw new RuntimeException("could not create directory: " + parentDirectory.getAbsolutePath());
         }
     }
 }
