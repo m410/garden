@@ -20,11 +20,8 @@ public class Activator implements BundleActivator {
                         .ifPresent(m->m.append(new OrmXmlTask()));
             }
         });
-
     }
 
     public void stop(BundleContext context) throws Exception {
-
     }
-
 }
