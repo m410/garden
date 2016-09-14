@@ -5,9 +5,6 @@ logging(org.m410.garden:garden-logback:0.2-SNAPSHOT):
       appender class: ch.qos.logback.core.ConsoleAppender
       layout: ch.qos.logback.classic.encoder.PatternLayoutEncoder
       pattern: "%-4relative [%thread] %-5level %class - %msg%n"
-  logger:
-    - name: org.m410
-      level: TRACE
   root:
     level: DEBUG
     ref: [STDOUT]
@@ -20,6 +17,6 @@ bundles:
 
 dependencies:
   - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: 0.2.0-SNAPSHOT }
-  - { scope: compile, org: ch.qos.logback, name: logback-classic, rev: 1.1.2, transitive=true }
-  - { scope: compile, org: ch.qos.logback, name: logback-core, rev: 1.1.2, transitive=true }
+  - { scope: compile, org: ch.qos.logback, name: logback-classic, rev: 1.1.2, transitive: true }
+  - { scope: compile, org: ch.qos.logback, name: logback-core, rev: 1.1.2, transitive: true }
   - { scope: compile, org: org.slf4j, name: slf4j-api, rev: 1.7.7}
