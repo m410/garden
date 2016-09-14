@@ -12,8 +12,7 @@ logging(org.m410.garden:garden-logback:0.2-SNAPSHOT):
 bundles:
   - name: garden-logback
     org: org.m410.garden
-    version: 0.1-SNAPSHOT
-    remote_reference: file:/Users/m410/Projects/m410.org/garden/garden-logback/target/garden-logback-0.2-SNAPSHOT.jar
+    version: 0.2-SNAPSHOT
 
 dependencies:
   - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: 0.2.0-SNAPSHOT }
