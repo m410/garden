@@ -7,7 +7,7 @@ import java.lang.reflect.*;
 /**
  * @author Michael Fortin
  */
-public class TransactionInvocationHandlerFactory implements InvocationHandlerFactory {
+public class LogInvocationHandlerFactory implements InvocationHandlerFactory {
 
 
     @Override
@@ -32,7 +32,7 @@ public class TransactionInvocationHandlerFactory implements InvocationHandlerFac
 
         @Override
         public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
-            System.out.println("called loggin proxy");
+            System.out.println("log "+target.getClass().getSimpleName() +":"+ method.getName());
             return method.invoke(target, args);
         }
     }

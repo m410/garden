@@ -17,7 +17,7 @@ import java.util.List;
 public class SampleApplication extends Application {
 
     Components components = Components.init()
-            .withProxy(new TransactionInvocationHandlerFactory())
+            .withProxy(new LogInvocationHandlerFactory())
             .withComponents(new SampleComponent())
             .make();
 
