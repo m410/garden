@@ -1,8 +1,7 @@
 # modules
-persistence(org.m410.garden:garden-orm:0.1-SNAPSHOT):
+persistence(org.m410.garden:garden-orm:0.2-SNAPSHOT):
 
 bundles:
   - name: garden-orm
     org: org.m410.garden
-    version: 0.1-SNAPSHOT
-    remote_reference: file:/Users/m410/Projects/m410.org/garden/garden-orm/target/garden-orm-0.1-SNAPSHOT.jar
+    version: 0.2-SNAPSHOT
