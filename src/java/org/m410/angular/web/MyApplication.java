@@ -26,7 +26,8 @@ public final class MyApplication extends Application implements OrmBuilderModule
     AddressService addressService = new AddressServiceImpl(addressDao);
 
 
-    @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
+    @Override
+    public List<? extends HttpCtrl> makeControllers(Configuration c) {
         return ImmutableList.of(
                 new HomeController(),
                 new PersonController(personService),
@@ -39,7 +40,8 @@ public final class MyApplication extends Application implements OrmBuilderModule
      * This makes the orm and persistence xml builders available to the build
      * in the maven plugin.
      */
-    @Override public List<? extends EntityFactory> entityBuilders() {
+    @Override
+    public List<? extends EntityFactory> entityBuilders() {
         return ImmutableList.of(personDao, new Address());
     }
 }

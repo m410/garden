@@ -1,8 +1,9 @@
+# archetype(org.m410.fabricate.garden:garden:0.2-SNAPSHOT):
 archetype:
   name: garden
-  version: "0.1"
+  version: 0.2-SNAPSHOT
   organization: org.m410.fabricate.garden
-  base_config: file:/Users/m410/Projects/m410.org/fabricate/fab-java-garden-project/src/main/resources/garden.fab.yml
+  remote_reference: file:/Users/m410/Projects/m410.org/fabricate/fab-java-garden-project/src/main/resources/garden.fab.yml
 
 application:
   name: &name demo2
@@ -14,57 +15,35 @@ application:
   description: &desc My Demo App
 
 repositories:
-  - {id: m410, url: "http://repo.m410.org" }
+- {id: m410, url: "http://repo.m410.org" }
 
 dependencies:
-  - { scope: compile, org: org.apache.commons, name: commons-lang3, rev: 3.3.2 }
-  - { scope: compile, org: commons-beanutils, name: commons-beanutils, rev: 1.9.2 }
-  - { scope: compile, org: com.h2database, name: h2, rev: 1.4.182}
+- { scope: compile, org: org.apache.commons, name: commons-lang3, rev: 3.3.2 }
+- { scope: compile, org: commons-beanutils, name: commons-beanutils, rev: 1.9.2 }
+- { scope: compile, org: com.h2database, name: h2, rev: 1.4.182}
 
-persistence:
-  - name: garden-jpa
-    organization: org.m410.garden
-    version: "0.1"
-    base_config: file:/Users/m410/Projects/m410.org/garden/garden-jpa/src/main/resources/garden-jpa.fab.yml
-    user_orm_builder: true
-    properties:
-      hibernate.dialect: org.hibernate.dialect.H2Dialect
-      hibernate.connection.driver_class: org.h2.Driver
-      hibernate.connection.username: sa
-      hibernate.connection.password: ""
-      hibernate.connection.url: jdbc:h2:~/Documents/demo-angular;AUTO_SERVER=TRUE
-      hibernate.hbm2ddl.auto: update
+persistence(org.m410.garden:garden-jpa:0.2-SNAPSHOT):
+  remote_reference: file:../../garden/garden-jpa/src/main/resources/garden-jpa.fab.yml
+  user_orm_builder: true
+  properties:
+    hibernate.dialect: org.hibernate.dialect.H2Dialect
+    hibernate.connection.driver_class: org.h2.Driver
+    hibernate.connection.username: sa
+    hibernate.connection.password: ""
+    hibernate.connection.url: jdbc:h2:./db/demo;AUTO_SERVER=TRUE
+    hibernate.hbm2ddl.auto: update
 
-modules:
-  - name: garden-jetty9
-    organization: org.m410.garden
-    version: "0.1"
-    base_config: file:/Users/m410/Projects/m410.org/garden/garden-jetty9/src/main/resources/garden-jetty9.fab.yml
+modules(org.m410.garden:garden-jetty9:0.2-SNAPSHOT):
+  remote_reference: file:../../garden/garden-jetty9/src/main/resources/garden-jetty9.fab.yml
 
-testing:
-  - name: garden-junit
-    organization: org.m410.garden
-    version: "0.1"
-    base_config: file:/Users/m410/Projects/m410.org/fabricate/fab-junit/src/main/resources/fab-junit.fab.yml
+testing(org.m410.fabricate:fab-junit:0.2-SNAPSHOT):
+  remote_reference: file:../../fabricate/fab-junit/src/main/resources/fab-junit.fab.yml
 
-logging:
-  - name: garden-logback
-    organization: org.m410.garden
-    version: "0.1"
-    base_config: file:/Users/m410/Projects/m410.org/garden/garden-logback/src/main/resources/garden-logback.fab.yml
-    appenders:
-      - name: STDOUT
-        appender class: ch.qos.logback.core.ConsoleAppender
-        layout: ch.qos.logback.classic.encoder.PatternLayoutEncoder
-        pattern: "%-4relative [%thread] %-5level %class - %msg%n"
-    logger:
-      - name: org.m410
-        level: TRACE
-    root:
-      level: DEBUG
-      ref: [STDOUT]
-
-environment_overrides:
-  - environment: developement
-  - environment: test
-  - environment: production
+logging(org.m410.garden:garden-logback:0.2-SNAPSHOT):
+  remote_reference: file:../../garden/garden-logback/src/main/resources/garden-logback.fab.yml
+  logger:
+  - name: org.m410
+    level: TRACE
+  root:
+    level: DEBUG
+    ref: [STDOUT]

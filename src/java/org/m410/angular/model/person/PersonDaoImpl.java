@@ -27,9 +27,9 @@ public class PersonDaoImpl extends AbstractDao<Person,Long> implements PersonDao
     @Override @SuppressWarnings("unchecked")
     public Optional<Person> findByUserPass(String user, String pass) {
         return JpaThreadLocal.get()
-                        .createNamedQuery("findByUserPass")
-                        .setParameter("user",user)
-                        .setParameter("pass",pass)
-                        .getResultList().stream().findFirst();
+                .createNamedQuery("findByUserPass")
+                .setParameter("user",user)
+                .setParameter("pass",pass)
+                .getResultList().stream().findFirst();
     }
 }

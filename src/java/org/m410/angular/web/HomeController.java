@@ -19,7 +19,6 @@ import static org.m410.garden.transaction.TransactionScope.*;
 public final class HomeController extends Controller {
 
     public HomeController() {
-    	
     	super("");
     }
 
