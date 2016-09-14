@@ -40,22 +40,25 @@ public class Jetty9Task implements Task {
         context.cli().debug("context:"+context);
         context.cli().debug("context.app:"+context.getApplication());
         context.cli().debug("context.build:"+context.getBuild());
-        context.cli().debug("context.classpath:"+context.getClasspath());
+        context.cli().debug("context.classpath:"+context.getClasspath().get("compile"));
 
         applicationClass = context.getApplication().getApplicationClass();
         appLoaderClass = applicationClass + "Loader";
         sourceDir = FileSystems.getDefault().getPath(context.getBuild().getSourceDir()).toFile();
         classesDir = FileSystems.getDefault().getPath(context.getBuild().getSourceOutputDir()).toFile();
-        classpath = toPath(context.getClasspath().get("compile")); // was runtime
+        classpath = toPath(context.getClasspath().get("compile"));
 
         // works, but needs to be loaded dynamically from another group of dependencies
 //        List<URL> jettyClasspath = new ArrayList<>();
 //        jettyClasspath.add(new File("/Users/m410/.m2/repository/org/eclipse/jetty/aggregate/jetty-all/9.2.3.v20140905/jetty-all-9.2.3.v20140905.jar").toURI().toURL());
 //        jettyClasspath.add(new File("/Users/m410/.m2/repository/javax/websocket/javax.websocket-api/1.1/javax.websocket-api-1.1.jar").toURI().toURL());
 //        jettyClasspath.add(new File("/Users/m410/.m2/repository/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar").toURI().toURL());
-//        jettyClasspath.add(new File("/Users/m410/.m2/repository/org/m410/garden/garden-jetty9/0.1-SNAPSHOT/garden-jetty9-0.1-SNAPSHOT.jar").toURI().toURL());
+//        jettyClasspath.add(new File("/Users/m410/.m2/repository/org/m410/garden/garden-jetty9/0.1-SNAPSHOT/garden-jetty9-0.2-SNAPSHOT.jar").toURI().toURL());
 
-        new DeligateApp(toPath("jetty9"), context.getBuild().getWebappDir(), context.environment());
+
+        final List<URL> jetty9Classpath = toPath(context.getClasspath().get("jetty9"));
+        context.cli().debug("jetty9.classpath:"+jetty9Classpath);
+        new DeligateApp(jetty9Classpath, context.getBuild().getWebappDir(), context.environment());
     }
 
     class DeligateApp implements Runnable {
