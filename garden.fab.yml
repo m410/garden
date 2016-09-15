@@ -1,12 +1,12 @@
 archetype:
   name: garden
-  version: 0.2-SNAPSHOT
+  version: 0.2
   organization: org.m410.fabricate
 
 application:
   name: &name demo2
   organization: org.m410.demo
-  version: "1.0-SNAPSHOT"
+  version: "2.0"
   packageName: org.m410
   applicationClass: org.m410.angular.web.MyApplication
   author: Michael Fortin
@@ -20,7 +20,7 @@ dependencies:
 - { scope: compile, org: commons-beanutils, name: commons-beanutils, rev: 1.9.2 }
 - { scope: compile, org: com.h2database, name: h2, rev: 1.4.182}
 
-persistence(org.m410.garden:garden-jpa:0.2-SNAPSHOT):
+persistence(org.m410.garden:garden-jpa:0.2):
   user_orm_builder: true
   properties:
     hibernate.dialect: org.hibernate.dialect.H2Dialect
@@ -30,12 +30,13 @@ persistence(org.m410.garden:garden-jpa:0.2-SNAPSHOT):
     hibernate.connection.url: jdbc:h2:./db/demo;AUTO_SERVER=TRUE
     hibernate.hbm2ddl.auto: update
 
-modules(org.m410.garden:garden-jetty9:0.2-SNAPSHOT):
-
-testing(org.m410.fabricate:fab-junit:0.2-SNAPSHOT):
+modules(org.m410.garden:garden-jetty9:0.2):
   val: placeholder
 
-logging(org.m410.garden:garden-logback:0.2-SNAPSHOT):
+testing(org.m410.fabricate:fab-junit:0.2):
+  val: placeholder
+
+logging(org.m410.garden:garden-logback:0.2):
   logger:
   - name: org.m410
     level: TRACE
