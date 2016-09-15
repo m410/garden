@@ -3,15 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.m410.garden</groupId>
     <artifactId>garden-jetty9</artifactId>
-    <version>0.2-SNAPSHOT</version>
+    <version>0.2</version>
     <packaging>bundle</packaging>
     <name>Garden Jetty9 Build Module</name>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <garden.version>0.2-SNAPSHOT</garden.version>
-        <fab-share.version>0.2-SNAPSHOT</fab-share.version>
+        <garden.version>0.2</garden.version>
+        <fab-share.version>0.2</fab-share.version>
     </properties>
 
     <distributionManagement>
