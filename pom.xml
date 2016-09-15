@@ -3,15 +3,15 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.m410.garden</groupId>
     <artifactId>garden-jpa</artifactId>
-    <version>0.2</version>
+    <version>0.3-SNAPSHOT</version>
     <name>Garden JPA Build Module</name>
     <packaging>bundle</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <garden-jpa-lib.version>0.2.0-SNAPSHOT</garden-jpa-lib.version>
-        <fab-share.version>0.2</fab-share.version>
+        <garden-jpa-lib.version>0.3-SNAPSHOT</garden-jpa-lib.version>
+        <fab-share.version>0.3-SNAPSHOT</fab-share.version>
     </properties>
 
     <distributionManagement>
