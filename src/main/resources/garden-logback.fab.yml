@@ -1,5 +1,5 @@
 # modules
-logging(org.m410.garden:garden-logback:0.2-SNAPSHOT):
+logging(org.m410.garden:garden-logback:${project.version}):
   appenders:
     - name: STDOUT
       appender class: ch.qos.logback.core.ConsoleAppender
@@ -12,10 +12,10 @@ logging(org.m410.garden:garden-logback:0.2-SNAPSHOT):
 bundles:
   - name: garden-logback
     org: org.m410.garden
-    version: 0.2-SNAPSHOT
+    version: "${project.version}"
 
 dependencies:
-  - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: 0.2.0-SNAPSHOT }
+  - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: "${garden-jpa-lib.version}" }
   - { scope: compile, org: ch.qos.logback, name: logback-classic, rev: 1.1.2, transitive: true }
   - { scope: compile, org: ch.qos.logback, name: logback-core, rev: 1.1.2, transitive: true }
   - { scope: compile, org: org.slf4j, name: slf4j-api, rev: 1.7.7}
