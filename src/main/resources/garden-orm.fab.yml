@@ -1,7 +1,7 @@
 # modules
-persistence(org.m410.garden:garden-orm:0.2-SNAPSHOT):
+persistence(org.m410.garden:garden-orm:${project.version}):
 
 bundles:
   - name: garden-orm
     org: org.m410.garden
-    version: 0.2-SNAPSHOT
+    version: "${project.version}"
