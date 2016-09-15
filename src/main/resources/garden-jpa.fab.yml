@@ -1,7 +1,5 @@
 # modules
-persistence(org.m410.garden:garden-jpa:0.2-SNAPSHOT):
-  placeholder: placeholder
-
+persistence(org.m410.garden:garden-jpa:${project.version}}):
 
 bundles:
   - name: garden-jpa
@@ -9,8 +7,8 @@ bundles:
     version: 0.2-SNAPSHOT
 
 dependencies:
-  - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: 0.2.0-SNAPSHOT }
-  - { scope: compile, org: org.m410.garden, name: garden-jpa, rev: 0.2-SNAPSHOT}
+  - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: "${garden-jpa-lib.version}" }
+  - { scope: compile, org: org.m410.garden, name: garden-jpa, rev: "${project.version}"}
   - { scope: compile, org: commons-fileupload, name: commons-fileupload, rev: 1.3.1}
   - { scope: compile, org: commons-io, name: commons-io, rev: "2.4" }
   - { scope: compile, org: org.hibernate, name: hibernate-core, rev: 4.3.6.Final}
