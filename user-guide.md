@@ -22,7 +22,7 @@ Services that use interfaces have a simple way to create a proxy for transaction
 
     public final MyApplication extends Application implements JpaModule {
     MyService service = proxy(MyService.class, new MyServiceImpl(), new LocalHandler());
-    public List<Ctrl> makeControllers(Configuration c) {
+    public List<Ctrl> makeControllers(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of(
             new MyController(service);
         );

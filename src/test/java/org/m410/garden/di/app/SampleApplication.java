@@ -1,8 +1,8 @@
 package org.m410.garden.di.app;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.Application;
-import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.di.ComponentSupplier;
 import org.m410.garden.di.Components;
@@ -24,7 +24,7 @@ public class SampleApplication extends Application {
             .make();
 
     @Override
-    public List<? extends HttpCtlr> makeControllers(Configuration c) {
+    public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of(
                 new MyController(components.typeOf(MyService.class))
        );

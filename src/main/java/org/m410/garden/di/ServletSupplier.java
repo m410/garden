@@ -1,6 +1,6 @@
 package org.m410.garden.di;
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 
 import javax.servlet.http.HttpServlet;
 import java.util.Collection;
@@ -10,5 +10,5 @@ import java.util.Collection;
  */
 @FunctionalInterface
 public interface ServletSupplier {
-    Collection<? extends HttpServlet> get(Configuration configuration);
+    Collection<? extends HttpServlet> get(ImmutableHierarchicalConfiguration configuration);
 }

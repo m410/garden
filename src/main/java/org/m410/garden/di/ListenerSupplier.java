@@ -1,10 +1,7 @@
 package org.m410.garden.di;
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpSessionListener;
-import java.awt.*;
 import java.util.Collection;
 import java.util.EventListener;
 
@@ -13,5 +10,5 @@ import java.util.EventListener;
  */
 @FunctionalInterface
 public interface ListenerSupplier {
-    Collection<? extends EventListener> get(Configuration configuration);
+    Collection<? extends EventListener> get(ImmutableHierarchicalConfiguration configuration);
 }

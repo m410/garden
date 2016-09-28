@@ -1,13 +1,12 @@
 package org.m410.garden.application;
 
-import com.google.common.collect.ImmutableList;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import static org.junit.Assert.*;
 
-import org.m410.garden.configuration.Configuration;
 import org.m410.garden.configuration.ConfigurationFactory;
 import org.m410.garden.fixtures.MyWebApp;
 import org.m410.garden.transaction.ThreadLocalSessionFactory;
@@ -29,7 +28,7 @@ public class ApplicationThreadLocalTest {
     @Before
     public void setup() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
-        Configuration conf = ConfigurationFactory.fromInputStream(in, "development");
+        ImmutableHierarchicalConfiguration conf = ConfigurationFactory.fromInputStream(in, "development");
         app = new MyWebApp();
         app.init(conf);
     }

@@ -27,7 +27,7 @@ The action class is the central wiring and initialization point of the applicati
 A basic Application class looks like this
 
     public final class MyApplication extends Application {
-        @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
+        @Override public List<? extends HttpCtrl> makeControllers(ImmutableHierarchicalConfiguration c) {
                    return ImmutableList.of(new HomeController());
             }
     }
@@ -39,7 +39,7 @@ method that follows a conventional signature.
 
     public interface JpaModule extends ApplicationModule {  
         @ThreadLocalComponent 
-        default List<? extends ThreadLocalSessionFactory<?>> makeJpaThreadLocal(Configuration c) { 
+        default List<? extends ThreadLocalSessionFactory<?>> makeJpaThreadLocal(ImmutableHierarchicalConfiguration c) { 
             return ImmutableList.of( 
                 new HibernatePersistence(c) 
             ); 
@@ -59,7 +59,7 @@ Creating a service is as simple as declaring it and injecting it as a dependency
         PersonDao personDao = new PersonDaoImpl();
             PersonService personService = new PersonServiceImpl(personDao);
 
-    @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
+    @Override public List<? extends HttpCtrl> makeControllers(ImmutableHierarchicalConfiguration c) {
             return ImmutableList.of(
                     new HomeController(),
                     new PersonController(personService)
@@ -75,7 +75,7 @@ Services that need to have life cycle events called can be wrapped into the life
         PersonDao personDao = new PersonDaoImpl();
             PersonService personService = new PersonServiceImpl(personDao);
 
-    @Override public List<LifeCycle> manageLifeCycle(Configuration c) {
+    @Override public List<LifeCycle> manageLifeCycle(ImmutableHierarchicalConfiguration c) {
             return ImmutableList.of(
                     new LifeCycle(){
             public void initialize(){personService.init();}
@@ -95,7 +95,7 @@ you can add transaction to a service by using the transactional method proxy.
                 PersonService.class,
                 new PersonServiceImpl(personDao));
 
-    @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
+    @Override public List<? extends HttpCtrl> makeControllers(ImmutableHierarchicalConfiguration c) {
             return ImmutableList.of(
                     new HomeController(),
                     new PersonController(personService)
@@ -107,7 +107,7 @@ you can add transaction to a service by using the transactional method proxy.
 This will wrap all calls to the PersonServiceImpl class with any threadLocal created by a
 ThreadLocalFactory in the Application class.  You can add your own threadLocals by overriding
 
-    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c)
+    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c)
 
 
 ### Creating Controllers
@@ -183,7 +183,7 @@ A full example will look something like this
             }
         }
 
-        @Override public List<? extends HttpCtrl> makeControllers(Configuration c) { 
+        @Override public List<? extends HttpCtrl> makeControllers(ImmutableHierarchicalConfiguration c) { 
             return ImmutableList.of(
                 new AuthenticationController(getAuthenticationProvider()),
                 new HomeController(), 

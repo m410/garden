@@ -1,8 +1,8 @@
 package org.m410.garden.transactional.fixtures;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.Application;
-import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.transaction.ThreadLocalSessionFactory;
 
@@ -20,12 +20,12 @@ public class TrxApplication extends Application {
     }
 
     @Override
-    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of(new TrxThreadLocalSessionFactory());
     }
 
     @Override
-    public List<? extends HttpCtlr> makeControllers(Configuration c) {
+    public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of(new TrxController(myService));
     }
 }

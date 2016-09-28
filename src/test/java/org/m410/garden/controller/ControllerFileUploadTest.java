@@ -1,11 +1,11 @@
 package org.m410.garden.controller;
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.fixtures.FileUploadController;
 import org.m410.garden.fixtures.MyWebApp;
 
@@ -27,7 +27,7 @@ public class ControllerFileUploadTest implements MockServletInput{
     @Before
     public void setup() {
         myApp = new MyWebApp() {
-            @Override public List<? extends HttpCtlr> makeControllers(Configuration c) {
+            @Override public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
                 return ImmutableList.of(controller);
             }
         };

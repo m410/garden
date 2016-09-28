@@ -1,9 +1,9 @@
 package org.m410.garden.application;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.annotate.*;
 import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
-import org.m410.garden.configuration.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -86,7 +86,7 @@ abstract public class Application implements ApplicationModule {
     }
 
     @Override
-    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c) {
+    public List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of();
     }
 
@@ -111,7 +111,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of container listeners.
      */
-    public List<ListenerDefinition> makeListeners(Configuration c) {
+    public List<ListenerDefinition> makeListeners(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of();
     }
 
@@ -121,7 +121,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of filter definitions.
      */
-    public List<FilterDefinition> makeFilters(Configuration c) {
+    public List<FilterDefinition> makeFilters(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of(
                 new FilterDefinition("M410Filter", "org.m410.garden.servlet.M410Filter", "/*")
         );
@@ -137,7 +137,7 @@ abstract public class Application implements ApplicationModule {
      * @param c configuration
      * @return a list of servlet definitions
      */
-    public List<ServletDefinition> makeServlets(Configuration c) {
+    public List<ServletDefinition> makeServlets(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of(
                 new ServletDefinition("M410Servlet", "org.m410.garden.servlet.M410Servlet", "", "*.m410")
         );
@@ -154,7 +154,7 @@ abstract public class Application implements ApplicationModule {
      * @return a list of service classes.
      */
     @Override
-    public List<?> makeServices(Configuration c) {
+    public List<?> makeServices(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of();
     }
 
@@ -274,10 +274,10 @@ abstract public class Application implements ApplicationModule {
      * You may want to add some initialization of your own by overriding this, and if
      * you do, be sure to call super.init(configuration).
      *
-     * @see org.m410.garden.application.ApplicationModule#init(org.m410.garden.configuration.Configuration)
+     * @see org.m410.garden.application.ApplicationModule#init(org.m410.garden.configuration.ImmutableHierarchicalConfiguration)
      * @param configuration the configuration.
      */
-    public void init(final Configuration configuration) {
+    public void init(final ImmutableHierarchicalConfiguration configuration) {
         assemble(configuration, ThreadLocalProvider.class, threadLocalsFactories);
         threadLocalsFactories.addAll(makeThreadLocalFactories(configuration));
         log.debug("threadLocalsFactories: {}", threadLocalsFactories);
@@ -311,13 +311,13 @@ abstract public class Application implements ApplicationModule {
         initComponents(configuration, Startup.class);
     }
 
-    protected <T> void assemble(Configuration configuration, Class<T> componentClass, Collection collection) {
+    protected <T> void assemble(ImmutableHierarchicalConfiguration configuration, Class<T> componentClass, Collection collection) {
         Arrays.stream(getClass().getMethods())
                 .filter(m -> isAnnotatedWith(componentClass, m))
                 .forEach(component -> addToCollection(configuration, collection, component));
     }
 
-    private void addToCollection(Configuration configuration, Collection collection, Method component) {
+    private void addToCollection(ImmutableHierarchicalConfiguration configuration, Collection collection, Method component) {
         try {
             Object result = component.invoke(this, configuration);
             collection.addAll((List) result);
@@ -332,14 +332,14 @@ abstract public class Application implements ApplicationModule {
                 .findAny().isPresent();
     }
 
-    protected <T> void initComponents(Configuration configuration, Class<T> componentClass) {
+    protected <T> void initComponents(ImmutableHierarchicalConfiguration configuration, Class<T> componentClass) {
         final Class thisClass = getClass();
         Arrays.stream(thisClass.getMethods())
                 .filter(m -> isAnnotatedWith(componentClass,m))
                 .forEach(component -> invokeMethod(configuration, component));
     }
 
-    private void invokeMethod(Configuration configuration, Method component) {
+    private void invokeMethod(ImmutableHierarchicalConfiguration configuration, Method component) {
         try {
             component.invoke(this, configuration);
         }

@@ -1,5 +1,6 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.ApplicationModule;
 
 /**
@@ -9,10 +10,10 @@ import org.m410.garden.application.ApplicationModule;
  */
 public class ServletContextAppFactory {
     public static ApplicationModule forEnvironment(String env) {
-        Configuration config = ConfigurationFactory.runtime(env);
+        ImmutableHierarchicalConfiguration config = ConfigurationFactory.runtime(env);
 
         try {
-            Class clazz = Class.forName(config.getApplication().getApplicationClass());
+            Class clazz = Class.forName(config.getString("application.applicationClass"));
             final ApplicationModule application = (ApplicationModule) clazz.newInstance();
             application.init(config);
             return application;

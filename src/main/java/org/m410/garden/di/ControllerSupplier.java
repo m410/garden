@@ -1,6 +1,6 @@
 package org.m410.garden.di;
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.controller.HttpCtlr;
 
 import java.util.List;
@@ -10,5 +10,5 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface ControllerSupplier {
-    List<? extends HttpCtlr> get(Configuration configuration, Components components);
+    List<? extends HttpCtlr> get(ImmutableHierarchicalConfiguration configuration, Components components);
 }

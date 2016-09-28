@@ -1,7 +1,7 @@
 package org.m410.garden.application;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.controller.HttpCtlr;
-import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.servlet.FilterDefinition;
 import org.m410.garden.servlet.ListenerDefinition;
@@ -25,7 +25,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of listener definitions
      */
-    List<ListenerDefinition> makeListeners(Configuration c);
+    List<ListenerDefinition> makeListeners(ImmutableHierarchicalConfiguration c);
 
     List<ListenerDefinition> getListeners();
 
@@ -36,7 +36,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return list of filter definitions
      */
-    List<FilterDefinition> makeFilters(Configuration c) ;
+    List<FilterDefinition> makeFilters(ImmutableHierarchicalConfiguration c) ;
 
     List<FilterDefinition> getFilters();
 
@@ -47,7 +47,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of servlet definitions
      */
-    List<ServletDefinition> makeServlets(Configuration c) ;
+    List<ServletDefinition> makeServlets(ImmutableHierarchicalConfiguration c) ;
 
     List<ServletDefinition> getServlets();
 
@@ -57,7 +57,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of thread local factory implementations.
      */
-    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(Configuration c);
+    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c);
 
     List<? extends ThreadLocalSessionFactory> getThreadLocalFactories();
 
@@ -67,7 +67,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of controllers
      */
-    List<? extends HttpCtlr> makeControllers(Configuration c);
+    List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c);
 
     List<? extends HttpActionDefinition> getActionDefinitions();
 
@@ -77,7 +77,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return list of java pojos.
      */
-    List<?> makeServices(Configuration c);
+    List<?> makeServices(ImmutableHierarchicalConfiguration c);
 
     /**
      * This is the main initialization method for the application.  It will be
@@ -86,7 +86,7 @@ public interface ApplicationModule {
      *
      * @param configuration configuration
      */
-    void init(Configuration configuration);
+    void init(ImmutableHierarchicalConfiguration configuration);
 
     void destroy();
 }

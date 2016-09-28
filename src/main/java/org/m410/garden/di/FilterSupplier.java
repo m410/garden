@@ -1,9 +1,8 @@
 package org.m410.garden.di;
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 
 import javax.servlet.Filter;
-import javax.servlet.http.HttpServlet;
 import java.util.Collection;
 
 /**
@@ -11,5 +10,5 @@ import java.util.Collection;
  */
 @FunctionalInterface
 public interface FilterSupplier {
-    Collection<? extends Filter> get(Configuration configuration);
+    Collection<? extends Filter> get(ImmutableHierarchicalConfiguration configuration);
 }
