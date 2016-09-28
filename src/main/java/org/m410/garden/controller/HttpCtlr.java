@@ -10,7 +10,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public interface HttpCtrl extends Intercept {
+public interface HttpCtlr extends Intercept {
 
     /**
      * All controllers must implement an action and add it to it's to this list.

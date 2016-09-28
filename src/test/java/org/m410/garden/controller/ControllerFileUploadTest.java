@@ -5,14 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.transaction.ThreadLocalSessionFactory;
 import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.fixtures.FileUploadController;
 import org.m410.garden.fixtures.MyWebApp;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.IOException;
 import java.util.List;
 
 import static org.junit.Assert.assertEquals;
@@ -29,7 +27,7 @@ public class ControllerFileUploadTest implements MockServletInput{
     @Before
     public void setup() {
         myApp = new MyWebApp() {
-            @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
+            @Override public List<? extends HttpCtlr> makeControllers(Configuration c) {
                 return ImmutableList.of(controller);
             }
         };

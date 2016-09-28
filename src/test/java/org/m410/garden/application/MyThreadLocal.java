@@ -9,15 +9,16 @@ import org.m410.garden.transaction.ThreadLocalSession;
  */
 final class MyThreadLocal implements ThreadLocalSession {
     private String value;
+    private static final ThreadLocal<String> myThreadLocal = new ThreadLocal<String>();
 
     MyThreadLocal(String value) {
         this.value = value;
     }
 
-    private static final ThreadLocal<String> myThreadLocal = new ThreadLocal<String>();
     public static String get() {
         return myThreadLocal.get();
     }
+
     public static void set(String a) {
         myThreadLocal.set(a);
     }

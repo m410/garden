@@ -3,7 +3,7 @@ package org.m410.garden.controller.action.http;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.transaction.TransactionScope;
@@ -20,7 +20,7 @@ import static org.mockito.Mockito.*;
  */
 @RunWith(JUnit4.class)
 public class ActionDefinitionTest {
-    HttpCtrl controller = () -> { return null; };
+    HttpCtlr controller = () -> { return null; };
 
 
     @Test

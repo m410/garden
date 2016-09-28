@@ -6,7 +6,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.garden.controller.auth.Authorizable;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.status.*;
@@ -44,7 +44,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private static final Logger log = LoggerFactory.getLogger(HttpActionDefinition.class);
     private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.HTTP;
 
-    private final HttpCtrl controller;
+    private final HttpCtlr controller;
     private final PathExpr pathExpr;
     private final Securable.Ssl useSsl;
     private final List<String> roles;
@@ -73,7 +73,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      *          the Authentication interface.
      * @param transactionScope the transactional scope for the action request.
      */
-    public HttpActionDefinition(HttpCtrl controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
+    public HttpActionDefinition(HttpCtlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
                                 Securable.Ssl useSsl, String[] acceptTypes, String[] roles,
                                 TransactionScope transactionScope) {
         this.controller = controller;
@@ -175,7 +175,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     @Override
-    public HttpCtrl getController() {
+    public HttpCtlr getController() {
         return controller;
     }
 

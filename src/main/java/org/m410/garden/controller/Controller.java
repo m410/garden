@@ -48,7 +48,7 @@ import org.m410.garden.transaction.TransactionScope;
  * @see org.m410.garden.controller.action.PathExpr
  * @see org.m410.garden.controller.action.http.Action
  */
-public abstract class Controller implements HttpCtrl, Securable {
+public abstract class Controller implements HttpCtlr, Securable {
 
     /**
      * A helper property to set the content type of action definitions.

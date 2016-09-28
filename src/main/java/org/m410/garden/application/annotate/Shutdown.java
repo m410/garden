@@ -12,6 +12,7 @@ import java.lang.annotation.Target;
  *     &#64;Shutdown
  *     void shutdownMyService();
  * </code>
+ *
  * @author <a href="mailto:michael@m410.org">Michael Fortin</a>
  */
 @Retention(RetentionPolicy.RUNTIME)

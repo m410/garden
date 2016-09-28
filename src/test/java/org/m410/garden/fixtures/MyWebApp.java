@@ -4,7 +4,7 @@ package org.m410.garden.fixtures;
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.application.Application;
 import org.m410.garden.configuration.Configuration;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
 //import org.m410.garden.module.migration.MigrationModule;
 //import org.m410.garden.module.jms.JmsModule;
 //import org.m410.garden.module.mail.MailModule;
@@ -25,7 +25,7 @@ public class MyWebApp extends Application {
         return ImmutableList.of(ImmutableList.of(myService));
     }
 
-    @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
+    @Override public List<? extends HttpCtlr> makeControllers(Configuration c) {
         return ImmutableList.of(
                 new MyController(myService)
         );

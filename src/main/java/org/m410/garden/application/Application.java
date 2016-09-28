@@ -1,13 +1,14 @@
 package org.m410.garden.application;
 
 import org.m410.garden.application.annotate.*;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.configuration.Configuration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import java.lang.reflect.Method;
 import java.lang.reflect.Proxy;
 import java.util.*;
 
@@ -201,13 +202,6 @@ abstract public class Application implements ApplicationModule {
     }
 
     /**
-     * Used for internal use to wrap actions in a single method function.
-     */
-    public interface Work {
-        Object doWork() throws Exception;
-    }
-
-    /**
      * Wraps action invocations with a thread local context.
      *
      * @param work internal closure to wrap the action.
@@ -228,17 +222,20 @@ abstract public class Application implements ApplicationModule {
      * @return in most cases it will be null, except when wrapping the call to a service method.
      * @throws Exception everything by default.
      */
-    protected Object doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block)
-            throws Exception {
+    protected Object doWithThreadLocal(List<? extends ThreadLocalSessionFactory> tlf, Work block) throws Exception {
         if (tlf != null && tlf.size() >= 1) {
             ThreadLocalSession session = tlf.get(tlf.size() - 1).make();
             session.start();
-            Object result = doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
-            session.stop();
-            return result;
+
+            try {
+                return doWithThreadLocal(tlf.subList(0, tlf.size() - 1), block);
+            }
+            finally {
+                session.stop();
+            }
         }
         else {
-            return block.doWork();
+            return block.get();
         }
     }
 
@@ -281,28 +278,28 @@ abstract public class Application implements ApplicationModule {
      * @param configuration the configuration.
      */
     public void init(final Configuration configuration) {
-        assemble(configuration, ThreadLocalComponent.class, threadLocalsFactories);
+        assemble(configuration, ThreadLocalProvider.class, threadLocalsFactories);
         threadLocalsFactories.addAll(makeThreadLocalFactories(configuration));
         log.debug("threadLocalsFactories: {}", threadLocalsFactories);
 
-        assemble(configuration, ServletComponent.class, servletDefinitions);
+        assemble(configuration, ServletProvider.class, servletDefinitions);
         servletDefinitions.addAll(makeServlets(configuration));
         log.debug("servletDefinitions: {}", servletDefinitions);
 
-        assemble(configuration, FilterComponent.class, filterDefinitions);
+        assemble(configuration, FilterProvider.class, filterDefinitions);
         filterDefinitions.addAll(makeFilters(configuration));
         log.debug("filterDefinitions: {}", filterDefinitions);
 
-        assemble(configuration, ListenerComponent.class, listenerDefinitions);
+        assemble(configuration, ListenerProvider.class, listenerDefinitions);
         listenerDefinitions.addAll(makeListeners(configuration));
         log.debug("listenerDefinitions: {}", listenerDefinitions);
 
-        assemble(configuration, ServiceComponent.class, services);
+        assemble(configuration, ComponentsProvider.class, services);
         services.addAll(makeServices(configuration));
         log.debug("services: {}", services);
 
-        List<HttpCtrl> controllers = new ArrayList<>();
-        assemble(configuration, ControllerComponent.class, controllers);
+        List<HttpCtlr> controllers = new ArrayList<>();
+        assemble(configuration, ControllerProvider.class, controllers);
         controllers.addAll(makeControllers(configuration));
         log.debug("controllers: {}", controllers);
 
@@ -315,52 +312,71 @@ abstract public class Application implements ApplicationModule {
     }
 
     protected <T> void assemble(Configuration configuration, Class<T> componentClass, Collection collection) {
-        final Class thisClass = getClass();
-        Arrays.asList(thisClass.getMethods()).stream()
-                .filter(m -> Arrays.asList(m.getDeclaredAnnotations()).stream()
-                        .filter(a -> a.annotationType().equals(componentClass))
-                        .findAny().isPresent())
-                .forEach(component -> {
-                    try {
-                        Object result = component.invoke(this, configuration);
-                        collection.addAll((List) result);
-                    } catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        Arrays.stream(getClass().getMethods())
+                .filter(m -> isAnnotatedWith(componentClass, m))
+                .forEach(component -> addToCollection(configuration, collection, component));
+    }
+
+    private void addToCollection(Configuration configuration, Collection collection, Method component) {
+        try {
+            Object result = component.invoke(this, configuration);
+            collection.addAll((List) result);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private <T> boolean isAnnotatedWith(Class<T> componentClass, Method m) {
+        return Arrays.stream(m.getDeclaredAnnotations())
+                .filter(a -> a.annotationType().equals(componentClass))
+                .findAny().isPresent();
     }
 
     protected <T> void initComponents(Configuration configuration, Class<T> componentClass) {
         final Class thisClass = getClass();
-        Arrays.asList(thisClass.getMethods()).stream()
-                .filter(m -> Arrays.asList(m.getDeclaredAnnotations()).stream()
-                        .filter(a -> a.annotationType().equals(componentClass))
-                        .findAny().isPresent())
-                .forEach(component -> {
-                    try {
-                        component.invoke(this, configuration);
-                    }
-                    catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+        Arrays.stream(thisClass.getMethods())
+                .filter(m -> isAnnotatedWith(componentClass,m))
+                .forEach(component -> invokeMethod(configuration, component));
+    }
+
+    private void invokeMethod(Configuration configuration, Method component) {
+        try {
+            component.invoke(this, configuration);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
     public void destroy() {
-        threadLocalsFactories.stream().forEach(ThreadLocalSessionFactory::shutdown);
-
+        threadLocalsFactories.forEach(ThreadLocalSessionFactory::shutdown);
         final Class thisClass = getClass();
-        Arrays.asList(thisClass.getMethods()).stream()
-                .filter(m -> Arrays.asList(m.getDeclaredAnnotations()).stream()
-                        .filter(a -> a.annotationType().equals(Shutdown.class))
-                        .findAny().isPresent())
-                .forEach(shutdownMethod -> {
-                    try {
-                        Object result = shutdownMethod.invoke(this);
-                    }
-                    catch (Exception e) {
-                        throw new RuntimeException(e);
-                    }
-                });
+
+        Arrays.stream(thisClass.getMethods())
+                .filter(this::doesImplementShutdown)
+                .forEach(this::invokeShutdown);
+    }
+
+    private boolean doesImplementShutdown(Method m) {
+        return Arrays.stream(m.getDeclaredAnnotations())
+                .filter(a -> a.annotationType().equals(Shutdown.class))
+                .findAny().isPresent();
+    }
+
+    private void invokeShutdown(Method shutdownMethod) {
+        try {
+            shutdownMethod.invoke(this);
+        }
+        catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    /**
+     * Used for internal use to wrap actions in a single method function.  It's a Supplier with throws clause.
+     */
+    @FunctionalInterface
+    public interface Work {
+        Object get() throws Exception;
     }
 }

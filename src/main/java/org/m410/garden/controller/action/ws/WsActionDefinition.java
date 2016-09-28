@@ -1,7 +1,7 @@
 package org.m410.garden.controller.action.ws;
 
 import com.google.common.collect.ImmutableList;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.WsCtrl;
 import org.m410.garden.controller.action.ActionDefinition;
@@ -44,7 +44,7 @@ public final class WsActionDefinition implements ActionDefinition {
     }
 
     @Override
-    public HttpCtrl getController() {
+    public HttpCtlr getController() {
         return null;
     }
 

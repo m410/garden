@@ -1,8 +1,6 @@
 package org.m410.garden.application;
 
-import org.m410.garden.application.annotate.ThreadLocalComponent;
-import org.m410.garden.controller.HttpCtrl;
-import org.m410.garden.controller.action.ActionDefinition;
+import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.servlet.FilterDefinition;
@@ -69,7 +67,7 @@ public interface ApplicationModule {
      * @param c configuration
      * @return a list of controllers
      */
-    List<? extends HttpCtrl> makeControllers(Configuration c);
+    List<? extends HttpCtlr> makeControllers(Configuration c);
 
     List<? extends HttpActionDefinition> getActionDefinitions();
 

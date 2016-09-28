@@ -3,7 +3,7 @@ package org.m410.garden.transactional.fixtures;
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.application.Application;
 import org.m410.garden.configuration.Configuration;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.transaction.ThreadLocalSessionFactory;
 
 import java.util.List;
@@ -25,7 +25,7 @@ public class TrxApplication extends Application {
     }
 
     @Override
-    public List<? extends HttpCtrl> makeControllers(Configuration c) {
+    public List<? extends HttpCtlr> makeControllers(Configuration c) {
         return ImmutableList.of(new TrxController(myService));
     }
 }

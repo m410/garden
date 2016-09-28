@@ -5,6 +5,7 @@ import org.m410.garden.application.Application;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -25,6 +26,12 @@ public final class TransactionHandler<T> implements InvocationHandler {
         this.application = application;
     }
 
+    public TransactionHandler(T instance) {
+        this.instance = instance;
+        this.methodFilter = new ArrayList<>();
+        this.application = null;
+    }
+
     @Override
     public Object invoke(Object proxy, Method method, Object[] args) throws Throwable {
         if(methodIsTransactional(method.getName()))
@@ -34,9 +41,7 @@ public final class TransactionHandler<T> implements InvocationHandler {
     }
 
     protected Object wrapInvocation(Method method, Object[] args) throws Exception{
-        return application.doWithThreadLocals(() -> {
-            return method.invoke(instance,args);
-        });
+        return application.doWithThreadLocals(() -> method.invoke(instance,args));
     }
 
     protected boolean methodIsTransactional(String name) {
