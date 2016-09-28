@@ -2,7 +2,7 @@ package org.m410.garden.module.jms;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.application.ApplicationModule;
-import org.m410.garden.application.annotate.ServiceComponent;
+import org.m410.garden.application.annotate.ComponentsProvider;
 import org.m410.garden.configuration.Configuration;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface JmsModule extends ApplicationModule {
 
-    @ServiceComponent
+    @ComponentsProvider
     default List<?> makeJmsServices(Configuration c) {
         return ImmutableList.of();
     }

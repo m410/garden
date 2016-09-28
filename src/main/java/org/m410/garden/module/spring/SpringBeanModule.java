@@ -2,7 +2,7 @@ package org.m410.garden.module.spring;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.application.ApplicationModule;
-import org.m410.garden.application.annotate.ServiceComponent;
+import org.m410.garden.application.annotate.ComponentsProvider;
 import org.m410.garden.configuration.Configuration;
 
 import java.util.List;
@@ -19,7 +19,7 @@ import java.util.List;
  */
 public interface SpringBeanModule extends ApplicationModule {
 
-    @ServiceComponent
+    @ComponentsProvider
     default List<?> makeSpringServices(Configuration c) {
         return ImmutableList.of();
     }
