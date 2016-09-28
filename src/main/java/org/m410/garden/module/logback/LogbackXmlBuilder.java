@@ -1,6 +1,6 @@
 package org.m410.garden.module.logback;
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.module.ormbuilder.orm.ConfigFileBuilder;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
@@ -24,7 +24,7 @@ import java.nio.file.Path;
  */
 public class LogbackXmlBuilder implements ConfigFileBuilder {
 
-    String make(Configuration configuration) throws ParserConfigurationException, TransformerException {
+    String make(ImmutableHierarchicalConfiguration configuration) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
@@ -69,7 +69,7 @@ public class LogbackXmlBuilder implements ConfigFileBuilder {
     }
 
     @Override
-    public void writeToFile(Path path, Configuration configuration) {
+    public void writeToFile(Path path, ImmutableHierarchicalConfiguration configuration) {
         try {
             path.getParent().toFile().mkdirs();
             Files.write(path, make(configuration).getBytes());

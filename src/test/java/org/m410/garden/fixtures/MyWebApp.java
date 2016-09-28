@@ -2,8 +2,8 @@ package org.m410.garden.fixtures;
 
 
 import com.google.common.collect.ImmutableList;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.Application;
-import org.m410.garden.configuration.Configuration;
 import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.module.migration.MigrationModule;
 import org.m410.garden.module.ormbuilder.OrmBuilderModule;
@@ -27,7 +27,7 @@ public class MyWebApp extends Application
     // todo componentService(MailService.class, "mailService")
 
 //    @Override
-//    Collection<ManagedService> managedServices(final Configuration config) {
+//    Collection<ManagedService> managedServices(final ImmutableHierarchicalConfiguration config) {
 //        return ImmutableList.of(new ManagedService() {
 //            void start() {
 //                myService.doStartup();
@@ -39,13 +39,13 @@ public class MyWebApp extends Application
 //        });
 //    }
 
-    @Override public List<?> makeServices(Configuration c) {
+    @Override public List<?> makeServices(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.builder()
                 .addAll(ImmutableList.of(myService))
                 .build();
     }
 
-    @Override public List<? extends HttpCtlr> makeControllers(Configuration c) {
+    @Override public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
         return ImmutableList.of(
                 new MyController(myService)
         );

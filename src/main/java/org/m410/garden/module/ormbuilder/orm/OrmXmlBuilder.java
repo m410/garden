@@ -1,6 +1,6 @@
 package org.m410.garden.module.ormbuilder.orm;
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
@@ -100,7 +100,7 @@ public final class OrmXmlBuilder implements ConfigFileBuilder{
     }
 
     @Override
-    public void writeToFile(Path path, Configuration configuration) {
+    public void writeToFile(Path path, ImmutableHierarchicalConfiguration configuration) {
         try {
             Files.write(path, make().getBytes());
         }

@@ -1,7 +1,7 @@
 package org.m410.garden.module.ormbuilder.orm;
 
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 
 import java.nio.file.Path;
 
@@ -12,5 +12,5 @@ import java.nio.file.Path;
  * @author Michael Fortin
  */
 public interface ConfigFileBuilder {
-    void writeToFile(Path path, Configuration configuration);
+    void writeToFile(Path path, ImmutableHierarchicalConfiguration configuration);
 }

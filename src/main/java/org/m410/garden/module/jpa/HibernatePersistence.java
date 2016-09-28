@@ -1,12 +1,11 @@
 package org.m410.garden.module.jpa;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.transaction.ThreadLocalSessionFactory;
-import org.m410.garden.configuration.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -27,7 +26,7 @@ public class HibernatePersistence implements ThreadLocalSessionFactory<JpaThread
 
     private EntityManagerFactory entityManagerFactory;
 
-    public HibernatePersistence(Configuration configuration) {
+    public HibernatePersistence(ImmutableHierarchicalConfiguration configuration) {
         log.debug("thread classloader: {}" , Thread.currentThread().getContextClassLoader());
         log.debug("thread classloader res: {}" , Thread.currentThread().getContextClassLoader().getResource("META-INF/persistence.xml"));
         log.debug("class classloader: {}" , this.getClass().getClassLoader());
