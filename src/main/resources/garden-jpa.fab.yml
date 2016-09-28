@@ -1,5 +1,6 @@
 # modules
 persistence(org.m410.garden:garden-jpa:${project.version}}):
+  unit_name: garden-jpa
 
 bundles:
   - name: garden-jpa
