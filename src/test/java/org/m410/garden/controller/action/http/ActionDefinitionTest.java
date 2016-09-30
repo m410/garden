@@ -6,7 +6,7 @@ import org.junit.runners.JUnit4;
 import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.action.PathExpr;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -33,7 +33,7 @@ public class ActionDefinitionTest {
         Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET,
                 Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
-        assertTrue(ad.doesRequestMatchAction(request));
+        assertTrue(ad.doesMatchRequest(request));
 
         verify(request).getContextPath();
         verify(request).getRequestURI();
@@ -50,7 +50,7 @@ public class ActionDefinitionTest {
         Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET,
                 Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
-        assertTrue(ad.doesRequestMatchAction(request));
+        assertTrue(ad.doesMatchRequest(request));
 
         verify(request).getContextPath();
         verify(request).getRequestURI();
@@ -67,7 +67,7 @@ public class ActionDefinitionTest {
         Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET,
                 Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
-        assertTrue(ad.doesRequestMatchAction(request));
+        assertTrue(ad.doesMatchRequest(request));
 
         verify(request).getContextPath();
         verify(request).getRequestURI();
@@ -128,7 +128,7 @@ public class ActionDefinitionTest {
         HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
                 HttpMethod.GET, Securable.Ssl.Optional, new String[]{"application/json"}, new String[0], TransactionScope.None);
 
-        boolean match = a.doesRequestMatchAction(request);
+        boolean match = a.doesMatchRequest(request);
         assertFalse(match);
 
         verify(request).getContentType();
@@ -149,7 +149,7 @@ public class ActionDefinitionTest {
         HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
                 HttpMethod.GET, Securable.Ssl.Optional, new String[]{"application/json"}, new String[0], TransactionScope.None);
 
-        boolean match = a.doesRequestMatchAction(request);
+        boolean match = a.doesMatchRequest(request);
         assertTrue(match);
 
         verify(request).getContentType();
@@ -173,8 +173,8 @@ public class ActionDefinitionTest {
         HttpActionDefinition ad2 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT,
                 Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
 
-        assertTrue(ad2.doesRequestMatchAction(request));
-        assertFalse(ad1.doesRequestMatchAction(request));
+        assertTrue(ad2.doesMatchRequest(request));
+        assertFalse(ad1.doesMatchRequest(request));
 
 
         verify(request,times(2)).getContextPath();

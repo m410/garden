@@ -8,7 +8,7 @@ import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.controller.action.http.Response;
 
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 
 /**
  * This is the default implementation of a the Ctlr interface.

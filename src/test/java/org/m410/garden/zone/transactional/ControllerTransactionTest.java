@@ -1,4 +1,4 @@
-package org.m410.garden.transactional;
+package org.m410.garden.zone.transactional;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -6,18 +6,15 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.controller.MockServletInput;
 import org.m410.garden.servlet.M410Filter;
-import org.m410.garden.transactional.fixtures.TrxApplication;
-import org.m410.garden.transactional.fixtures.TrxSession;
+import org.m410.garden.zone.transactional.fixtures.TrxApplication;
+import org.m410.garden.zone.transactional.fixtures.Trx;
 
 import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletContext;
-import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
-import java.io.IOException;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -35,7 +32,7 @@ public class ControllerTransactionTest implements MockServletInput {
     public void setup() {
         app = new TrxApplication();
         app.init(null);
-        TrxSession.resetCount();
+        Trx.resetCount();
         request = mock(HttpServletRequest.class);
         response = mock(HttpServletResponse.class);
     }
@@ -50,7 +47,7 @@ public class ControllerTransactionTest implements MockServletInput {
         when(response.getOutputStream()).thenReturn(servletOutputStream(buffer));
 
         app.doRequest(request,response);
-        assertEquals(0, TrxSession.getCallCount());
+        assertEquals(0, Trx.getCallCount());
         assertEquals("none",buffer.toString());
     }
 
@@ -64,7 +61,7 @@ public class ControllerTransactionTest implements MockServletInput {
         when(response.getOutputStream()).thenReturn(servletOutputStream(buffer));
 
         app.doRequest(request,response);
-        assertEquals(1, TrxSession.getCallCount());
+        assertEquals(1, Trx.getCallCount());
         assertEquals(" a b c", buffer.toString());
     }
 
@@ -78,7 +75,7 @@ public class ControllerTransactionTest implements MockServletInput {
         when(response.getOutputStream()).thenReturn(servletOutputStream(buffer));
 
         app.doRequest(request,response);
-        assertEquals(2, TrxSession.getCallCount());
+        assertEquals(2, Trx.getCallCount());
         assertEquals(" a b c", buffer.toString());
     }
 
@@ -95,7 +92,7 @@ public class ControllerTransactionTest implements MockServletInput {
         when(request.getRequestDispatcher("/some/some")).thenReturn(dispatcher);
 
         app.doRequest(request, response);
-        assertEquals(1, TrxSession.getCallCount());
+        assertEquals(1, Trx.getCallCount());
     }
 
     @Test
@@ -113,7 +110,7 @@ public class ControllerTransactionTest implements MockServletInput {
         FilterChain chain = mock(FilterChain.class);
 
         filter.doFilter(request, response, chain);
-        assertEquals(1, TrxSession.getCallCount());
+        assertEquals(1, Trx.getCallCount());
     }
 
     @Test
@@ -131,6 +128,6 @@ public class ControllerTransactionTest implements MockServletInput {
         FilterChain chain = mock(FilterChain.class);
 
         filter.doFilter(request, response, chain);
-        assertEquals(0, TrxSession.getCallCount());
+        assertEquals(0, Trx.getCallCount());
     }
 }

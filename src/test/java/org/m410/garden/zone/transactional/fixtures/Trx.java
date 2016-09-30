@@ -1,11 +1,11 @@
-package org.m410.garden.transactional.fixtures;
+package org.m410.garden.zone.transactional.fixtures;
 
-import org.m410.garden.transaction.ThreadLocalSession;
+import org.m410.garden.zone.Zone;
 
 /**
  * @author m410
  */
-public class TrxSession implements ThreadLocalSession {
+public class Trx implements Zone {
 
     private static int callCount = 0;
 

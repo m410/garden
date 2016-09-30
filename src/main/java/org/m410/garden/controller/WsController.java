@@ -4,7 +4,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.ws.WebSocket;
 import org.m410.garden.controller.action.ws.WsActionDefinition;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 
 /**
  * This is the default implementation of a the Ctlr interface.

@@ -2,7 +2,7 @@ package org.m410.garden.servlet;
 
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.status.*;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.m410.garden.application.Application;
@@ -57,7 +57,7 @@ public class M410Filter implements Filter {
 
                     if(action.getTransactionScope() == TransactionScope.ActionAndView)
                         try {
-                            webapp.doWithThreadLocals(() -> {
+                            webapp.getZoneManager().doInZone(() -> {
                                 wrapExceptions(() -> chain.doFilter(req, res));
                                 return null;
                             });

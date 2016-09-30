@@ -1,4 +1,4 @@
-package org.m410.garden.transactional.fixtures;
+package org.m410.garden.zone.transactional.fixtures;
 
 import java.util.Arrays;
 import java.util.List;

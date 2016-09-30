@@ -1,5 +1,6 @@
 package org.m410.garden.application;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.junit.Before;
 import org.junit.Test;
@@ -7,6 +8,7 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.configuration.ConfigurationFactory;
 import org.m410.garden.controller.HttpCtlr;
+import org.m410.garden.di.ControllerSupplier;
 import org.m410.garden.fixtures.MyWebApp;
 
 import javax.servlet.http.HttpServletRequest;
@@ -30,11 +32,10 @@ public class ApplicationActionForRequestTest {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         ImmutableHierarchicalConfiguration conf = ConfigurationFactory.fromInputStream(in, "development");
         app = new MyWebApp() {
-            @Override public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
-                List<HttpCtlr> ctrls = new ArrayList<>();
-                final MockController mockController = new MockController();
-                ctrls.add(mockController);
-                return ctrls;
+            @Override public ControllerSupplier controllerProvider() {
+                return (config,components) -> ImmutableList.of(
+                        new MockController()
+                );
             }
         };
         app.init(conf);

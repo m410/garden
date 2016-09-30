@@ -1,17 +1,17 @@
-package org.m410.garden.application;
+package org.m410.garden.zone;
 
-import org.m410.garden.transaction.ThreadLocalSession;
+import org.m410.garden.zone.Zone;
 
 /**
  * Document Me..
  *
  * @author Michael Fortin
  */
-final class MyThreadLocal implements ThreadLocalSession {
+final class MyZone implements Zone {
     private String value;
     private static final ThreadLocal<String> myThreadLocal = new ThreadLocal<String>();
 
-    MyThreadLocal(String value) {
+    MyZone(String value) {
         this.value = value;
     }
 

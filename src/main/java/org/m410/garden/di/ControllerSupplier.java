@@ -10,5 +10,5 @@ import java.util.List;
  */
 @FunctionalInterface
 public interface ControllerSupplier {
-    List<? extends HttpCtlr> get(ImmutableHierarchicalConfiguration configuration, Components components);
+    List<? extends HttpCtlr> get(ImmutableHierarchicalConfiguration configuration, ComponentRegistry components);
 }

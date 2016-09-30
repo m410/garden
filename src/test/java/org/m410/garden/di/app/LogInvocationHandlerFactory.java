@@ -1,13 +1,13 @@
 package org.m410.garden.di.app;
 
-import org.m410.garden.di.InvocationHandlerFactory;
+import org.m410.garden.zone.ZoneHandlerFactory;
 
 import java.lang.reflect.*;
 
 /**
  * @author Michael Fortin
  */
-public class LogInvocationHandlerFactory implements InvocationHandlerFactory {
+public class LogInvocationHandlerFactory implements ZoneHandlerFactory {
 
     @Override
     @SuppressWarnings("unchecked")

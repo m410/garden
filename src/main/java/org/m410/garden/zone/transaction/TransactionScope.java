@@ -1,4 +1,4 @@
-package org.m410.garden.transaction;
+package org.m410.garden.zone.transaction;
 
 /**
  * Controller and Action transaction scope

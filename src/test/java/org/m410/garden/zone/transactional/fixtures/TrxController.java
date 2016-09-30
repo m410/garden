@@ -1,4 +1,4 @@
-package org.m410.garden.transactional.fixtures;
+package org.m410.garden.zone.transactional.fixtures;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.controller.Controller;
@@ -7,7 +7,7 @@ import org.m410.garden.controller.action.http.HttpActionDefinition;
 
 import java.util.List;
 
-import static org.m410.garden.transaction.TransactionScope.*;
+import static org.m410.garden.zone.transaction.TransactionScope.*;
 
 /**
  * @author m410

@@ -1,20 +1,24 @@
 package org.m410.garden.di;
 
 
-import java.lang.reflect.InvocationHandler;
+import org.m410.garden.zone.ZoneHandlerFactory;
+
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.stream.Collectors;
 
 /**
+ * A registry of multiple component instances.
+ *
  * @author Michael Fortin
  */
-public final class Components {
+public final class Components implements ComponentRegistry {
 
     private final List<Component> components;
-    private final List<InvocationHandlerFactory> invocationHandlers;
+    private final List<ZoneHandlerFactory> invocationHandlers;
     private final SortedSet<Entry> registry = new TreeSet<>();
 
-    private Components(List<Component> components, List<InvocationHandlerFactory> invocationHandlers) {
+    private Components(List<Component> components, List<ZoneHandlerFactory> invocationHandlers) {
         this.components = components;
         this.invocationHandlers = invocationHandlers;
     }
@@ -23,8 +27,8 @@ public final class Components {
         return new Components(new ArrayList<>(), new ArrayList<>());
     }
 
-    public Components withProxy(InvocationHandlerFactory o) {
-        List<InvocationHandlerFactory> transactionAspectList2 = new ArrayList<>();
+    public Components withProxy(ZoneHandlerFactory o) {
+        List<ZoneHandlerFactory> transactionAspectList2 = new ArrayList<>();
         transactionAspectList2.addAll(invocationHandlers);
         transactionAspectList2.add(o);
         List<Component> componentList2 = new ArrayList<>();
@@ -33,8 +37,13 @@ public final class Components {
         return new Components(componentList2, transactionAspectList2);
     }
 
-    public Components withComponents(Component component) {
-        List<InvocationHandlerFactory> transactionAspectList2 = new ArrayList<>();
+    public Components inherit(Components components) {
+        this.registry.addAll(components.registry);
+        return this;
+    }
+
+    public Components add(Component component) {
+        List<ZoneHandlerFactory> transactionAspectList2 = new ArrayList<>();
         transactionAspectList2.addAll(invocationHandlers);
         List<Component> componentList2 = new ArrayList<>();
         componentList2.add(component);
@@ -61,6 +70,7 @@ public final class Components {
         return this;
     }
 
+    @Override
     public <T> T typeOf(Class<T> myServiceClass) {
         return registry.stream()
                 .filter(r -> r.getClass().isAssignableFrom(myServiceClass))
@@ -69,8 +79,28 @@ public final class Components {
                 .getInstanceAs(myServiceClass);
     }
 
+    @Override
+    public <T> T typeOf(Class<T> myServiceClass, String name) {
+        return registry.stream()
+                .filter(r -> r.getClass().isAssignableFrom(myServiceClass))
+                .filter(r -> r.getName().equals(name))
+                .findAny()
+                .orElseThrow(() -> new NoServiceException(myServiceClass.getName() +" and '"+name+"'"))
+                .getInstanceAs(myServiceClass);
+    }
+
+    @Override
+    public <T> T[] arrayOf(Class<T> myServiceClass) {
+        return registry.stream().filter(r -> r.getClass().isAssignableFrom(myServiceClass))
+                .toArray(size -> (T[])Array.newInstance(myServiceClass,size));
+    }
+
+    /**
+     *
+     */
     static final class Entry {
         private final String name;
+        // todo add support for multiple types
         private final Class type;
         private final Object instance;
 

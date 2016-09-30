@@ -13,7 +13,7 @@ import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.auth.AuthenticationProvider;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 
 
 import javax.servlet.http.HttpServletRequest;

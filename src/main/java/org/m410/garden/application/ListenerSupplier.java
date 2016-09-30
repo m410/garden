@@ -1,14 +1,14 @@
-package org.m410.garden.di;
+package org.m410.garden.application;
 
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+import org.m410.garden.servlet.ListenerDefinition;
 
 import java.util.Collection;
-import java.util.EventListener;
 
 /**
  * @author Michael Fortin
  */
 @FunctionalInterface
 public interface ListenerSupplier {
-    Collection<? extends EventListener> get(ImmutableHierarchicalConfiguration configuration);
+    Collection<ListenerDefinition> get(ImmutableHierarchicalConfiguration configuration);
 }

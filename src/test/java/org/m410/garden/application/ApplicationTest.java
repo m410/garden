@@ -7,8 +7,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.configuration.ConfigurationFactory;
 import org.m410.garden.fixtures.MyWebApp;
-import org.m410.garden.transaction.ThreadLocalSession;
-import org.m410.garden.transaction.ThreadLocalSessionFactory;
+import org.m410.garden.zone.Zone;
+import org.m410.garden.zone.ZoneFactory;
 
 import java.io.InputStream;
 import java.util.List;
@@ -35,13 +35,7 @@ public class ApplicationTest {
     public void applicationStartup() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         ImmutableHierarchicalConfiguration conf = ConfigurationFactory.fromInputStream(in,"development");
-        Application app = new MyWebApp(){
-
-            @Override
-            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c) {
-                return ImmutableList.of();
-            }
-        };
+        Application app = new MyWebApp();
         app.init(conf);
         assertNotNull(app);
         assertNotNull(app.getActionDefinitions().size() == 0);
@@ -51,26 +45,7 @@ public class ApplicationTest {
     public void applicationShutdown() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
         ImmutableHierarchicalConfiguration conf = ConfigurationFactory.fromInputStream(in,"development");
-        Application app = new MyWebApp(){
-
-
-            @Override
-            public List<? extends ThreadLocalSessionFactory<?>> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c) {
-                return ImmutableList.of(
-                        new ThreadLocalSessionFactory<ThreadLocalSession<String>>() {
-                            @Override
-                            public ThreadLocalSession<String> make() {
-                                return null;
-                            }
-
-                            @Override
-                            public void shutdown() {
-//                                System.out.println("shutdown called");
-                            }
-                        }
-                );
-            }
-        };
+        Application app = new MyWebApp();
         app.init(conf);
         app.destroy();
         assertNotNull(app);

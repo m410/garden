@@ -18,29 +18,17 @@ import java.util.List;
  */
 public class SampleApplication extends Application {
 
-    Components components = Components.init()
-            .withProxy(new LogInvocationHandlerFactory())
-            .withComponents(new SampleComponent())
-            .make();
-
     @Override
-    public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
-        return ImmutableList.of(
+    public ControllerSupplier controllerProvider() {
+        return (threadlocals, components) -> ImmutableList.of(
                 new MyController(components.typeOf(MyService.class))
-       );
+        );
     }
 
-    // todo I like this design pattern better
-    ComponentSupplier componentsSupplier() {
-        return (invocationHandlerFactory, configuration) -> Components.init()
-                .withProxy(invocationHandlerFactory)
-                .withComponents(new SampleComponent())
+    protected ComponentSupplier componentsSupplier() {
+        return (zoneManager, configuration) -> Components.init()
+                .withProxy(zoneManager.getZoneFactories().get(0).zoneHandlerFactory())
+                .add(new SampleComponent())
                 .make();
     }
-
-    ControllerSupplier controllerSupplier() {
-        return (configuration, components) -> ImmutableList.of(
-                new MyController(components.typeOf(MyService.class)));
-    }
-
 }

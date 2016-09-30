@@ -1,12 +1,13 @@
 package org.m410.garden.application;
 
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
-import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
+import org.m410.garden.di.*;
 import org.m410.garden.servlet.FilterDefinition;
 import org.m410.garden.servlet.ListenerDefinition;
 import org.m410.garden.servlet.ServletDefinition;
-import org.m410.garden.transaction.ThreadLocalSessionFactory;
+import org.m410.garden.zone.ZoneFactory;
+import org.m410.garden.zone.ZoneFactorySupplier;
 
 import java.util.List;
 
@@ -19,65 +20,35 @@ import java.util.List;
  */
 public interface ApplicationModule {
 
+    ServletSupplier servletProvider();
+
+    FilterSupplier filterProvider();
+
+    ListenerSupplier listenerProvider();
+
     /**
-     * Add container listeners to the servlet container at startup.
+     * Creates service classes with the available configuration.  Some modules may add
+     * services through this method.
+     * <p>
+     * It is not explicitly necessary for you to add your service here unless you
+     * require lifecycle management.  Note lifecycle management is not fully implemented yet.
      *
-     * @param c configuration
-     * @return a list of listener definitions
+     * @return a list of service classes.
      */
-    List<ListenerDefinition> makeListeners(ImmutableHierarchicalConfiguration c);
+    ComponentSupplier componentProvider();
+
+    ControllerSupplier controllerProvider();
+
+    ZoneFactorySupplier zoneFactoryProvider();
+
 
     List<ListenerDefinition> getListeners();
 
-    /**
-     * creates a list of servlet filters that are added to the servlet
-     * container at startup.
-     *
-     * @param c configuration
-     * @return list of filter definitions
-     */
-    List<FilterDefinition> makeFilters(ImmutableHierarchicalConfiguration c) ;
-
     List<FilterDefinition> getFilters();
-
-    /**
-     * creates a list of servlet definitions that are added to the servlet
-     * container at startup.
-     *
-     * @param c configuration
-     * @return a list of servlet definitions
-     */
-    List<ServletDefinition> makeServlets(ImmutableHierarchicalConfiguration c) ;
 
     List<ServletDefinition> getServlets();
 
-    /**
-     * Creates the threadLocal factories for the application.
-     *
-     * @param c configuration
-     * @return a list of thread local factory implementations.
-     */
-    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c);
-
-    List<? extends ThreadLocalSessionFactory> getThreadLocalFactories();
-
-    /**
-     * Creates the controllers for the application.
-     *
-     * @param c configuration
-     * @return a list of controllers
-     */
-    List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c);
-
     List<? extends HttpActionDefinition> getActionDefinitions();
-
-    /**
-     * Creates the application services.
-     *
-     * @param c configuration
-     * @return list of java pojos.
-     */
-    List<?> makeServices(ImmutableHierarchicalConfiguration c);
 
     /**
      * This is the main initialization method for the application.  It will be

@@ -8,7 +8,7 @@ import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.HttpMethod;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

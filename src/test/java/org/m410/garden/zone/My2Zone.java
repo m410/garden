@@ -1,16 +1,16 @@
-package org.m410.garden.application;
+package org.m410.garden.zone;
 
-import org.m410.garden.transaction.ThreadLocalSession;
+import org.m410.garden.zone.Zone;
 
 /**
  * Document Me..
  *
  * @author Michael Fortin
  */
-final class My2ThreadLocal implements ThreadLocalSession {
+final class My2Zone implements Zone {
     private String value;
 
-    My2ThreadLocal(String value) {
+    My2Zone(String value) {
         this.value = value;
     }
 

@@ -9,9 +9,9 @@ import javax.servlet.*;
  *
  * @author Michael Fortin
  */
-public class ApplicationContextListener implements ServletContextListener {
+public final class ApplicationContextListener implements ServletContextListener {
 
-    public static final String SCOPE_NAME = "application";
+    private static final String SCOPE_NAME = "application";
 
     @Override
     public void contextInitialized(ServletContextEvent servletContextEvent) {
@@ -23,9 +23,9 @@ public class ApplicationContextListener implements ServletContextListener {
         ApplicationModule app = ServletContextAppFactory.forEnvironment(env);
         servletContext.setAttribute(SCOPE_NAME, app);
 
-        app.getListeners().stream().forEach((l) -> l.configure(servletContext));
-        app.getFilters().stream().forEach((s) -> s.configure(servletContext));
-        app.getServlets().stream().forEach((s) -> s.configure(servletContext));
+        app.getListeners().forEach(listener -> listener.configure(servletContext));
+        app.getFilters().forEach(filter -> filter.configure(servletContext));
+        app.getServlets().forEach(servlet -> servlet.configure(servletContext));
     }
 
     @Override

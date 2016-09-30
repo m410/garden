@@ -1,15 +1,17 @@
-package org.m410.garden.application;
+package org.m410.garden.zone;
 
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import static org.junit.Assert.*;
 
+import org.m410.garden.application.*;
 import org.m410.garden.configuration.ConfigurationFactory;
 import org.m410.garden.fixtures.MyWebApp;
-import org.m410.garden.transaction.ThreadLocalSessionFactory;
+import org.m410.garden.zone.ZoneFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
@@ -36,27 +38,27 @@ public class ApplicationThreadLocalTest {
     @Test
     public void wrapWithOneThreadLocal() throws Exception {
         Application.Work work = () -> {
-            assertEquals("local", MyThreadLocal.get());
+            Assert.assertEquals("local", MyZone.get());
             return null;
         };
 
-        List<ThreadLocalSessionFactory> factories = new ArrayList<>();
+        List<ZoneFactory> factories = new ArrayList<>();
         factories.add(new MyThreadLocalFactory("local"));
-        app.doWithThreadLocal(factories, work);
+        app.getZoneManager().doWithThreadLocal(factories, work);
     }
 
     @Test
     public void wrapWithManyThreadLocal() throws Exception {
         Application.Work work = () -> {
-            assertEquals("local2", MyThreadLocal.get());
-            assertEquals("local3", My2ThreadLocal.get());
+            assertEquals("local2", MyZone.get());
+            Assert.assertEquals("local3", My2Zone.get());
             return null;
         };
 
-        List<ThreadLocalSessionFactory> factories = new ArrayList<>();
+        List<ZoneFactory> factories = new ArrayList<>();
         factories.add(new MyThreadLocalFactory("local2"));
         factories.add(new My2ThreadLocalFactory("local3"));
-        app.doWithThreadLocal(factories, work);
+        app.getZoneManager().doWithThreadLocal(factories, work);
     }
 
 }

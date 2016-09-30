@@ -1,9 +1,8 @@
-package org.m410.garden.transaction;
+package org.m410.garden.zone.transaction;
 
 import org.m410.garden.application.Application;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -41,7 +40,7 @@ public final class TransactionHandler<T> implements InvocationHandler {
     }
 
     protected Object wrapInvocation(Method method, Object[] args) throws Exception{
-        return application.doWithThreadLocals(() -> method.invoke(instance,args));
+        return application.getZoneManager().doInZone(() -> method.invoke(instance,args));
     }
 
     protected boolean methodIsTransactional(String name) {

@@ -7,6 +7,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.controller.fixtures.JsonController;
+import org.m410.garden.di.ControllerSupplier;
 import org.m410.garden.fixtures.MyWebApp;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,8 +30,9 @@ public class ControllerJsonTest implements MockServletInput{
     @Before
     public void setup() {
         myApp = new MyWebApp() {
-            @Override public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
-                return ImmutableList.of(controller);
+            @Override
+            public ControllerSupplier controllerProvider() {
+                return (one,two) -> ImmutableList.of(controller);
             }
         };
         myApp.init(null);

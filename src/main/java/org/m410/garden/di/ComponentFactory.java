@@ -1,12 +1,12 @@
 package org.m410.garden.di;
 
 
-import java.lang.reflect.InvocationHandler;
+import org.m410.garden.zone.ZoneHandlerFactory;
 
 /**
  * @author Michael Fortin
  */
 @FunctionalInterface
 public interface ComponentFactory<T> {
-    T make(InvocationHandlerFactory txmgr, Object... arguments);
+    T make(ZoneHandlerFactory txmgr, Object... arguments);
 }

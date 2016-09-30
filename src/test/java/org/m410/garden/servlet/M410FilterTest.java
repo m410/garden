@@ -9,7 +9,7 @@ import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.application.Application;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.fixtures.MyWebApp;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 
 
 import javax.servlet.FilterChain;

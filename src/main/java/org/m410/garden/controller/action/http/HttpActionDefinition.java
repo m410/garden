@@ -13,7 +13,7 @@ import org.m410.garden.controller.action.status.*;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.auth.AuthenticationProvider;
 import org.m410.garden.servlet.ServletExtension;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.transaction.TransactionScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -138,7 +138,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         controller.intercept(actionRequest, action).handleResponse(request, response);
     }
 
-    public boolean doesRequestMatchAction(HttpServletRequest req) {
+    public boolean doesMatchRequest(HttpServletRequest req) {
         return pathExpr.doesPathMatch(req) &&
                 httpMethod.toString().equalsIgnoreCase(req.getMethod()) &&
                 (contentTypes.size() == 0 || contentTypes.contains(req.getContentType()));

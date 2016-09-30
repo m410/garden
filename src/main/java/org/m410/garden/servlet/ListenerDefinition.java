@@ -6,6 +6,22 @@ import java.util.EventListener;
 /**
  * Create a listener class and adds it the the servlet container at runtime.
  *
+ * A listener implementation of one of the following.
+ * <ul>
+ * <li>javax.servlet.ServletRequestListener           </li>
+ * <li>javax.servlet.ServletRequestAttributeListener  </li>
+ * <li>javax.servlet.ServletContextListener           </li>
+ * <li>javax.servlet.ServletContextAttributeListener  </li>
+ * <li>javax.servlet.http.HttpSessionListener         </li>
+ * <li>javax.servlet.http.HttpSessionAttributeListener</li>
+ * <li>javax.servlet.http.HttpSessionAttributeListener</li>
+ * </ul>
+ * <p>
+ * The most common example usage is if you would like to perform some action
+ * on session start or session expire.  In those cases add your own implement
+ * of the HttpSessionListener here.
+ *
+ *
  * @author Michael Fortin
  */
 public final class ListenerDefinition {
