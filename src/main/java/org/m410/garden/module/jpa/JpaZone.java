@@ -1,6 +1,6 @@
 package org.m410.garden.module.jpa;
 
-import org.m410.garden.transaction.ThreadLocalSession;
+import org.m410.garden.zone.Zone;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -15,14 +15,14 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author Michael Fortin
  */
-public class JpaThreadLocal implements ThreadLocalSession<EntityManager> {
-    static final Logger log = LoggerFactory.getLogger(JpaThreadLocal.class);
+public class JpaZone implements Zone<EntityManager> {
+    static final Logger log = LoggerFactory.getLogger(JpaZone.class);
     static final ThreadLocal<EntityManager> threadLocal = new ThreadLocal<>();
 
     private final EntityManagerFactory factory;
 
 
-    public JpaThreadLocal(EntityManagerFactory factory) {
+    public JpaZone(EntityManagerFactory factory) {
         this.factory = factory;
     }
 

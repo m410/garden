@@ -1,7 +1,7 @@
 package org.m410.garden.module.jpa;
 
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
-import org.m410.garden.transaction.ThreadLocalSessionFactory;
+import org.m410.garden.zone.ZoneFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,7 +21,7 @@ import java.util.HashMap;
  *
  * @author Michael Fortin
  */
-public class HibernatePersistence implements ThreadLocalSessionFactory<JpaThreadLocal> {
+public class HibernatePersistence implements ZoneFactory<JpaZone> {
     private static final Logger log = LoggerFactory.getLogger(HibernatePersistence.class);
 
     private EntityManagerFactory entityManagerFactory;
@@ -45,8 +45,8 @@ public class HibernatePersistence implements ThreadLocalSessionFactory<JpaThread
      * @return a thread local to manage connections.
      */
     @Override
-    public JpaThreadLocal make() {
-        return new JpaThreadLocal(entityManagerFactory);
+    public JpaZone makeZone() {
+        return new JpaZone(entityManagerFactory);
     }
 
     /**

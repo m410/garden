@@ -1,6 +1,6 @@
 package org.m410.garden.module.jpa.impl;
 
-import org.m410.garden.module.jpa.JpaThreadLocal;
+import org.m410.garden.module.jpa.JpaZone;
 
 import java.util.List;
 import java.util.Optional;
@@ -22,17 +22,17 @@ public abstract class AbstractDao<T extends Id<K>, K> implements Dao<T,K> {
     }
 
     public Optional<T> get(K id) {
-        return Optional.ofNullable(JpaThreadLocal.get().find(tClass, id));
+        return Optional.ofNullable(JpaZone.get().find(tClass, id));
     }
 
     @SuppressWarnings("unchecked")
     public List<T> list() {
-        return JpaThreadLocal.get().createQuery(listQuery).getResultList();
+        return JpaZone.get().createQuery(listQuery).getResultList();
     }
 
     @SuppressWarnings("unchecked")
     public List<T> page(int start, int limit) {
-        return JpaThreadLocal.get()
+        return JpaZone.get()
                 .createQuery(listQuery)
                 .setFirstResult(start)
                 .setMaxResults(limit)
@@ -40,19 +40,19 @@ public abstract class AbstractDao<T extends Id<K>, K> implements Dao<T,K> {
     }
 
     public Number count() {
-        return (Number)JpaThreadLocal.get().createQuery(countQuery).getSingleResult();
+        return (Number) JpaZone.get().createQuery(countQuery).getSingleResult();
     }
 
     public T insert(T t) {
-        return JpaThreadLocal.get().merge(t);
+        return JpaZone.get().merge(t);
     }
 
     public T update(T t) {
-        return JpaThreadLocal.get().merge(t);
+        return JpaZone.get().merge(t);
     }
 
     @Override
     public void delete(T t) {
-        JpaThreadLocal.get().remove(t);
+        JpaZone.get().remove(t);
     }
 }
