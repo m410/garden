@@ -5,19 +5,18 @@ import com.google.common.collect.ImmutableList;
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.Application;
 import org.m410.garden.controller.HttpCtlr;
+import org.m410.garden.module.jms.JmsModule;
+import org.m410.garden.module.mail.MailModule;
 import org.m410.garden.module.migration.MigrationModule;
 import org.m410.garden.module.ormbuilder.OrmBuilderModule;
 import org.m410.garden.module.ormbuilder.orm.EntityFactory;
-import org.m410.garden.module.jms.JmsModule;
-import org.m410.garden.module.mail.MailModule;
 
 import java.util.List;
 
 
 /**
  */
-public class MyWebApp extends Application
-        implements MailModule, JmsModule, OrmBuilderModule, MigrationModule {
+public class MyWebApp extends Application implements MailModule, JmsModule, OrmBuilderModule, MigrationModule {
 
 
     MyServiceDao myServiceDao = new MyServiceDaoImpl();

@@ -2,6 +2,8 @@ package org.m410.garden.module.jpa;
 
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.zone.ZoneFactory;
+import org.m410.garden.zone.ZoneHandlerFactory;
+import org.m410.garden.zone.ZoneManager;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +39,22 @@ public class HibernatePersistence implements ZoneFactory<JpaZone> {
         final org.hibernate.ejb.HibernatePersistence persistence = new org.hibernate.ejb.HibernatePersistence();
         entityManagerFactory = persistence.createEntityManagerFactory("garden-jpa", new HashMap());
         log.info("Created EntityManagerFactory: {}", entityManagerFactory);
+    }
+
+
+    @Override
+    public void setZoneManager(ZoneManager zoneManager) {
+
+    }
+
+    @Override
+    public String name() {
+        return null;
+    }
+
+    @Override
+    public ZoneHandlerFactory zoneHandlerFactory() {
+        return null;
     }
 
     /**
