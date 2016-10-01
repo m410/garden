@@ -8,5 +8,7 @@ import org.m410.garden.zone.ZoneHandlerFactory;
  */
 @FunctionalInterface
 public interface ComponentFactory<T> {
+
+    // todo should txmgr be optional?
     T make(ZoneHandlerFactory txmgr, Object... arguments);
 }

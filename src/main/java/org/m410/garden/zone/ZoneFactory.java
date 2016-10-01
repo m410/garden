@@ -9,6 +9,8 @@ package org.m410.garden.zone;
  */
 public interface ZoneFactory<T extends Zone> {
 
+    void setZoneManager(ZoneManager zoneManager);
+
     String name();
 
     /**
@@ -24,7 +26,7 @@ public interface ZoneFactory<T extends Zone> {
 
     /**
      *
-     * @return
+     * @return the ZoneHandlerFactory associated with this zone.
      */
     ZoneHandlerFactory zoneHandlerFactory();
 }

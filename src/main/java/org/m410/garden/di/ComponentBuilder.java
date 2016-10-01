@@ -3,6 +3,7 @@ package org.m410.garden.di;
 import org.m410.garden.zone.ZoneHandlerFactory;
 
 import java.util.Arrays;
+import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.stream.Collectors;
@@ -24,7 +25,7 @@ public final class ComponentBuilder<T> {
     }
 
     public static <T> ComponentBuilder<T> builder(Class<T> t) {
-        return new ComponentBuilder<T>(t, null,null);
+        return new ComponentBuilder<T>(t, new Class[0], null);
     }
 
     public ComponentBuilder<T> dependsOn(Class... dependency) {
@@ -51,9 +52,21 @@ public final class ComponentBuilder<T> {
         return registry.stream().filter(r->r.getType().equals(d)).findAny();
     }
 
-    Components.Entry createWith(ZoneHandlerFactory proxy, SortedSet<Components.Entry> registry) {
-        Object[] arguments = Arrays.stream(dependencies).map(d->registryContains(d, registry).get()).toArray();
-        final T instance = factory.make(proxy, arguments);
+    // todo should proxy be a list?
+    Components.Entry createWith(List<ZoneHandlerFactory> proxy, SortedSet<Components.Entry> registry) {
+        Object[] arguments = Arrays.stream(dependencies)
+                .map(d -> registryContains(d, registry).get().getInstance())
+                .toArray();
+
+        final T instance = factory.make(proxy.get(0), arguments);
         return new Components.Entry(targetClass.getSimpleName(), targetClass, instance);
+    }
+
+    public Class[] getDependencies() {
+        return dependencies;
+    }
+
+    public Class<T> getTargetClass() {
+        return targetClass;
     }
 }

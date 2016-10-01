@@ -24,9 +24,9 @@ public class SampleComponent implements Component {
     //  These services should really be a child of this package.
     ComponentBuilder<MyService> service = builder(MyService.class)
             .dependsOn(MyServiceDao.class)
-            .factory((transaction, dependencies) -> {
-                return transaction.proxy(MyService.class, new MyServiceImpl((MyServiceDao)dependencies[0]));
-            });
+            .factory((transaction, dependencies) ->
+                            transaction.proxy(MyService.class, new MyServiceImpl((MyServiceDao) dependencies[0]))
+                    );
 
     ComponentBuilder<MyServiceDao> dao = builder(MyServiceDao.class)
             .factory((transaction, dependencies) -> new MyServiceDaoImpl());

@@ -1,6 +1,6 @@
 package org.m410.garden.zone.transaction;
 
-import org.m410.garden.application.Application;
+import org.m410.garden.zone.ZoneManager;
 
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.Method;
@@ -17,18 +17,18 @@ public final class TransactionHandler<T> implements InvocationHandler {
 
     private final T instance;
     private final List<String> methodFilter;
-    private final Application application ;
+    private final ZoneManager zoneManager;
 
-    public TransactionHandler(T instance, String[] methodFilter, Application application) {
+    public TransactionHandler(T instance, String[] methodFilter, ZoneManager zoneManager) {
         this.instance = instance;
         this.methodFilter = Arrays.asList(methodFilter);
-        this.application = application;
+        this.zoneManager = zoneManager;
     }
 
-    public TransactionHandler(T instance) {
+    public TransactionHandler(T instance, ZoneManager zoneManager) {
         this.instance = instance;
         this.methodFilter = new ArrayList<>();
-        this.application = null;
+        this.zoneManager = zoneManager;
     }
 
     @Override
@@ -40,7 +40,7 @@ public final class TransactionHandler<T> implements InvocationHandler {
     }
 
     protected Object wrapInvocation(Method method, Object[] args) throws Exception{
-        return application.getZoneManager().doInZone(() -> method.invoke(instance,args));
+        return zoneManager.doInZone(() -> method.invoke(instance, args));
     }
 
     protected boolean methodIsTransactional(String name) {

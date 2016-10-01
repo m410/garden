@@ -1,6 +1,7 @@
 package org.m410.garden.di;
 
 
+import com.google.common.collect.ImmutableList;
 import org.m410.garden.zone.ZoneHandlerFactory;
 
 import java.lang.reflect.Array;
@@ -15,26 +16,24 @@ import java.util.stream.Collectors;
 public final class Components implements ComponentRegistry {
 
     private final List<Component> components;
-    private final List<ZoneHandlerFactory> invocationHandlers;
+    private final List<ZoneHandlerFactory> zoneHandlerFactories;
     private final SortedSet<Entry> registry = new TreeSet<>();
 
-    private Components(List<Component> components, List<ZoneHandlerFactory> invocationHandlers) {
+    private Components(List<Component> components, List<ZoneHandlerFactory> zoneHandlerFactories) {
         this.components = components;
-        this.invocationHandlers = invocationHandlers;
+        this.zoneHandlerFactories = zoneHandlerFactories;
     }
 
     public static Components init() {
         return new Components(new ArrayList<>(), new ArrayList<>());
     }
 
-    public Components withProxy(ZoneHandlerFactory o) {
-        List<ZoneHandlerFactory> transactionAspectList2 = new ArrayList<>();
-        transactionAspectList2.addAll(invocationHandlers);
-        transactionAspectList2.add(o);
-        List<Component> componentList2 = new ArrayList<>();
-        componentList2.addAll(components);
-
-        return new Components(componentList2, transactionAspectList2);
+    public Components withZoneHandler(ZoneHandlerFactory zoneHandlerFactory) {
+        final List<ZoneHandlerFactory> out = ImmutableList.<ZoneHandlerFactory>builder()
+                .addAll(zoneHandlerFactories)
+                .add(zoneHandlerFactory)
+                .build();
+        return new Components(components, out);
     }
 
     public Components inherit(Components components) {
@@ -43,13 +42,11 @@ public final class Components implements ComponentRegistry {
     }
 
     public Components add(Component component) {
-        List<ZoneHandlerFactory> transactionAspectList2 = new ArrayList<>();
-        transactionAspectList2.addAll(invocationHandlers);
-        List<Component> componentList2 = new ArrayList<>();
-        componentList2.add(component);
-        componentList2.addAll(components);
-
-        return new Components(componentList2, transactionAspectList2);
+        final List<Component> out = ImmutableList.<Component>builder()
+                .addAll(components)
+                .add(component)
+                .build();
+        return new Components(out, zoneHandlerFactories);
     }
 
     public Components make() {
@@ -57,11 +54,11 @@ public final class Components implements ComponentRegistry {
                 .flatMap(c -> c.builders().stream())
                 .collect(Collectors.toList());
 
-        while (builders.size() < registry.size()) {
+        while (builders.size() > registry.size()) {
             final Collection<Entry> collect = builders.stream()
-                    .filter(b -> b.isRegistered(registry))
-                    .filter(b -> b.canCreateWith(registry))
-                    .map(b -> b.createWith(invocationHandlers.get(0),registry))
+                    .filter(builder -> !builder.isRegistered(registry))
+                    .filter(builder -> builder.canCreateWith(registry))
+                    .map(builder -> builder.createWith(zoneHandlerFactories, registry))
                     .collect(Collectors.toList());
 
             registry.addAll(collect);
@@ -73,7 +70,7 @@ public final class Components implements ComponentRegistry {
     @Override
     public <T> T typeOf(Class<T> myServiceClass) {
         return registry.stream()
-                .filter(r -> r.getClass().isAssignableFrom(myServiceClass))
+                .filter(entry -> entry.getType().equals(myServiceClass))
                 .findAny()
                 .orElseThrow(() -> new NoServiceException(myServiceClass.getName()))
                 .getInstanceAs(myServiceClass);
@@ -98,7 +95,7 @@ public final class Components implements ComponentRegistry {
     /**
      *
      */
-    static final class Entry {
+    static final class Entry implements Comparable<Entry> {
         private final String name;
         // todo add support for multiple types
         private final Class type;
@@ -130,6 +127,41 @@ public final class Components implements ComponentRegistry {
 
         public <T> T getInstanceAs(Class<T> myServiceClass) {
             return (T) instance;
+        }
+
+        @Override
+        public int compareTo(Entry o) {
+            // todo needs improvement
+            return this.name.compareTo(o.name);
+        }
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) {
+                return true;
+            }
+            if (o == null || getClass() != o.getClass()) {
+                return false;
+            }
+
+            Entry entry = (Entry) o;
+
+            if (!name.equals(entry.name)) {
+                return false;
+            }
+            if (!type.equals(entry.type)) {
+                return false;
+            }
+            return instance.equals(entry.instance);
+
+        }
+
+        @Override
+        public int hashCode() {
+            int result = name.hashCode();
+            result = 31 * result + type.hashCode();
+            result = 31 * result + instance.hashCode();
+            return result;
         }
     }
 }

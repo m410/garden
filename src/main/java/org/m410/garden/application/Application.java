@@ -1,30 +1,35 @@
 package org.m410.garden.application;
 
+import com.google.common.collect.ImmutableList;
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.annotate.*;
+import org.m410.garden.application.annotate.Shutdown;
 import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
-
-import com.google.common.collect.ImmutableList;
-import org.m410.garden.di.*;
+import org.m410.garden.di.ComponentRegistry;
+import org.m410.garden.di.ComponentSupplier;
+import org.m410.garden.di.Components;
+import org.m410.garden.di.ControllerSupplier;
 import org.m410.garden.servlet.FilterDefinition;
 import org.m410.garden.servlet.ListenerDefinition;
 import org.m410.garden.servlet.ServletDefinition;
 import org.m410.garden.zone.ZoneFactory;
+import org.m410.garden.zone.ZoneFactorySupplier;
 import org.m410.garden.zone.ZoneManager;
 import org.m410.garden.zone.transaction.TransactionScope;
-import org.m410.garden.zone.ZoneFactorySupplier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
+import java.util.Optional;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 
 /**
@@ -66,7 +71,7 @@ abstract public class Application implements ApplicationModule {
     //  }
 
 
-    public Components getComponents() {
+    public ComponentRegistry getComponents() {
         return components;
     }
 
@@ -148,7 +153,7 @@ abstract public class Application implements ApplicationModule {
      * @return a list of service classes.
      */
     public ComponentSupplier componentProvider() {
-        return (components, config) -> Components.init();
+        return (zoneManager, config) -> Components.init();
     }
 
     public ControllerSupplier controllerProvider() {
@@ -217,6 +222,39 @@ abstract public class Application implements ApplicationModule {
      * @param configuration the configuration.
      */
     public void init(final ImmutableHierarchicalConfiguration configuration) {
+        initZones(configuration);
+        initServlets(configuration);
+        initFilters(configuration);
+        initListeners(configuration);
+        initComponents(configuration);
+        initControllers(configuration);
+        initActions();
+        callDynamicStart(configuration, Startup.class);
+    }
+
+    final void initActions() {
+        actionDefinitions = controllers.stream()
+                .map(HttpCtlr::actions)
+                .flatMap(Collection::stream)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), ImmutableList::copyOf));
+
+        log.debug("actionDefinitions: {}", actionDefinitions);
+    }
+
+    final void initControllers(final ImmutableHierarchicalConfiguration configuration) {
+        final List<? extends HttpCtlr> ctlrs = dynamicProviders(ControllerProvider.class, ControllerSupplier.class)
+                .map(s -> s.get(configuration, components))
+                .flatMap(Collection::stream)
+                .collect(Collectors.collectingAndThen(Collectors.toList(), ImmutableList::copyOf));
+
+        controllers = ImmutableList.<HttpCtlr>builder()
+                .addAll(ctlrs)
+                .addAll(controllerProvider().get(configuration, components))
+                .build();
+        log.debug("controllers: {}", controllers);
+    }
+
+    final void initZones(final ImmutableHierarchicalConfiguration configuration) {
         final Collection<? extends ZoneFactory> locals = dynamicProviders(ThreadLocalProvider.class, ZoneFactorySupplier.class)
                 .map(s -> s.get(configuration))
                 .flatMap(Collection::stream)
@@ -228,7 +266,9 @@ abstract public class Application implements ApplicationModule {
                 .build();
         zoneManager = new ZoneManager(zoneFactories);
         log.debug("zoneFactories: {}", zoneFactories);
+    }
 
+    final void initServlets(final ImmutableHierarchicalConfiguration configuration) {
         final List<ServletDefinition> servlets = dynamicProviders(ServletProvider.class, ServletSupplier.class)
                 .map(s -> s.get(configuration))
                 .flatMap(Collection::stream)
@@ -239,8 +279,9 @@ abstract public class Application implements ApplicationModule {
                 .addAll(servletProvider().get(configuration))
                 .build();
         log.debug("servletDefinitions: {}", servletDefinitions);
+    }
 
-
+    final void initFilters(final ImmutableHierarchicalConfiguration configuration) {
         final List<FilterDefinition> filters = dynamicProviders(FilterProvider.class, FilterSupplier.class)
                 .map(s -> s.get(configuration))
                 .flatMap(Collection::stream)
@@ -251,8 +292,9 @@ abstract public class Application implements ApplicationModule {
                 .addAll(filterProvider().get(configuration))
                 .build();
         log.debug("filterDefinitions: {}", filterDefinitions);
+    }
 
-
+    final void initListeners(final ImmutableHierarchicalConfiguration configuration) {
         final List<ListenerDefinition> listeners = dynamicProviders(ListenerProvider.class, ListenerSupplier.class)
                 .map(s -> s.get(configuration))
                 .flatMap(Collection::stream)
@@ -263,35 +305,17 @@ abstract public class Application implements ApplicationModule {
                 .addAll(listenerProvider().get(configuration))
                 .build();
         log.debug("listenerDefinitions: {}", listenerDefinitions);
+    }
 
+    final void initComponents(final ImmutableHierarchicalConfiguration configuration) {
         final Components dyComponents = dynamicProviders(ComponentsProvider.class, ComponentSupplier.class)
                 .map(s -> s.get(zoneManager, configuration))
                 .reduce(Components.init(), (a,b)-> b.inherit(a.make()));
 
-         components = componentProvider().get(zoneManager, configuration)
+        components = componentProvider().get(zoneManager, configuration)
                 .inherit(dyComponents.make())
                 .make();
         log.debug("components: {}", components);
-
-        final List<? extends HttpCtlr> ctlrs = dynamicProviders(ControllerProvider.class, ControllerSupplier.class)
-                .map(s -> s.get(configuration, components))
-                .flatMap(Collection::stream)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), ImmutableList::copyOf));
-
-        controllers = ImmutableList.<HttpCtlr>builder()
-                .addAll(ctlrs)
-                .addAll(controllerProvider().get(configuration, components))
-                .build();
-        log.debug("controllers: {}", controllers);
-
-        actionDefinitions = controllers.stream()
-                .map(HttpCtlr::actions)
-                .flatMap(Collection::stream)
-                .collect(Collectors.collectingAndThen(Collectors.toList(), ImmutableList::copyOf));
-
-        log.debug("actionDefinitions: {}", actionDefinitions);
-
-        callDynamicStart(configuration, Startup.class);
     }
 
     private <M> Stream<M> dynamicProviders(Class annotatedProvider, Class<M> clzz) {
@@ -315,14 +339,14 @@ abstract public class Application implements ApplicationModule {
                 .isPresent();
     }
 
-    private <T> void callDynamicStart(ImmutableHierarchicalConfiguration configuration, Class<T> componentClass) {
+    private <T> void callDynamicStart(final ImmutableHierarchicalConfiguration configuration, Class<T> componentClass) {
         final Class thisClass = getClass();
         Arrays.stream(thisClass.getMethods())
                 .filter(m -> isAnnotatedWith(componentClass,m))
                 .forEach(component -> invokeMethod(configuration, component));
     }
 
-    private void invokeMethod(ImmutableHierarchicalConfiguration configuration, Method component) {
+    private void invokeMethod(final ImmutableHierarchicalConfiguration configuration, Method component) {
         try {
             component.invoke(this, configuration);
         }

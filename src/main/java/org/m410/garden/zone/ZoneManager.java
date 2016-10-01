@@ -1,9 +1,7 @@
 package org.m410.garden.zone;
 
 import org.m410.garden.application.Application;
-import org.m410.garden.zone.transaction.TransactionHandler;
 
-import java.lang.reflect.Proxy;
 import java.util.List;
 
 /**
@@ -15,6 +13,7 @@ public final class ZoneManager {
 
     public ZoneManager(List<ZoneFactory> zoneFactories) {
         this.zoneFactories = zoneFactories;
+        this.zoneFactories.forEach(z -> z.setZoneManager(this));
     }
 
     public ZoneFactory byName(String name) {

@@ -5,11 +5,15 @@ package org.m410.garden.zone;
  *
  * @author Michael Fortin
  */
-class My2ThreadLocalFactory implements ZoneFactory<My2Zone> {
+class My2ZoneFactory implements ZoneFactory<My2Zone> {
     private String value;
 
-    My2ThreadLocalFactory(String value) {
+    My2ZoneFactory(String value) {
         this.value = value;
+    }
+
+    @Override
+    public void setZoneManager(ZoneManager zoneManager) {
     }
 
     @Override public My2Zone makeZone() { return new My2Zone(value); }

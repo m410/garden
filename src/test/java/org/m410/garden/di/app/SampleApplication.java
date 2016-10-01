@@ -1,17 +1,14 @@
 package org.m410.garden.di.app;
 
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.Application;
-import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.di.ComponentSupplier;
 import org.m410.garden.di.Components;
 import org.m410.garden.di.ControllerSupplier;
 import org.m410.garden.di.app.sample.SampleComponent;
 import org.m410.garden.fixtures.MyController;
 import org.m410.garden.fixtures.MyService;
-
-import java.util.List;
+import org.m410.garden.zone.*;
 
 /**
  * @author Michael Fortin
@@ -25,9 +22,45 @@ public class SampleApplication extends Application {
         );
     }
 
-    protected ComponentSupplier componentsSupplier() {
+    @Override
+    public ZoneFactorySupplier zoneFactoryProvider() {
+        return (config) -> ImmutableList.of(new ZoneFactory() {
+
+            @Override
+            public void setZoneManager(ZoneManager zoneManager) {
+            }
+
+            @Override
+            public String name() {
+                return "test";
+            }
+
+            @Override
+            public Zone makeZone() {
+                return null;
+            }
+
+            @Override
+            public void shutdown() {
+
+            }
+
+            @Override
+            public ZoneHandlerFactory zoneHandlerFactory() {
+                return new ZoneHandlerFactory() {
+                    @Override
+                    public <T> T proxy(Class<T> interfce, T instance) {
+                        return instance;
+                    }
+                };
+            }
+        });
+    }
+
+    @Override
+    public ComponentSupplier componentProvider() {
         return (zoneManager, configuration) -> Components.init()
-                .withProxy(zoneManager.getZoneFactories().get(0).zoneHandlerFactory())
+                .withZoneHandler(zoneManager.getZoneFactories().get(0).zoneHandlerFactory())
                 .add(new SampleComponent())
                 .make();
     }

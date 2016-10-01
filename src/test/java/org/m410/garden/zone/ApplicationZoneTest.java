@@ -6,24 +6,21 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import static org.junit.Assert.*;
-
-import org.m410.garden.application.*;
+import org.m410.garden.application.Application;
 import org.m410.garden.configuration.ConfigurationFactory;
 import org.m410.garden.fixtures.MyWebApp;
-import org.m410.garden.zone.ZoneFactory;
 
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertEquals;
 
 /**
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class ApplicationThreadLocalTest {
+public class ApplicationZoneTest {
     final String configFile = "garden.fab.yml";
     Application app;
 
@@ -43,7 +40,7 @@ public class ApplicationThreadLocalTest {
         };
 
         List<ZoneFactory> factories = new ArrayList<>();
-        factories.add(new MyThreadLocalFactory("local"));
+        factories.add(new MyZoneFactory("local"));
         app.getZoneManager().doWithThreadLocal(factories, work);
     }
 
@@ -56,8 +53,8 @@ public class ApplicationThreadLocalTest {
         };
 
         List<ZoneFactory> factories = new ArrayList<>();
-        factories.add(new MyThreadLocalFactory("local2"));
-        factories.add(new My2ThreadLocalFactory("local3"));
+        factories.add(new MyZoneFactory("local2"));
+        factories.add(new My2ZoneFactory("local3"));
         app.getZoneManager().doWithThreadLocal(factories, work);
     }
 
