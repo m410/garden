@@ -2,9 +2,10 @@ package org.m410.garden.fixtures;
 
 
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.Application;
-import org.m410.garden.controller.HttpCtlr;
+import org.m410.garden.di.ComponentSupplier;
+import org.m410.garden.di.Components;
+import org.m410.garden.di.ControllerSupplier;
 import org.m410.garden.module.jms.JmsModule;
 import org.m410.garden.module.mail.MailModule;
 import org.m410.garden.module.migration.MigrationModule;
@@ -13,46 +14,31 @@ import org.m410.garden.module.ormbuilder.orm.EntityFactory;
 
 import java.util.List;
 
+import static org.m410.garden.di.ComponentBuilder.builder;
+
 
 /**
  */
 public class MyWebApp extends Application implements MailModule, JmsModule, OrmBuilderModule, MigrationModule {
 
+    @Override
+    public ComponentSupplier componentProvider() {
+        return (components, config) -> Components.init()
+                .add(() -> ImmutableList.of(
+                        builder(MyServiceDao.class).factory((a, b) -> new MyServiceDaoImpl()),
+                        builder(MyService.class).factory((a, b) -> new MyServiceImpl((MyServiceDao) b[0]))
+                                           ));
 
-    MyServiceDao myServiceDao = new MyServiceDaoImpl();
-    MyService myService = new MyServiceImpl(myServiceDao);
-    // todo trxProxy
-    // todo jpaTrxProxy(MyService.class, new MyServiceImpl())
-    // todo componentService(MailService.class, "mailService")
-
-//    @Override
-//    Collection<ManagedService> managedServices(final ImmutableHierarchicalConfiguration config) {
-//        return ImmutableList.of(new ManagedService() {
-//            void start() {
-//                myService.doStartup();
-//            }
-//
-//            void shutdown() {
-//                myService.doShutdown();
-//            }
-//        });
-//    }
-
-    @Override public List<?> makeServices(ImmutableHierarchicalConfiguration c) {
-        return ImmutableList.builder()
-                .addAll(ImmutableList.of(myService))
-                .build();
     }
 
-    @Override public List<? extends HttpCtlr> makeControllers(ImmutableHierarchicalConfiguration c) {
-        return ImmutableList.of(
-                new MyController(myService)
-        );
+    @Override
+    public ControllerSupplier controllerProvider() {
+        return (components, config) -> ImmutableList.of(new MyController(config.typeOf(MyService.class)));
     }
 
     @Override
     public List<? extends EntityFactory> entityBuilders() {
-        return ImmutableList.of(myService);
+        return ImmutableList.of();
     }
 }
 
