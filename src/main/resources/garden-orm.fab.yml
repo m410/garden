@@ -1,5 +1,7 @@
 # modules
 persistence(org.m410.garden:garden-orm:${project.version}):
+  factory_class: org.m410.garden.configuration.ConfigurationFactory
+  builder_class: org.m410.garden.module.ormbuilder.orm.OrmXmlBuilder
 
 bundles:
   - name: garden-orm
