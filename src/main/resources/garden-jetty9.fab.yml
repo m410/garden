@@ -1,4 +1,4 @@
-modules(org.m410.garden:garden-jetty9:${project.version}}):
+modules(org.m410.garden:garden-jetty9:${project.version}):
 
 dependencies:
 - {scope: jetty9, org: org.eclipse.jetty.aggregate, name: jetty-all, rev: 9.2.3.v20140905 }
