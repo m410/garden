@@ -1,11 +1,10 @@
 package org.m410.garden.module.spring;
 
-import com.google.common.collect.ImmutableList;
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.ApplicationModule;
 import org.m410.garden.application.annotate.ComponentsProvider;
-
-import java.util.List;
+import org.m410.garden.di.ComponentSupplier;
+import org.m410.garden.di.Components;
 
 /**
  * This is not implemented.  The concept is that if you would prefer
@@ -20,7 +19,7 @@ import java.util.List;
 public interface SpringBeanModule extends ApplicationModule {
 
     @ComponentsProvider
-    default List<?> makeSpringServices(ImmutableHierarchicalConfiguration c) {
-        return ImmutableList.of();
+    static ComponentSupplier makeSpringServices(final ImmutableHierarchicalConfiguration c) {
+        return (zoneManager, configuration) -> Components.init();
     }
 }

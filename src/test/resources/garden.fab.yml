@@ -8,7 +8,7 @@ application:
 build:
   packageSource: true
 
-persistence(org.m410.garden:garden-jpa:0.2-SNAPSHOT):
+persistence(org.m410.garden:garden-jpa:0.3-SNAPSHOT):
   properties:
     hibernate.dialect: org.hibernate.dialect.H2Dialect
     hibernate.connection.driver_class: org.h2.Driver

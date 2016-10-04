@@ -15,9 +15,11 @@ import javax.persistence.EntityManagerFactory;
  *
  * @author Michael Fortin
  */
-public class JpaZone implements Zone<EntityManager> {
+public final class JpaZone implements Zone<EntityManager> {
     static final Logger log = LoggerFactory.getLogger(JpaZone.class);
     static final ThreadLocal<EntityManager> threadLocal = new ThreadLocal<>();
+
+    public static final String JPA_ZONE = "JPA";
 
     private final EntityManagerFactory factory;
 

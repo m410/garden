@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.Enumeration;
 import java.util.HashMap;
 
+import static org.m410.garden.module.jpa.JpaZone.JPA_ZONE;
+
 /**
  * A hibernate implementation of the threadLocalSession factory.  It's created by the
  * JpaModule and injected into the application to manage the persistence context.
@@ -23,38 +25,45 @@ import java.util.HashMap;
  *
  * @author Michael Fortin
  */
-public class HibernatePersistence implements ZoneFactory<JpaZone> {
-    private static final Logger log = LoggerFactory.getLogger(HibernatePersistence.class);
+public final class HibernateZoneFactory implements ZoneFactory<JpaZone> {
+    private static final Logger log = LoggerFactory.getLogger(HibernateZoneFactory.class);
 
-    private EntityManagerFactory entityManagerFactory;
+    private final String unitName;
+    private final EntityManagerFactory entityManagerFactory;
+    private ZoneManager zoneManager;
 
-    public HibernatePersistence(ImmutableHierarchicalConfiguration configuration) {
+    public HibernateZoneFactory(ImmutableHierarchicalConfiguration configuration) {
         log.debug("thread classloader: {}" , Thread.currentThread().getContextClassLoader());
         log.debug("thread classloader res: {}" , Thread.currentThread().getContextClassLoader().getResource("META-INF/persistence.xml"));
         log.debug("class classloader: {}" , this.getClass().getClassLoader());
         log.debug("class classloader res: {}" , this.getClass().getClassLoader().getResource("META-INF/persistence.xml"));
 
-        // todo get entityManager name from configuration
+        // nested propertyName
+        unitName = configuration.getString("unit_name");
+
+        // todo set other properties
+
         // todo replace with org.hibernate.jpa.HibernatePersistenceProvider
         final org.hibernate.ejb.HibernatePersistence persistence = new org.hibernate.ejb.HibernatePersistence();
-        entityManagerFactory = persistence.createEntityManagerFactory("garden-jpa", new HashMap());
+        entityManagerFactory = persistence.createEntityManagerFactory(unitName, new HashMap());
+
         log.info("Created EntityManagerFactory: {}", entityManagerFactory);
     }
 
 
     @Override
     public void setZoneManager(ZoneManager zoneManager) {
-
+        this.zoneManager = zoneManager;
     }
 
     @Override
     public String name() {
-        return null;
+        return JPA_ZONE;
     }
 
     @Override
     public ZoneHandlerFactory zoneHandlerFactory() {
-        return null;
+        return new HibernateZoneHandlerFactory(zoneManager);
     }
 
     /**
@@ -86,6 +95,5 @@ public class HibernatePersistence implements ZoneFactory<JpaZone> {
                 e.printStackTrace();
             }
         }
-
     }
 }
