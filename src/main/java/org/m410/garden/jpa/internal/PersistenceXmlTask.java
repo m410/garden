@@ -15,6 +15,7 @@
  */
 package org.m410.garden.jpa.internal;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.fabricate.builder.BuildContext;
 import org.m410.fabricate.builder.Task;
 import org.m410.fabricate.util.ReflectConfigFileBuilder;
@@ -24,6 +25,7 @@ import java.nio.file.FileSystems;
 import java.nio.file.Path;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -34,8 +36,10 @@ import java.util.stream.Collectors;
  */
 public final class PersistenceXmlTask implements Task {
 
+    // todo move to config
     final String builderName = "org.m410.garden.module.ormbuilder.persistence.PersistenceXmlBuilder";
-
+    final String org = "org.m410.garden";
+    final String name = "garden-jpa";
 
     @Override
     public String getName() {
@@ -51,7 +55,13 @@ public final class PersistenceXmlTask implements Task {
     public void execute(BuildContext context) throws Exception {
         final String[] compiles = context.getClasspath().get("compile").split(System.getProperty("path.separator"));
         Collection<File> mavenProject = Arrays.stream(compiles).map(File::new).collect(Collectors.toList());
+        final Optional<ImmutableHierarchicalConfiguration> optCfg = context.configAt(org, name);
 
+        if (!optCfg.isPresent()) {
+            throw new RuntimeException("could not find configuration");
+        }
+
+        final ImmutableHierarchicalConfiguration c = optCfg.get();
         final String sourceOut = context.getBuild().getSourceOutputDir();
         final Path outputPath = FileSystems.getDefault().getPath(sourceOut,"META-INF/persistence.xml");
         final File file = FileSystems.getDefault().getPath(sourceOut,"META-INF").toFile();
@@ -61,6 +71,8 @@ public final class PersistenceXmlTask implements Task {
 
         new ReflectConfigFileBuilder(builderName)
                 .withClasspath(mavenProject)
+                .withAppClass(context.getConfiguration().getString("application.applicationClass"))
+                .withFactoryClass(c.getString("factory_class"))
                 .withPath(outputPath)
                 .withEnv(context.environment())
                 .make();

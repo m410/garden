@@ -1,11 +1,22 @@
 # modules
-persistence(org.m410.garden:garden-jpa:${project.version}}):
+persistence(org.m410.garden:garden-jpa:${project.version}):
   unit_name: garden-jpa
+  orm_builder_class: org.m410.garden.module.ormbuilder.orm.OrmXmlBuilder
+  factory_class: org.m410.garden.configuration.ConfigurationFactory
+  persistence_builder_class: org.m410.garden.module.ormbuilder.persistence.PersistenceXmlBuilder
+  user_orm_builder: false
+  properties:
+    hibernate.dialect: org.hibernate.dialect.H2Dialect
+    hibernate.connection.driver_class: org.h2.Driver
+    hibernate.connection.username: sa
+    hibernate.connection.password: ""
+    hibernate.connection.url: jdbc:h2:./db/demo;AUTO_SERVER=TRUE
+    hibernate.hbm2ddl.auto: update
 
 bundles:
   - name: garden-jpa
     org: org.m410.garden
-    version: 0.2-SNAPSHOT
+    version: 0.3-SNAPSHOT
 
 dependencies:
   - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: "${garden-jpa-lib.version}" }

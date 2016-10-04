@@ -15,9 +15,9 @@
  */
 package org.m410.garden.jpa.internal;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.fabricate.builder.BuildContext;
 import org.m410.fabricate.builder.Task;
-import org.m410.fabricate.config.Module;
 import org.m410.fabricate.util.ReflectConfigFileBuilder;
 
 import java.io.File;
@@ -26,7 +26,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
@@ -38,7 +38,8 @@ public final class OrmXmlTask implements Task {
     // todo add meta model generator
     // todo http://stackoverflow.com/questions/3037593/how-to-generate-jpa-2-0-metamodel
 
-    final String ormXmlClassName = "org.m410.garden.module.ormbuilder.orm.OrmXmlBuilder";
+    final String org = "org.m410.garden";
+    final String name = "garden-jpa";
 
     @Override
     public String getName() {
@@ -68,11 +69,21 @@ public final class OrmXmlTask implements Task {
         if (!file.exists() && !file.mkdirs())
             throw new RuntimeException("Could not make META-INF directories");
 
-        new ReflectConfigFileBuilder(ormXmlClassName)
+        final Optional<ImmutableHierarchicalConfiguration> optCfg = context.configAt(org, name);
+
+        if (!optCfg.isPresent()) {
+            throw new RuntimeException("could not find configuration");
+        }
+
+        final ImmutableHierarchicalConfiguration c = optCfg.get();
+
+        new ReflectConfigFileBuilder(c.getString("orm_builder_class"))
                 .withClasspath(classpath)
                 .withPath(outputPath)
                 .withEnv(context.environment())
                 .withAppCreated(true)
+                .withAppClass(context.getConfiguration().getString("application.applicationClass"))
+                .withFactoryClass(c.getString("factory_class"))
                 .make();
     }
 
