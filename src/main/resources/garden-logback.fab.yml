@@ -1,5 +1,7 @@
 # modules
 logging(org.m410.garden:garden-logback:${project.version}):
+  factory_class: org.m410.garden.configuration.ConfigurationFactory
+  builder_class: org.m410.garden.module.logback.LogbackXmlBuilder
   appenders:
     - name: STDOUT
       appender class: ch.qos.logback.core.ConsoleAppender
