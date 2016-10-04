@@ -1,14 +1,12 @@
 package org.m410.garden.controller;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
-
-import org.m410.garden.controller.action.*;
+import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.controller.action.http.Response;
-
-import org.m410.garden.zone.transaction.TransactionScope;
+import org.m410.garden.zone.ZoneScope;
 
 /**
  * This is the default implementation of a the Ctlr interface.
@@ -69,7 +67,7 @@ public abstract class Controller implements HttpCtlr, Securable {
     protected PathExpr pathExpr;
     protected boolean useSsl = false;
     protected String[] contentTypes = {};
-    protected TransactionScope defaultTransactionScope = TransactionScope.Action;
+    protected ZoneScope defaultTransactionScope = ZoneScope.Action;
 
     /**
      * private constructor so you must implement a path.

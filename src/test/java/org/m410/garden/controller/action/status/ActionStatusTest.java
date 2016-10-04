@@ -5,24 +5,22 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.controller.auth.Authorizable;
 import org.m410.garden.controller.Controller;
+import org.m410.garden.controller.Securable;
+import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
-import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.HttpMethod;
-import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.auth.AuthenticationProvider;
-import org.m410.garden.zone.transaction.TransactionScope;
-
+import org.m410.garden.controller.auth.Authorizable;
+import org.m410.garden.zone.ZoneScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-
 import java.security.Principal;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 
@@ -52,7 +50,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
 
         HttpSession httpSession = mock(HttpSession.class);
         when(httpSession.getAttribute(AuthenticationProvider.SESSION_KEY)).thenReturn("anything");
@@ -76,7 +74,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -92,7 +90,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -107,7 +105,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.Ssl.Only, new String[]{}, new String[]{}, TransactionScope.None);
+                Securable.Ssl.Only, new String[]{}, new String[]{}, ZoneScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -128,7 +126,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.Ssl.Optional, new String[]{}, new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");
@@ -149,7 +147,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
 
 
         HttpServletRequest request = mock(HttpServletRequest.class);
@@ -170,7 +168,7 @@ public class ActionStatusTest {
         final HttpMethod get = HttpMethod.GET;
         final PathExpr path = new PathExpr("/path");
         HttpActionDefinition ad = new HttpActionDefinition(controller,action, path, get,
-                Securable.Ssl.Optional, new String[]{"USER"}, new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{"USER"}, new String[]{}, ZoneScope.None);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getContextPath()).thenReturn("");

@@ -24,32 +24,6 @@ public final class ZoneManager {
         return zoneFactories;
     }
 
-    //
-//     /**
-//     * Wrap services in a transaction.  Actions do not have to be transactional, you have
-//     * the option to set the transaction boundries at the service level by wrapping its
-//     * declaration with this method.
-//     *
-//     * <pre>
-//     *     MyService myService = transactional(MyService.class,new MyServiceImpl());
-//     * </pre>
-//     *
-//     * @param intrface the Class for the interface that is proxied.
-//     * @param instance an instance of the interface that is invoked.
-//     * @param methods names of method to wrap in a transaction, if all transaction are
-//     *                wrapped in a transaction, leave this empty.
-//     * @param <T> the type of the class and instance to proxy
-//     * @return a proxy for the instance.
-//    */
-//    @SuppressWarnings("unchecked")
-//    protected <T> T transactional(Class<T> intrface, T instance, String... methods) {
-//        final ClassLoader loader = Thread.currentThread().getContextClassLoader();
-//        final Class[] interfaces = {intrface};
-//        final TransactionHandler<T> handler = new TransactionHandler<T>(instance, methods, this);
-//
-//        return (T) Proxy.newProxyInstance(loader, interfaces, handler);
-//    }
-
     /**
      * Wraps action invocations with a thread local context.
      *

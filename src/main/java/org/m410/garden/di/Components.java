@@ -15,6 +15,8 @@ import java.util.stream.Collectors;
  */
 public final class Components implements ComponentRegistry {
 
+    // todo create Components.of(Component...).withZone(ZoneManager z);
+
     private final List<Component> components;
     private final List<ZoneHandlerFactory> zoneHandlerFactories;
     private final SortedSet<Entry> registry = new TreeSet<>();
@@ -28,6 +30,12 @@ public final class Components implements ComponentRegistry {
         return new Components(new ArrayList<>(), new ArrayList<>());
     }
 
+    public static Components of(Component... components) {
+        ImmutableList<Component> build = ImmutableList.<Component>builder().addAll(Arrays.asList(components)).build();
+        return new Components(build, ImmutableList.of());
+    }
+
+    // todo should this be the zoneManager?
     public Components withZoneHandler(ZoneHandlerFactory zoneHandlerFactory) {
         final List<ZoneHandlerFactory> out = ImmutableList.<ZoneHandlerFactory>builder()
                 .addAll(zoneHandlerFactories)

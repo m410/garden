@@ -57,5 +57,4 @@ public class ApplicationZoneTest {
         factories.add(new My2ZoneFactory("local3"));
         app.getZoneManager().doWithThreadLocal(factories, work);
     }
-
 }

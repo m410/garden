@@ -52,13 +52,13 @@ public final class ComponentBuilder<T> {
         return registry.stream().filter(r->r.getType().equals(d)).findAny();
     }
 
-    // todo should proxy be a list?
-    Components.Entry createWith(List<ZoneHandlerFactory> proxy, SortedSet<Components.Entry> registry) {
+    // todo should proxy be a list?  Maybe pass the whole zoneManager
+    Components.Entry createWith(List<ZoneHandlerFactory> zones, SortedSet<Components.Entry> registry) {
         Object[] arguments = Arrays.stream(dependencies)
                 .map(d -> registryContains(d, registry).get().getInstance())
                 .toArray();
 
-        final T instance = factory.make(proxy.get(0), arguments);
+        final T instance = factory.make(zones.get(0), arguments);
         return new Components.Entry(targetClass.getSimpleName(), targetClass, instance);
     }
 

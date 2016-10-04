@@ -1,11 +1,11 @@
-package org.m410.garden.zone.transaction;
+package org.m410.garden.zone;
 
 /**
  * Controller and Action transaction scope
  *
  * @author Michael Fortin
  */
-public enum TransactionScope {
+public enum ZoneScope {
 
     /**
      * No Transaction

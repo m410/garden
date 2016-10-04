@@ -16,7 +16,7 @@ import org.m410.garden.servlet.ServletDefinition;
 import org.m410.garden.zone.ZoneFactory;
 import org.m410.garden.zone.ZoneFactorySupplier;
 import org.m410.garden.zone.ZoneManager;
-import org.m410.garden.zone.transaction.TransactionScope;
+import org.m410.garden.zone.ZoneScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -184,7 +184,7 @@ abstract public class Application implements ApplicationModule {
         if(optional.isPresent()) {
             HttpActionDefinition definition = (HttpActionDefinition)optional.get();
 
-            if (definition.getTransactionScope() == TransactionScope.Action)
+            if (definition.getTransactionScope() == ZoneScope.Action)
                 zoneManager.doInZone(() -> {
                     definition.apply(req, res);
                     return null;
@@ -255,7 +255,7 @@ abstract public class Application implements ApplicationModule {
     }
 
     final void initZones(final ImmutableHierarchicalConfiguration configuration) {
-        final Collection<? extends ZoneFactory> locals = dynamicProviders(ThreadLocalProvider.class, ZoneFactorySupplier.class)
+        final Collection<? extends ZoneFactory> locals = dynamicProviders(ZoneProvider.class, ZoneFactorySupplier.class)
                 .map(s -> s.get(configuration))
                 .flatMap(Collection::stream)
                 .collect(Collectors.toList());

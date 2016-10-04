@@ -24,6 +24,12 @@ public class ConfigurationFactory {
         return fromInputStream(in, env);
     }
 
+    /**
+     * called via reflection in the ReflectConfigFileBuilder class.
+     *
+     * @param env
+     * @return
+     */
     public static ImmutableHierarchicalConfiguration buildtime(String env) {
         String filePath = BUILDTIME_CONFIG.replace("${env}", env);
         File file = FileSystems.getDefault().getPath(filePath).toFile();

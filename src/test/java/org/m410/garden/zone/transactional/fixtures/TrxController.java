@@ -7,7 +7,7 @@ import org.m410.garden.controller.action.http.HttpActionDefinition;
 
 import java.util.List;
 
-import static org.m410.garden.zone.transaction.TransactionScope.*;
+import static org.m410.garden.zone.ZoneScope.*;
 
 /**
  * @author m410

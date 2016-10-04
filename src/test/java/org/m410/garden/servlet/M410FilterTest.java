@@ -3,14 +3,13 @@ package org.m410.garden.servlet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.controller.Securable;
-import org.m410.garden.controller.action.http.HttpActionDefinition;
-import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.application.Application;
+import org.m410.garden.controller.Securable;
+import org.m410.garden.controller.action.PathExpr;
+import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.http.HttpMethod;
 import org.m410.garden.fixtures.MyWebApp;
-import org.m410.garden.zone.transaction.TransactionScope;
-
+import org.m410.garden.zone.ZoneScope;
 
 import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
@@ -21,7 +20,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.Optional;
 
-import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.*;
 
 /**
@@ -35,7 +33,7 @@ public class M410FilterTest {
         Application application = new MyWebApp() {
             @Override public Optional<HttpActionDefinition> actionForRequest(HttpServletRequest request) {
                 return Optional.of(new HttpActionDefinition(null, null,new PathExpr("json"), HttpMethod.GET,
-                        Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None));
+                        Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None));
             }
         };
 

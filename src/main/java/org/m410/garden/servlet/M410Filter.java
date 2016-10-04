@@ -1,11 +1,11 @@
 package org.m410.garden.servlet;
 
+import org.m410.garden.application.Application;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.status.*;
-import org.m410.garden.zone.transaction.TransactionScope;
+import org.m410.garden.zone.ZoneScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.m410.garden.application.Application;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -55,7 +55,7 @@ public class M410Filter implements Filter {
                 case ActionStatus.ACT_ON:
                     log.trace("ActOn({},{})", action, action.getTransactionScope());
 
-                    if(action.getTransactionScope() == TransactionScope.ActionAndView)
+                    if (action.getTransactionScope() == ZoneScope.ActionAndView)
                         try {
                             webapp.getZoneManager().doInZone(() -> {
                                 wrapExceptions(() -> chain.doFilter(req, res));

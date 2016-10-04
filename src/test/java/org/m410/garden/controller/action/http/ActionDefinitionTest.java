@@ -6,7 +6,7 @@ import org.junit.runners.JUnit4;
 import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.action.PathExpr;
-import org.m410.garden.zone.transaction.TransactionScope;
+import org.m410.garden.zone.ZoneScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,7 +32,7 @@ public class ActionDefinitionTest {
 
         Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         assertTrue(ad.doesMatchRequest(request));
 
         verify(request).getContextPath();
@@ -49,7 +49,7 @@ public class ActionDefinitionTest {
 
         Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         assertTrue(ad.doesMatchRequest(request));
 
         verify(request).getContextPath();
@@ -66,7 +66,7 @@ public class ActionDefinitionTest {
 
         Action a = (args) -> Response.respond();
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr("a/b/c"), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         assertTrue(ad.doesMatchRequest(request));
 
         verify(request).getContextPath();
@@ -84,7 +84,7 @@ public class ActionDefinitionTest {
         };
 
         HttpActionDefinition ad = new HttpActionDefinition(controller, a, new PathExpr(""), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
 
         try {
             ad.apply(request, response);
@@ -100,9 +100,9 @@ public class ActionDefinitionTest {
     public void actionDefinitionsEqual() {
         Action action = (args) -> { return null; };
         HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         assertEquals(ad1,ad2);
     }
 
@@ -110,9 +110,9 @@ public class ActionDefinitionTest {
     public void actionDefinitionsDontEqual() {
         Action action = (args) -> { return null; };
         HttpActionDefinition ad1 = new HttpActionDefinition(controller, action,new PathExpr(""), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         HttpActionDefinition ad2 = new HttpActionDefinition(controller, action,new PathExpr("persons"), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         assertNotEquals(ad1, ad2);
     }
 
@@ -126,7 +126,7 @@ public class ActionDefinitionTest {
 
         Action action = (args) -> { return null; };
         HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
-                HttpMethod.GET, Securable.Ssl.Optional, new String[]{"application/json"}, new String[0], TransactionScope.None);
+                HttpMethod.GET, Securable.Ssl.Optional, new String[]{"application/json"}, new String[0], ZoneScope.None);
 
         boolean match = a.doesMatchRequest(request);
         assertFalse(match);
@@ -147,7 +147,7 @@ public class ActionDefinitionTest {
 
         Action action = (args) -> { return null; };
         HttpActionDefinition a = new HttpActionDefinition(controller, action,new PathExpr("/c"),
-                HttpMethod.GET, Securable.Ssl.Optional, new String[]{"application/json"}, new String[0], TransactionScope.None);
+                HttpMethod.GET, Securable.Ssl.Optional, new String[]{"application/json"}, new String[0], ZoneScope.None);
 
         boolean match = a.doesMatchRequest(request);
         assertTrue(match);
@@ -169,9 +169,9 @@ public class ActionDefinitionTest {
         HttpServletResponse response = mock(HttpServletResponse.class);
         Action a = (args) -> Response.respond();
         HttpActionDefinition ad1 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         HttpActionDefinition ad2 = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.PUT,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
 
         assertTrue(ad2.doesMatchRequest(request));
         assertFalse(ad1.doesMatchRequest(request));
