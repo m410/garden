@@ -1,7 +1,7 @@
 package org.m410.garden.di;
 
 
-import org.m410.garden.zone.ZoneHandlerFactory;
+import org.m410.garden.zone.ZoneManager;
 
 /**
  * @author Michael Fortin
@@ -9,6 +9,5 @@ import org.m410.garden.zone.ZoneHandlerFactory;
 @FunctionalInterface
 public interface ComponentFactory<T> {
 
-    // todo should txmgr be optional? Maybe the ZoneManager
-    T make(ZoneHandlerFactory txmgr, Object... arguments);
+    T make(ZoneManager zoneManager, Object... arguments);
 }

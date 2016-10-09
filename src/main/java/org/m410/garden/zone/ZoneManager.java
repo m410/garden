@@ -61,4 +61,11 @@ public final class ZoneManager {
             return block.get();
         }
     }
+
+    @Override
+    public String toString() {
+        return "ZoneManager{" +
+               "zoneFactories=" + zoneFactories +
+               '}';
+    }
 }

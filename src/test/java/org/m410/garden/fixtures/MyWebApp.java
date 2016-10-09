@@ -26,7 +26,7 @@ public class MyWebApp extends Application {
                         builder(MyServiceDao.class).factory((a, b) -> new MyServiceDaoImpl()),
                         builder(MyService.class).dependsOn(MyServiceDao.class)
                                 .factory((a, b) -> new MyServiceImpl((MyServiceDao) b[0]))))
-                .withZoneHandler(zoneManager.byName("test").zoneHandlerFactory());
+                .with(zoneManager);
     }
 
     @Override

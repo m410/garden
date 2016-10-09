@@ -21,7 +21,7 @@ public class TrxApplication extends Application {
     public ComponentSupplier componentProvider() {
         return (zoneManager, configuration) -> Components.init()
                 .add(component())
-                .withZoneHandler(zoneManager.byName("TrxThreadLocalFactory").zoneHandlerFactory());
+                .with(zoneManager);
     }
 
     private Component component() {
@@ -29,7 +29,8 @@ public class TrxApplication extends Application {
     }
 
     private ComponentFactory<MyService> factory() {
-        return (zoneFactory, dependencies) -> zoneFactory.proxy(MyService.class, new MyServiceImpl());
+        return (zone, dependencies) -> zone.getZoneFactories().get(0).zoneHandlerFactory().proxy(MyService.class, new
+                MyServiceImpl());
     }
 
     @Override

@@ -1,9 +1,8 @@
 package org.m410.garden.di;
 
-import org.m410.garden.zone.ZoneHandlerFactory;
+import org.m410.garden.zone.ZoneManager;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.Optional;
 import java.util.SortedSet;
 import java.util.stream.Collectors;
@@ -11,6 +10,7 @@ import java.util.stream.Collectors;
 /**
  * @author Michael Fortin
  */
+// todo should break out interface & make this inner class of Component
 public final class ComponentBuilder<T> {
     private final Class[] dependencies;
     private final ComponentFactory<T> factory;
@@ -53,12 +53,12 @@ public final class ComponentBuilder<T> {
     }
 
     // todo should proxy be a list?  Maybe pass the whole zoneManager
-    Components.Entry createWith(List<ZoneHandlerFactory> zones, SortedSet<Components.Entry> registry) {
+    Components.Entry createWith(ZoneManager zone, SortedSet<Components.Entry> registry) {
         Object[] arguments = Arrays.stream(dependencies)
                 .map(d -> registryContains(d, registry).get().getInstance())
                 .toArray();
 
-        final T instance = factory.make(zones.get(0), arguments);
+        final T instance = factory.make(zone, arguments);
         return new Components.Entry(targetClass.getSimpleName(), targetClass, instance);
     }
 

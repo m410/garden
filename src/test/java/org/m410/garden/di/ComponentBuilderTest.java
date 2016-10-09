@@ -5,9 +5,8 @@ import org.junit.Test;
 import org.m410.garden.di.app.sample.SampleComponent;
 import org.m410.garden.fixtures.MyServiceDao;
 import org.m410.garden.zone.MyZoneFactory;
-import org.m410.garden.zone.ZoneHandlerFactory;
+import org.m410.garden.zone.ZoneManager;
 
-import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
@@ -18,7 +17,7 @@ import static org.junit.Assert.*;
  */
 public class ComponentBuilderTest {
 
-    private List<ZoneHandlerFactory> zones = ImmutableList.of(new MyZoneFactory(null).zoneHandlerFactory());
+    private ZoneManager zoneManager = new ZoneManager(ImmutableList.of(new MyZoneFactory(null)));
 
     @Test
     public void isRegistered() throws Exception {
@@ -43,7 +42,7 @@ public class ComponentBuilderTest {
     @Test
     public void createWith() throws Exception {
         final ComponentBuilder componentBuilder = new SampleComponent().builders().get(1);
-        final Components.Entry entry = componentBuilder.createWith(zones, new TreeSet<>());
+        final Components.Entry entry = componentBuilder.createWith(zoneManager, new TreeSet<>());
         assertNotNull(entry);
         assertNotNull(entry.getInstance());
     }

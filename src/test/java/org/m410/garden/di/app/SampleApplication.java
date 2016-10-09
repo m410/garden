@@ -60,7 +60,7 @@ public class SampleApplication extends Application {
     @Override
     public ComponentSupplier componentProvider() {
         return (zoneManager, configuration) -> Components.init()
-                .withZoneHandler(zoneManager.getZoneFactories().get(0).zoneHandlerFactory())
+                .with(zoneManager)
                 .add(new SampleComponent())
                 .make();
     }

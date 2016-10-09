@@ -222,7 +222,7 @@ abstract public class Application implements ApplicationModule {
      * @param configuration the configuration.
      */
     public void init(final ImmutableHierarchicalConfiguration configuration) {
-        initZones(configuration);
+        initZoneManager(configuration);
         initServlets(configuration);
         initFilters(configuration);
         initListeners(configuration);
@@ -254,7 +254,7 @@ abstract public class Application implements ApplicationModule {
         log.debug("controllers: {}", controllers);
     }
 
-    final void initZones(final ImmutableHierarchicalConfiguration configuration) {
+    final void initZoneManager(final ImmutableHierarchicalConfiguration configuration) {
         final Collection<? extends ZoneFactory> locals = dynamicProviders(ZoneProvider.class, ZoneFactorySupplier.class)
                 .map(s -> s.get(configuration))
                 .flatMap(Collection::stream)
@@ -265,7 +265,7 @@ abstract public class Application implements ApplicationModule {
                 .addAll(zoneFactoryProvider().get(configuration))
                 .build();
         zoneManager = new ZoneManager(zoneFactories);
-        log.debug("zoneFactories: {}", zoneFactories);
+        log.debug("zoneManager: {}", zoneManager);
     }
 
     final void initServlets(final ImmutableHierarchicalConfiguration configuration) {
@@ -310,20 +310,21 @@ abstract public class Application implements ApplicationModule {
     final void initComponents(final ImmutableHierarchicalConfiguration configuration) {
         final Components dyComponents = dynamicProviders(ComponentsProvider.class, ComponentSupplier.class)
                 .map(s -> s.get(zoneManager, configuration))
-                .reduce(Components.init(), (a,b)-> b.inherit(a.make()));
+                .reduce(Components.init(), (a, b) -> b.join(a));
 
         components = componentProvider().get(zoneManager, configuration)
-                .inherit(dyComponents.make())
+                .join(dyComponents)
+                .with(zoneManager)
                 .make();
         log.debug("components: {}", components);
     }
 
     private <M> Stream<M> dynamicProviders(Class annotatedProvider, Class<M> clzz) {
-        return Arrays.stream(getClass().getDeclaredMethods())
+        return Arrays.stream(getClass().getMethods())
                 .filter(method -> isAnnotatedWith(annotatedProvider, method))
                 .map(method -> {
                     try {
-                        final Object invoked = ((Method)method).invoke(null);
+                        final Object invoked = ((Method) method).invoke(this);
                         return (M) invoked;
                     }
                     catch (IllegalAccessException  | InvocationTargetException e) {
@@ -333,7 +334,7 @@ abstract public class Application implements ApplicationModule {
     };
 
     private <T> boolean isAnnotatedWith(Class<T> componentClass, Method m) {
-        return Arrays.stream(m.getDeclaredAnnotations())
+        return Arrays.stream(m.getAnnotations())
                 .filter(a -> a.annotationType().equals(componentClass))
                 .findAny()
                 .isPresent();

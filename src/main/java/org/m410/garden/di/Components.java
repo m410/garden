@@ -2,7 +2,7 @@ package org.m410.garden.di;
 
 
 import com.google.common.collect.ImmutableList;
-import org.m410.garden.zone.ZoneHandlerFactory;
+import org.m410.garden.zone.ZoneManager;
 
 import java.lang.reflect.Array;
 import java.util.*;
@@ -15,36 +15,29 @@ import java.util.stream.Collectors;
  */
 public final class Components implements ComponentRegistry {
 
-    // todo create Components.of(Component...).withZone(ZoneManager z);
-
     private final List<Component> components;
-    private final List<ZoneHandlerFactory> zoneHandlerFactories;
+    private final ZoneManager zoneManager;
     private final SortedSet<Entry> registry = new TreeSet<>();
 
-    private Components(List<Component> components, List<ZoneHandlerFactory> zoneHandlerFactories) {
+    private Components(List<Component> components, ZoneManager zoneManager) {
         this.components = components;
-        this.zoneHandlerFactories = zoneHandlerFactories;
+        this.zoneManager = zoneManager;
     }
 
     public static Components init() {
-        return new Components(new ArrayList<>(), new ArrayList<>());
+        return new Components(new ArrayList<>(), null);
     }
 
     public static Components of(Component... components) {
         ImmutableList<Component> build = ImmutableList.<Component>builder().addAll(Arrays.asList(components)).build();
-        return new Components(build, ImmutableList.of());
+        return new Components(build, null);
     }
 
-    // todo should this be the zoneManager?
-    public Components withZoneHandler(ZoneHandlerFactory zoneHandlerFactory) {
-        final List<ZoneHandlerFactory> out = ImmutableList.<ZoneHandlerFactory>builder()
-                .addAll(zoneHandlerFactories)
-                .add(zoneHandlerFactory)
-                .build();
-        return new Components(components, out);
+    public Components with(ZoneManager zoneManager) {
+        return new Components(components, zoneManager);
     }
 
-    public Components inherit(Components components) {
+    public Components join(Components components) {
         this.registry.addAll(components.registry);
         return this;
     }
@@ -54,7 +47,7 @@ public final class Components implements ComponentRegistry {
                 .addAll(components)
                 .add(component)
                 .build();
-        return new Components(out, zoneHandlerFactories);
+        return new Components(out, zoneManager);
     }
 
     public Components make() {
@@ -66,7 +59,7 @@ public final class Components implements ComponentRegistry {
             final Collection<Entry> collect = builders.stream()
                     .filter(builder -> !builder.isRegistered(registry))
                     .filter(builder -> builder.canCreateWith(registry))
-                    .map(builder -> builder.createWith(zoneHandlerFactories, registry))
+                    .map(builder -> builder.createWith(zoneManager, registry))
                     .collect(Collectors.toList());
 
             registry.addAll(collect);
