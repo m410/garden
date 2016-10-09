@@ -1,8 +1,6 @@
 package org.m410.garden.module.jpa;
 
 import com.google.common.collect.ImmutableList;
-import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
-import org.m410.garden.application.ApplicationModule;
 import org.m410.garden.application.annotate.ZoneProvider;
 import org.m410.garden.zone.ZoneFactorySupplier;
 
@@ -11,10 +9,11 @@ import org.m410.garden.zone.ZoneFactorySupplier;
  *
  * @author Michael Fortin
  */
-public interface JpaModule extends ApplicationModule {
+public interface JpaModule {
 
     @ZoneProvider
-    static ZoneFactorySupplier makeJpaThreadLocal(final ImmutableHierarchicalConfiguration c) {
-        return configuration -> ImmutableList.of(new HibernateZoneFactory(c));
+    default ZoneFactorySupplier makeJpaZone() {
+        System.out.println("makeJpaThreadLocal, hibernateFactory");
+        return configuration -> ImmutableList.of(new HibernateZoneFactory(configuration));
     }
 }

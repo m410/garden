@@ -15,7 +15,7 @@ import org.m410.garden.di.Components;
 public interface JmsModule extends ApplicationModule {
 
     @ComponentsProvider
-    static ComponentSupplier makeJmsServices(final ImmutableHierarchicalConfiguration c) {
+    default ComponentSupplier makeJmsServices(final ImmutableHierarchicalConfiguration c) {
         return (zoneManager, configuration) -> Components.init();
     }
 }

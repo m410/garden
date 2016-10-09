@@ -24,8 +24,6 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.Iterator;
-import java.util.Optional;
 import java.util.stream.StreamSupport;
 
 /**
@@ -34,14 +32,17 @@ import java.util.stream.StreamSupport;
  * @author Michael Fortin
  */
 public class PersistenceXmlBuilder implements ConfigFileBuilder {
+    final String regex = "persistence\\(org\\.\\.m410\\.\\.garden:garden-jpa.*?\\)";
 
-    public String make(ImmutableHierarchicalConfiguration configuration) throws ParserConfigurationException, TransformerException {
+    public String make(ImmutableHierarchicalConfiguration configuration)
+            throws ParserConfigurationException, TransformerException {
+
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();
         DocumentBuilder docBuilder = docFactory.newDocumentBuilder();
 
         final Iterable<String> keys = configuration::getKeys;
         final String persistenceKey = StreamSupport.stream(keys.spliterator(), false)
-                .filter(key -> key.matches("persistence\\(org\\.m410\\.garden:garden-jpa.*?\\)"))
+                .filter(key -> key.matches(regex))
                 .findFirst()
                 .orElseThrow(() -> new RuntimeException("JPA persistence configuration not found"));;
 
@@ -66,21 +67,19 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         mappingFile.setTextContent("META-INF/orm.xml");
         persistUnit.appendChild(mappingFile);
 
-        config.getList(String.class, "classes").forEach(s ->{
-            Element propElem = doc.createElement("class");
-            propElem.setTextContent(s);
-            persistUnit.appendChild(propElem);
-        });
+        // todo fix npe
+        //        config.getList(String.class, "classes").forEach(s ->{
+        //            Element propElem = doc.createElement("class");
+        //            propElem.setTextContent(s);
+        //            persistUnit.appendChild(propElem);
+        //        });
 
         final Element propertiesElem = doc.createElement("properties");
         final ImmutableHierarchicalConfiguration props = config.immutableConfigurationAt("properties");
         final Iterable<String> propKeys = props::getKeys;
-        StreamSupport.stream(propKeys.spliterator(), false).forEach((k)->{
-            Element propElem = doc.createElement("property");
-            propElem.setAttribute("name",k);
-            propElem.setAttribute("value",props.getString(k));
-            propertiesElem.appendChild(propElem);
-        });
+        StreamSupport.stream(propKeys.spliterator(), false)
+                .filter(k -> !k.equals(""))
+                .forEach((k) -> addProperty(doc, propertiesElem, props, k));
         persistUnit.appendChild(propertiesElem);
         root.appendChild(persistUnit);
 
@@ -108,6 +107,12 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         return s.toString();
     }
 
+    private void addProperty(Document doc, Element propertiesElem, ImmutableHierarchicalConfiguration props, String k) {
+        Element propElem = doc.createElement("property");
+        propElem.setAttribute("name", k.replaceAll("\\.\\.", "."));
+        propElem.setAttribute("value", props.getString(k));
+        propertiesElem.appendChild(propElem);
+    }
 
 
     public void writeToFile(Path path, ImmutableHierarchicalConfiguration configuration) {

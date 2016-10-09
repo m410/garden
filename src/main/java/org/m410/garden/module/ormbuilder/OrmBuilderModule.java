@@ -1,6 +1,5 @@
 package org.m410.garden.module.ormbuilder;
 
-import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.module.ormbuilder.orm.EntityFactory;
 import org.m410.garden.module.ormbuilder.orm.OrmXmlBuilder;
 
@@ -25,12 +24,11 @@ public interface OrmBuilderModule {
     /**
      * Creates the builder with the injected application configuration.
      *
-     * @param configuration the garden.fab.yml file once serialized.
      * @return the builder for the application.
      */
-    default OrmXmlBuilder configureBuilder(ImmutableHierarchicalConfiguration configuration) {
+    default OrmXmlBuilder configureBuilder() {
         OrmXmlBuilder builder = new OrmXmlBuilder();
-        entityBuilders().stream().forEach(e->builder.addEntity(e.makeEntity()));
+        entityBuilders().forEach(e -> builder.addEntity(e.makeEntity()));
         return builder;
     }
 

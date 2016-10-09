@@ -1,6 +1,5 @@
 package org.m410.garden.module.spring;
 
-import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.application.ApplicationModule;
 import org.m410.garden.application.annotate.ComponentsProvider;
 import org.m410.garden.di.ComponentSupplier;
@@ -19,7 +18,7 @@ import org.m410.garden.di.Components;
 public interface SpringBeanModule extends ApplicationModule {
 
     @ComponentsProvider
-    static ComponentSupplier makeSpringServices(final ImmutableHierarchicalConfiguration c) {
+    default ComponentSupplier makeSpringServices() {
         return (zoneManager, configuration) -> Components.init();
     }
 }
