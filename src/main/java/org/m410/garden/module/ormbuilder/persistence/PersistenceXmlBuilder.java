@@ -24,6 +24,7 @@ import java.io.StringWriter;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.stream.StreamSupport;
 
 /**
@@ -67,12 +68,15 @@ public class PersistenceXmlBuilder implements ConfigFileBuilder {
         mappingFile.setTextContent("META-INF/orm.xml");
         persistUnit.appendChild(mappingFile);
 
-        // todo fix npe
-        //        config.getList(String.class, "classes").forEach(s ->{
-        //            Element propElem = doc.createElement("class");
-        //            propElem.setTextContent(s);
-        //            persistUnit.appendChild(propElem);
-        //        });
+
+        final List<String> classes = config.getList(String.class, "classes");
+        System.out.println(classes);
+
+        config.getList(String.class, "classes").forEach(s -> {
+            Element propElem = doc.createElement("class");
+            propElem.setTextContent(s);
+            persistUnit.appendChild(propElem);
+        });
 
         final Element propertiesElem = doc.createElement("properties");
         final ImmutableHierarchicalConfiguration props = config.immutableConfigurationAt("properties");

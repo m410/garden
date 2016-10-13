@@ -31,8 +31,8 @@ public interface OrmBuilderModule {
         entityBuilders().forEach(e -> builder.addEntity(e.makeEntity()));
         return builder;
     }
-
-//    default PersistenceUnitBuilder configurePersistence(ImmutableHierarchicalConfiguration configuration) {
+    //
+    //    default PersistenceUnitBuilder configurePersistence() {
 //        // todo fix hard coded values
 //        return new PersistenceXmlBuilder()
 //                .name("demo")
