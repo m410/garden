@@ -1,6 +1,6 @@
 package org.m410.garden.zone;
 
-import org.m410.garden.application.Application;
+import org.m410.garden.application.GardenApplication;
 
 import java.util.List;
 
@@ -32,7 +32,7 @@ public final class ZoneManager {
      *  it's called to wrap a service call, it should be the the result of the method invocation.
      * @throws Exception everything by default.
      */
-    public final Object doInZone(Application.Work work) throws Exception {
+    public final Object doInZone(GardenApplication.Work work) throws Exception {
         return doWithThreadLocal(zoneFactories, work);
     }
 
@@ -45,7 +45,7 @@ public final class ZoneManager {
      * @return in most cases it will be null, except when wrapping the call to a service method.
      * @throws Exception everything by default.
      */
-    Object doWithThreadLocal(List<? extends ZoneFactory> tlf, Application.Work block) throws Exception {
+    Object doWithThreadLocal(List<? extends ZoneFactory> tlf, GardenApplication.Work block) throws Exception {
         if (tlf != null && tlf.size() >= 1) {
             Zone zone = tlf.get(tlf.size() - 1).makeZone();
             zone.start();

@@ -1,7 +1,7 @@
 package org.m410.garden.di.app;
 
 import com.google.common.collect.ImmutableList;
-import org.m410.garden.application.Application;
+import org.m410.garden.application.GardenApplication;
 import org.m410.garden.di.ComponentSupplier;
 import org.m410.garden.di.Components;
 import org.m410.garden.di.ControllerSupplier;
@@ -13,7 +13,7 @@ import org.m410.garden.zone.*;
 /**
  * @author Michael Fortin
  */
-public class SampleApplication extends Application {
+public class SampleGardenApplication extends GardenApplication {
 
     @Override
     public ControllerSupplier controllerProvider() {

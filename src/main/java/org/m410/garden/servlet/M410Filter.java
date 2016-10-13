@@ -1,6 +1,6 @@
 package org.m410.garden.servlet;
 
-import org.m410.garden.application.Application;
+import org.m410.garden.application.GardenApplication;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.status.*;
 import org.m410.garden.zone.ZoneScope;
@@ -32,7 +32,7 @@ public class M410Filter implements Filter {
         final long startTimestamp = System.currentTimeMillis();
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) res;
-        final Application webapp = (Application) request.getServletContext().getAttribute("application");
+        final GardenApplication webapp = (GardenApplication) request.getServletContext().getAttribute("application");
 
         final Optional<HttpActionDefinition> optionalAction = webapp.actionForRequest(request);
 

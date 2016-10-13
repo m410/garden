@@ -1,7 +1,7 @@
 package org.m410.garden.zone.transactional.fixtures;
 
 import com.google.common.collect.ImmutableList;
-import org.m410.garden.application.Application;
+import org.m410.garden.application.GardenApplication;
 import org.m410.garden.di.*;
 import org.m410.garden.zone.ZoneFactorySupplier;
 
@@ -10,7 +10,7 @@ import static org.m410.garden.di.ComponentBuilder.builder;
 /**
  * @author m410
  */
-public class TrxApplication extends Application {
+public class TrxGardenApplication extends GardenApplication {
 
     @Override
     public ZoneFactorySupplier zoneFactoryProvider() {

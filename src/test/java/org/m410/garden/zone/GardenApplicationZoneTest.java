@@ -6,7 +6,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.application.Application;
+import org.m410.garden.application.GardenApplication;
 import org.m410.garden.configuration.ConfigurationFactory;
 import org.m410.garden.fixtures.MyWebApp;
 
@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class ApplicationZoneTest {
+public class GardenApplicationZoneTest {
     final String configFile = "garden.fab.yml";
-    Application app;
+    GardenApplication app;
 
     @Before
     public void setup() {
@@ -34,7 +34,7 @@ public class ApplicationZoneTest {
 
     @Test
     public void wrapWithOneThreadLocal() throws Exception {
-        Application.Work work = () -> {
+        GardenApplication.Work work = () -> {
             Assert.assertEquals("local", MyZone.get());
             return null;
         };
@@ -46,7 +46,7 @@ public class ApplicationZoneTest {
 
     @Test
     public void wrapWithManyThreadLocal() throws Exception {
-        Application.Work work = () -> {
+        GardenApplication.Work work = () -> {
             assertEquals("local2", MyZone.get());
             Assert.assertEquals("local3", My2Zone.get());
             return null;

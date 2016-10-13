@@ -6,8 +6,8 @@ import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.controller.MockServletInput;
 import org.m410.garden.servlet.M410Filter;
-import org.m410.garden.zone.transactional.fixtures.TrxApplication;
 import org.m410.garden.zone.transactional.fixtures.Trx;
+import org.m410.garden.zone.transactional.fixtures.TrxGardenApplication;
 
 import javax.servlet.FilterChain;
 import javax.servlet.RequestDispatcher;
@@ -16,21 +16,22 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author m410
  */
 @RunWith(JUnit4.class)
 public class ControllerTransactionTest implements MockServletInput {
-    TrxApplication app;
+    TrxGardenApplication app;
     HttpServletRequest request;
     HttpServletResponse response;
 
     @Before
     public void setup() {
-        app = new TrxApplication();
+        app = new TrxGardenApplication();
         app.init(null);
         Trx.resetCount();
         request = mock(HttpServletRequest.class);

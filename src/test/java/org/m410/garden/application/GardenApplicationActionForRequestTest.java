@@ -7,25 +7,24 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.configuration.ConfigurationFactory;
-import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.di.ControllerSupplier;
 import org.m410.garden.fixtures.MyWebApp;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 /**
  * @author Michael Fortin
  */
 @RunWith(JUnit4.class)
-public class ApplicationActionForRequestTest {
+public class GardenApplicationActionForRequestTest {
     final String configFile = "garden.fab.yml";
-    Application app;
+    GardenApplication app;
 
     @Before
     public void setup() {

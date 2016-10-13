@@ -50,8 +50,8 @@ import java.util.stream.Stream;
  * @author Michael Fortin
  * @see ApplicationModule
  */
-abstract public class Application implements ApplicationModule {
-    private static final Logger log = LoggerFactory.getLogger(Application.class);
+abstract public class GardenApplication implements ApplicationModule {
+    private static final Logger log = LoggerFactory.getLogger(GardenApplication.class);
 
     private Components components;
     private List<? extends HttpCtlr> controllers;

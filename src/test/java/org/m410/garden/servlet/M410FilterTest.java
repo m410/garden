@@ -3,7 +3,7 @@ package org.m410.garden.servlet;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.application.Application;
+import org.m410.garden.application.GardenApplication;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
@@ -30,7 +30,7 @@ public class M410FilterTest {
 
     @Test
     public void testForward() throws ServletException, IOException {
-        Application application = new MyWebApp() {
+        GardenApplication gardenApplication = new MyWebApp() {
             @Override public Optional<HttpActionDefinition> actionForRequest(HttpServletRequest request) {
                 return Optional.of(new HttpActionDefinition(null, null,new PathExpr("json"), HttpMethod.GET,
                         Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None));
@@ -38,7 +38,7 @@ public class M410FilterTest {
         };
 
         ServletContext context = mock(ServletContext.class);
-        when(context.getAttribute("application")).thenReturn(application);
+        when(context.getAttribute("application")).thenReturn(gardenApplication);
 
         HttpServletRequest request = mock(HttpServletRequest.class);
         when(request.getServletContext()).thenReturn(context);

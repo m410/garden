@@ -4,10 +4,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
 import org.m410.garden.zone.transactional.fixtures.MyService;
-import org.m410.garden.zone.transactional.fixtures.TrxApplication;
 import org.m410.garden.zone.transactional.fixtures.Trx;
+import org.m410.garden.zone.transactional.fixtures.TrxGardenApplication;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 /**
  * @author Michael Fortin
@@ -17,7 +18,7 @@ public class TrxServiceTest {
 
     @Test
     public void createServiceWithTransaction() {
-        TrxApplication app = new TrxApplication();
+        TrxGardenApplication app = new TrxGardenApplication();
         app.init(null);
         assertNotNull(app.getZoneManager());
         assertEquals(1, app.getZoneManager().getZoneFactories().size());

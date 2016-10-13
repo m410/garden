@@ -26,7 +26,7 @@ public class ApplicationLoader {
      * @param env The environment name.
      */
     @SuppressWarnings("unchecked")
-    public Application load(String env) {
+    public GardenApplication load(String env) {
         ClassLoader appClassLoader = getClass().getClassLoader();
 
         try {
@@ -37,7 +37,7 @@ public class ApplicationLoader {
             Object instance = appClass.newInstance();
             Method initMethod = appClass.getMethod("init",ImmutableHierarchicalConfiguration.class);
             initMethod.invoke(instance, config);
-            return (Application) instance;
+            return (GardenApplication) instance;
         }
         catch (Throwable e) {
             System.out.println("---- ApplicationLoader error: " + e.getMessage());

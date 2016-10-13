@@ -2,7 +2,7 @@ package org.m410.garden.fixtures;
 
 
 import com.google.common.collect.ImmutableList;
-import org.m410.garden.application.Application;
+import org.m410.garden.application.GardenApplication;
 import org.m410.garden.di.ComponentSupplier;
 import org.m410.garden.di.Components;
 import org.m410.garden.di.ControllerSupplier;
@@ -17,7 +17,7 @@ import static org.m410.garden.di.ComponentBuilder.builder;
 
 /**
  */
-public class MyWebApp extends Application {
+public class MyWebApp extends GardenApplication {
 
     @Override
     public ComponentSupplier componentProvider() {
