@@ -4,7 +4,9 @@ package org.m410.garden.jetty9;
 import org.m410.fabricate.builder.Command;
 import org.m410.fabricate.builder.Step;
 import org.m410.fabricate.service.FabricateService;
-import org.osgi.framework.*;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author Michael Fortin
@@ -16,7 +18,11 @@ public class Activator implements BundleActivator {
         FabricateService fabricateService = (FabricateService) context.getService(fabricateServiceReference);
 
         fabricateService.addCommand(new Command("jetty9", "Run jetty", false)
-                .withStep(new Step("default").append(new Jetty9Task())));
+                .withStep(new Step("initialize"))
+                .withStep(new Step("run")
+                                .append(new Jetty9Task())
+                                .append(new WatchStaticTask())
+                         ));
 
     }
 

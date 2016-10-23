@@ -1,4 +1,6 @@
 modules(org.m410.garden:garden-jetty9:${project.version}):
+  context_configuration: <fixme>
+  classpath: <fixme>
 
 dependencies:
 - {scope: jetty9, org: org.eclipse.jetty.aggregate, name: jetty-all, rev: 9.2.3.v20140905 }
