@@ -1,0 +1,9 @@
+# modules
+modules(org.m410.garden:garden-sass:${project.version}):
+  node_version: 6.3.0
+  watch:
+
+bundles:
+  - name: garden-sass
+    org: org.m410.garden
+    version: "${project.version}"
