@@ -15,7 +15,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.LinkedList;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
@@ -62,6 +65,7 @@ public class BuildSassTask implements Task{
         Path source = Paths.get(config.getString("source"));
         Path output = Paths.get(buildContext.getConfiguration().getString("build.webappOutput"))
                 .resolve(config.getString("output"));
+        output.getParent().toFile().mkdirs();
 
         new SassCompiler(source,output, buildContext.cli()).compile();
     }
