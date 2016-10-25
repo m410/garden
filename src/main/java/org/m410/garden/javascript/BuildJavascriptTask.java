@@ -12,7 +12,6 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Arrays;
@@ -46,7 +45,8 @@ public class BuildJavascriptTask implements Task {
         final String nodeVersion = "v6.8.1";
 
         if(config.getMaxIndex("packages") >=0) {
-            Node node = downloadNode(destination, nodeVersion);
+            String jsDest = buildContext.getConfiguration().getString("build.webappDir");
+            Node node = downloadNode(destination, nodeVersion, jsDest);
 
             if(!node.packageExists()) {
                 node.exec("init", "--yes");
@@ -63,10 +63,10 @@ public class BuildJavascriptTask implements Task {
         }
     }
 
-    Node downloadNode(String destination, String nodeVersion) throws IOException, ArchiveException {
+    Node downloadNode(String nodeDest, String nodeVersion, String jsDest) throws IOException, ArchiveException {
         final String distName = "node-" + nodeVersion + "-darwin-x64";
 
-        File nodeTar = new File(destination);
+        File nodeTar = new File(nodeDest);
         nodeTar.getParentFile().mkdirs();
         final File nodeParent = nodeTar.getParentFile();
         final File distDir = new File(nodeParent, distName);
@@ -82,7 +82,7 @@ public class BuildJavascriptTask implements Task {
 
         return new Node(
                 distDir.toPath().resolve("lib/node_modules/npm/bin/npm-cli.js").toFile(),
-                Paths.get("src/webapp").toFile()
+                Paths.get(jsDest).toFile()
         );
     }
 
