@@ -1,10 +1,10 @@
 # modules
 modules(org.m410.garden:garden-javascript:${project.version}):
-  node_version: 6.3.0
+  node_version: v6.8.1
   source: src/main/sass
   output: css/style.css
-  packages:
   compress: false
+  packages:
 
 bundles:
   - name: garden-javascript

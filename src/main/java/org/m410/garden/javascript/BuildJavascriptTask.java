@@ -12,13 +12,10 @@ import java.net.URL;
 import java.nio.channels.Channels;
 import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.Arrays;
-import java.util.EnumSet;
-import java.util.LinkedList;
-import java.util.Scanner;
-import java.util.stream.IntStream;
+import java.util.*;
 
 /**
  * @author Michael Fortin
@@ -39,34 +36,37 @@ public class BuildJavascriptTask implements Task {
         final ImmutableHierarchicalConfiguration config = buildContext.configAt("org.m410.garden", "garden-sass")
                 .orElseThrow(()->new RuntimeException("Could not find configuration"));
 
-        // todo load by platform
-        // todo use configured path instead of this hardcoded path
-        final String destination = ".fab/node-v6.8.1-darwin-x64.tar.gz";
-        final String nodeVersion = "v6.8.1";
+        // todo downloading node should be separate task
+        final String nodeVersion = config.getString("node_version", "v6.8.1");
+        final String arch = buildContext.getConfiguration().getString("build.osName");
+        final String base = buildContext.getConfiguration().getString("build.cacheDir");
+        final String platform = platform(arch);
+        final Path nodeDest = Paths.get(base).resolve("node=" + nodeVersion + "-" + platform + ".tar.gz");
+        final Path jsSource = Paths.get(buildContext.getConfiguration().getString("build.webappDir"));
 
-        if(config.getMaxIndex("packages") >=0) {
-            String jsDest = buildContext.getConfiguration().getString("build.webappDir");
-            Node node = downloadNode(destination, nodeVersion, jsDest);
+        Node node = downloadNode(nodeDest, nodeVersion, platform, jsSource).init();
 
-            if(!node.packageExists()) {
-                node.exec("init", "--yes");
-            }
+        // todo also should check for changes instead of running this each time
+        config.getList(String.class, "dependencies", new ArrayList<>()).forEach(dep -> {
+            node.exec("install", "--save", dep);
+        });
 
-            IntStream.range(0, config.getMaxIndex("packages")).forEach(idx ->{
-                try {
-                    node.exec("install","--save", config.getString("packages("+idx+").name"));
-                }
-                catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
-            });
+    }
+
+    private String platform(String arch) {
+        if (arch.startsWith("Mac")) {
+            return "darwin-x64";
+        }
+        else {
+            return "win-x64";
         }
     }
 
-    Node downloadNode(String nodeDest, String nodeVersion, String jsDest) throws IOException, ArchiveException {
-        final String distName = "node-" + nodeVersion + "-darwin-x64";
+    Node downloadNode(Path destination, String nodeVersion, String platform, Path jsSource) throws IOException,
+            ArchiveException {
+        final String distName = "node-" + nodeVersion + "-" + platform;
 
-        File nodeTar = new File(nodeDest);
+        File nodeTar = destination.toFile();
         nodeTar.getParentFile().mkdirs();
         final File nodeParent = nodeTar.getParentFile();
         final File distDir = new File(nodeParent, distName);
@@ -82,7 +82,7 @@ public class BuildJavascriptTask implements Task {
 
         return new Node(
                 distDir.toPath().resolve("lib/node_modules/npm/bin/npm-cli.js").toFile(),
-                Paths.get(jsDest).toFile()
+                jsSource.toFile()
         );
     }
 
@@ -110,33 +110,35 @@ public class BuildJavascriptTask implements Task {
             }
         }
 
-        File getExecutable() {
-            return executable;
-        }
-
-        public File getWorkingDir() {
-            return workingDir;
-        }
-
-
-        String exec(String... args) throws IOException {
+        String exec(String... args) {
             LinkedList<String> list = new LinkedList<>(Arrays.asList(args));
             list.addFirst(executable.getAbsolutePath());
 
-            System.out.println(list);
+            try {
+                Process process = new ProcessBuilder()
+                        .directory(workingDir)
+                        .command(list.toArray(new String[list.size()]))
+                        .redirectError(new File("process.error.txt"))
+                        .start();
 
-            Process process = new ProcessBuilder()
-                    .directory(workingDir)
-                    .command(list.toArray(new String[list.size()]))
-                    .redirectError(new File("process.error.txt"))
-                    .start();
-
-            Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\\A");
-            return scanner.hasNext() ? scanner.next() : "";
+                Scanner scanner = new Scanner(process.getInputStream()).useDelimiter("\\A");
+                return scanner.hasNext() ? scanner.next() : "";
+            }
+            catch (IOException e) {
+                throw new RuntimeException(e);
+            }
         }
 
-        public boolean packageExists() {
+        boolean packageExists() {
             return workingDir.toPath().resolve("package.json").toFile().exists();
+        }
+
+        Node init() {
+            if (!packageExists()) {
+                exec("init", "--yes");
+            }
+
+            return this;
         }
     }
 }
