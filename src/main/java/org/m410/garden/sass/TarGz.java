@@ -35,7 +35,6 @@ public class TarGz {
         TarArchiveEntry entry = null;
 
         while ((entry = (TarArchiveEntry)debInputStream.getNextEntry()) != null) {
-            System.out.println(entry.getName());
             final File outputFile = new File(outputDir, entry.getName());
 
             if (entry.isDirectory()) {
