@@ -5,7 +5,7 @@ import org.m410.garden.zone.Zone;
 /**
  * @author m410
  */
-public class Trx implements Zone {
+public final class Trx implements Zone {
 
     private static int callCount = 0;
 

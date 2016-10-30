@@ -2,9 +2,9 @@ package org.m410.garden.application;
 
 import com.google.common.collect.ImmutableList;
 import org.m410.garden.controller.Controller;
+import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.Action;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
-import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.http.Response;
 
 import java.util.List;
@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public class MockController extends Controller {
+public final class MockController extends Controller {
     public MockController() {
         super(new PathExpr("mock"));
     }

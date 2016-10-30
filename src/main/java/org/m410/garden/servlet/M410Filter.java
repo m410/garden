@@ -18,7 +18,7 @@ import java.util.Optional;
  *
  * @author Michael Fortin
  */
-public class M410Filter implements Filter {
+public final class M410Filter implements Filter {
     private static Logger log = LoggerFactory.getLogger(M410Filter.class);
 
     @Override

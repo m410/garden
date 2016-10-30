@@ -10,11 +10,6 @@ import org.m410.garden.zone.*;
 
 import static org.m410.garden.di.ComponentBuilder.builder;
 
-//import org.m410.garden.module.migration.MigrationModule;
-//import org.m410.garden.module.jms.JmsModule;
-//import org.m410.garden.module.mail.MailModule;
-
-
 /**
  */
 public class MyWebApp extends GardenApplication {

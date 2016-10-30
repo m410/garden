@@ -6,6 +6,6 @@ package org.m410.garden.fixtures;
  *
  * @author Michael Fortin
  */
-public class MyServiceDaoImpl implements MyServiceDao {
+public final class MyServiceDaoImpl implements MyServiceDao {
 
 }

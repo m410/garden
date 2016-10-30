@@ -6,7 +6,7 @@ package org.m410.garden.zone;
  *
  * @author Michael Fortin
  */
-public class MyZoneFactory implements ZoneFactory<MyZone> {
+public final class MyZoneFactory implements ZoneFactory<MyZone> {
     private String value;
     private ZoneManager zoneManager;
 

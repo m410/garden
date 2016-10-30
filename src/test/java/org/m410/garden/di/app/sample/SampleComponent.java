@@ -15,7 +15,7 @@ import static org.m410.garden.di.ComponentBuilder.builder;
 /**
  * @author Michael Fortin
  */
-public class SampleComponent implements Component {
+public final class SampleComponent implements Component {
 
     public List<ComponentBuilder> builders() {
         return ImmutableList.of(service, dao);

@@ -1,13 +1,11 @@
 package org.m410.garden.zone;
 
-import org.m410.garden.zone.Zone;
-
 /**
  * Document Me..
  *
  * @author Michael Fortin
  */
-final class MyZone implements Zone {
+public final class MyZone implements Zone {
     private String value;
     private static final ThreadLocal<String> myThreadLocal = new ThreadLocal<String>();
 

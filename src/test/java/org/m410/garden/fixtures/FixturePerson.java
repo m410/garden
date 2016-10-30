@@ -3,7 +3,7 @@ package org.m410.garden.fixtures;
 /**
  * @author m410
  */
-public class FixturePerson {
+public final class FixturePerson {
     private String name;
 
     public String getName() {

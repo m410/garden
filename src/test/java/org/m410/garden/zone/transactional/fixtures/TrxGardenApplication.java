@@ -10,7 +10,7 @@ import static org.m410.garden.di.ComponentBuilder.builder;
 /**
  * @author m410
  */
-public class TrxGardenApplication extends GardenApplication {
+public final class TrxGardenApplication extends GardenApplication {
 
     @Override
     public ZoneFactorySupplier zoneFactoryProvider() {

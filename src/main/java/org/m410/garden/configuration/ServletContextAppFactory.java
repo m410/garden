@@ -8,7 +8,7 @@ import org.m410.garden.application.ApplicationModule;
  *
  * @author Michael Fortin
  */
-public class ServletContextAppFactory {
+public final class ServletContextAppFactory {
     public static ApplicationModule forEnvironment(String env) {
         ImmutableHierarchicalConfiguration config = ConfigurationFactory.runtime(env);
 

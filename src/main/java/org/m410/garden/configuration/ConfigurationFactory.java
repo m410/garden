@@ -10,7 +10,7 @@ import java.nio.file.FileSystems;
 
 /**
  */
-public class ConfigurationFactory {
+public final class ConfigurationFactory {
     private static final String RUNTIME_CONFIG = "garden.fab.yml";
     private static final String RUNTIME_CONFIG_ALT = "/garden.fab.yml";
     private static final String BUILDTIME_CONFIG = ".fab/config/${env}.yml";

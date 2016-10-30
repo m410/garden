@@ -3,7 +3,7 @@ package org.m410.garden.fixtures;
 
 /**
  */
-public class MyServiceImpl implements MyService {
+public final class MyServiceImpl implements MyService {
 
     private MyServiceDao myServiceDao;
 
