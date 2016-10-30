@@ -1,9 +1,11 @@
 # modules
 modules(org.m410.garden:garden-sass:${project.version}):
-  node_version: v6.8.1
   watch:
 
 bundles:
   - name: garden-sass
     org: org.m410.garden
     version: "${project.version}"
+  - name: garden-node
+    org: org.m410.garden
+    version: "${garden-node.version}"

@@ -2,12 +2,14 @@ package org.m410.garden.sass;
 
 import org.m410.fabricate.builder.Command;
 import org.m410.fabricate.service.FabricateService;
-import org.osgi.framework.*;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author Michael Fortin
  */
-public class Activator implements BundleActivator {
+public final class Activator implements BundleActivator {
 
     public void start(BundleContext context) throws Exception {
         ServiceReference fabricateServiceReference = context.getServiceReference(FabricateService.class.getName());
@@ -32,7 +34,7 @@ public class Activator implements BundleActivator {
 
     private void addBuildTask(Command command) {
         command.getSteps().stream()
-                .filter(m->m.getName().equals("process-resources"))
+                .filter(m -> m.getName().equals("prepare-package"))
                 .findFirst()
                 .ifPresent(m->m.append(new BuildSassTask()));
     }

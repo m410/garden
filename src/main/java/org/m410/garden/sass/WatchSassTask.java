@@ -7,16 +7,13 @@ import org.m410.fabricate.builder.Task;
 
 import java.io.IOException;
 import java.nio.file.*;
-import java.util.Optional;
 
-import static java.nio.file.StandardWatchEventKinds.ENTRY_CREATE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_DELETE;
-import static java.nio.file.StandardWatchEventKinds.ENTRY_MODIFY;
+import static java.nio.file.StandardWatchEventKinds.*;
 
 /**
  * @author Michael Fortin
  */
-public class WatchSassTask implements Task{
+public final class WatchSassTask implements Task {
     @Override
     public String getName() {
         return "sass-watcher";
@@ -33,7 +30,7 @@ public class WatchSassTask implements Task{
                 .orElseThrow(()->new RuntimeException("Could not find configuration"));
 
         Path source = Paths.get(config.getString("source"));
-        Path output = Paths.get(buildContext.getConfiguration().getString("build.webappOutput"))
+        Path output = Paths.get(buildContext.getConfiguration().getString("build.webapp_output"))
                 .resolve(config.getString("output"));
         final SassCompiler compiler = new SassCompiler(source,output, buildContext.cli());
 

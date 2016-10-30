@@ -1,26 +1,25 @@
 package org.m410.garden.sass;
 
-import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.fabricate.builder.BuildContext;
 import org.m410.fabricate.builder.Task;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * @author Michael Fortin
  */
-public class BuildSassTask implements Task{
+public final class BuildSassTask implements Task {
     @Override
     public String getName() {
         return "sass-compile";
@@ -36,19 +35,15 @@ public class BuildSassTask implements Task{
         final ImmutableHierarchicalConfiguration config = buildContext.configAt("org.m410.garden", "garden-sass")
                 .orElseThrow(()->new RuntimeException("Could not find configuration"));
 
-        // todo downloading node should be separate task
-        final String nodeVersion = config.getString("node_version", "v6.8.1");
-        final String arch = buildContext.getConfiguration().getString("build.osName");
-        final String base = buildContext.getConfiguration().getString("build.cacheDir");
-        final String platform = platform(arch);
-        final Path nodeDest = Paths.get(base).resolve("node=" + nodeVersion + "-" + platform + ".tar.gz");
         final Path sourceFile = Paths.get(config.getString("source"));
+        final File executable = null;
+        final File workingDir = null;
+        Node node = new Node(executable, workingDir).init();
 
-        Node node = downloadNode(nodeDest, nodeVersion, platform, sourceFile.getParent()).init();
-
-        // todo also should check for changes instead of running this each time
-        config.getList(String.class, "dependencies", new ArrayList<>()).forEach(dep -> {
-            node.exec("install", "--save", dep);
+        IntStream.range(0, config.getMaxIndex("dependencies")).forEach(idx -> {
+            String name = config.getString("dependencies(" + idx + ").name");
+            String version = config.getString("dependencies(" + idx + ").version");
+            node.exec("install", name + "@" + version, "--save");
         });
 
         Path output = Paths.get(buildContext.getConfiguration().getString("build.webappOutput"))
@@ -56,39 +51,6 @@ public class BuildSassTask implements Task{
         output.getParent().toFile().mkdirs();
 
         new SassCompiler(sourceFile, output, buildContext.cli()).compile();
-    }
-
-    private String platform(String arch) {
-        if (arch.startsWith("Mac")) {
-            return "darwin-x64";
-        }
-        else {
-            return "win-x64";
-        }
-    }
-
-    Node downloadNode(Path destination, String nodeVersion, String platform, Path source) throws IOException,
-            ArchiveException {
-        final String distName = "node-" + nodeVersion + "-" + platform;
-
-        File nodeTar = destination.toFile();
-        nodeTar.getParentFile().mkdirs();
-        final File nodeParent = nodeTar.getParentFile();
-        final File distDir = new File(nodeParent, distName);
-
-        if(!distDir.exists()) {
-            URL url = new URL("https://nodejs.org/dist/" + nodeVersion + "/" + distName + ".tar.gz");
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream(nodeTar);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-
-            TarGz.unTar(TarGz.unGzip(nodeTar, nodeTar.getParentFile()), nodeParent);
-        }
-
-        return new Node(
-                distDir.toPath().resolve("lib/node_modules/npm/bin/npm-cli.js").toFile(),
-                source.toFile()
-        );
     }
 
     static class Node {
