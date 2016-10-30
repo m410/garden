@@ -11,25 +11,17 @@ import org.m410.fabricate.builder.Cli;
 import org.m410.fabricate.config.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.yaml.snakeyaml.DumperOptions;
-import org.yaml.snakeyaml.Yaml;
 
 import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.FileSystems;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.fail;
 
 /**
  * @author m410
  */
-public class Jetty9TaskTest {
+public final class Jetty9TaskTest {
 
     BuildContext context;
     Cli cli = new Cli() {

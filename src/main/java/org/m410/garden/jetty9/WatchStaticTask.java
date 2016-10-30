@@ -13,7 +13,7 @@ import static java.nio.file.StandardWatchEventKinds.*;
 /**
  * @author Michael Fortin
  */
-public class WatchStaticTask implements Task {
+public final class WatchStaticTask implements Task {
     @Override
     public String getName() {
         return "watch-static";

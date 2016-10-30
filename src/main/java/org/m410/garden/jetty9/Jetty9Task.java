@@ -16,7 +16,7 @@ import java.util.stream.Collectors;
 /**
  * @author m410
  */
-public class Jetty9Task implements Task {
+public final class Jetty9Task implements Task {
 
     String applicationClass;
     String appLoaderClass;

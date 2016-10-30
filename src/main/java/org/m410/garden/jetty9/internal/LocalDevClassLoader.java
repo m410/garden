@@ -12,7 +12,7 @@ import java.util.List;
  *
  * @author Michael Fortin
  */
-public class LocalDevClassLoader extends URLClassLoader {
+public final class LocalDevClassLoader extends URLClassLoader {
 
     public LocalDevClassLoader(List<URL> runPath, File classesDir, ClassLoader parent) {
         super(toURLs(runPath, classesDir), parent);
