@@ -2,11 +2,12 @@ package org.m410.garden.fixtures;
 
 
 import org.m410.garden.module.ormbuilder.orm.Entity;
-import static org.m410.garden.module.ormbuilder.orm.ORM.*;
+
+import static org.m410.garden.module.ormbuilder.orm.ORM.entity;
 
 /**
  */
-public class MyServiceImpl implements MyService {
+public final class MyServiceImpl implements MyService {
 
     private MyServiceDao myServiceDao;
 

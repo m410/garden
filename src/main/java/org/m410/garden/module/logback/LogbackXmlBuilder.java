@@ -22,7 +22,7 @@ import java.nio.file.Path;
  *
  *  @author Michael Fortin
  */
-public class LogbackXmlBuilder implements ConfigFileBuilder {
+public final class LogbackXmlBuilder implements ConfigFileBuilder {
 
     String make(ImmutableHierarchicalConfiguration configuration) throws ParserConfigurationException, TransformerException {
         DocumentBuilderFactory docFactory = DocumentBuilderFactory.newInstance();

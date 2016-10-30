@@ -32,7 +32,7 @@ import java.util.stream.StreamSupport;
  *
  * @author Michael Fortin
  */
-public class PersistenceXmlBuilder implements ConfigFileBuilder {
+public final class PersistenceXmlBuilder implements ConfigFileBuilder {
     final String regex = "persistence\\(org\\.\\.m410\\.\\.garden:garden-jpa.*?\\)";
 
     public String make(ImmutableHierarchicalConfiguration configuration)

@@ -1,16 +1,16 @@
 package org.m410.garden.fixtures;
 
 import com.google.common.collect.ImmutableList;
-import org.m410.garden.controller.auth.Authorizable;
 import org.m410.garden.controller.Controller;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
+import org.m410.garden.controller.auth.Authorizable;
 
 import java.util.List;
 
 /**
  * @author m410
  */
-public class MyAuthController extends Controller implements Authorizable {
+public final class MyAuthController extends Controller implements Authorizable {
     private final ImmutableList<String> roles = ImmutableList.of("ADMIN");
 
     public MyAuthController() {

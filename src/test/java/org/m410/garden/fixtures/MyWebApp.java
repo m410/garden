@@ -13,7 +13,7 @@ import static org.m410.garden.di.ComponentBuilder.builder;
 
 /**
  */
-public class MyWebApp extends GardenApplication implements JpaModule {
+public final class MyWebApp extends GardenApplication implements JpaModule {
 
     @Override
     public ComponentSupplier componentProvider() {
