@@ -1,26 +1,23 @@
 package org.m410.garden.javascript;
 
-import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.fabricate.builder.BuildContext;
 import org.m410.fabricate.builder.Task;
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.io.IOException;
-import java.net.URL;
-import java.nio.channels.Channels;
-import java.nio.channels.ReadableByteChannel;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
-import java.util.*;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.LinkedList;
+import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * @author Michael Fortin
  */
-public class BuildJavascriptTask implements Task {
+public final class BuildJavascriptTask implements Task {
     @Override
     public String getName() {
         return "javascript-manager";
@@ -33,57 +30,18 @@ public class BuildJavascriptTask implements Task {
 
     @Override
     public void execute(BuildContext buildContext) throws Exception {
-        final ImmutableHierarchicalConfiguration config = buildContext.configAt("org.m410.garden", "garden-sass")
-                .orElseThrow(()->new RuntimeException("Could not find configuration"));
+        final ImmutableHierarchicalConfiguration config = buildContext
+                .configAt("org.m410.garden", "garden-javascript")
+                .orElseThrow(() -> new RuntimeException("No configuration found"));
+        final File executable = null;
+        final File workingDir = null;
+        Node node = new Node(executable, workingDir).init();
 
-        // todo downloading node should be separate task
-        final String nodeVersion = config.getString("node_version", "v6.8.1");
-        final String arch = buildContext.getConfiguration().getString("build.osName");
-        final String base = buildContext.getConfiguration().getString("build.cacheDir");
-        final String platform = platform(arch);
-        final Path nodeDest = Paths.get(base).resolve("node=" + nodeVersion + "-" + platform + ".tar.gz");
-        final Path jsSource = Paths.get(buildContext.getConfiguration().getString("build.webappDir"));
-
-        Node node = downloadNode(nodeDest, nodeVersion, platform, jsSource).init();
-
-        // todo also should check for changes instead of running this each time
-        config.getList(String.class, "dependencies", new ArrayList<>()).forEach(dep -> {
-            node.exec("install", "--save", dep);
+        IntStream.range(0, config.getMaxIndex("dependencies")).forEach(idx -> {
+            String name = config.getString("dependencies(" + idx + ").name");
+            String version = config.getString("dependencies(" + idx + ").version");
+            node.exec("install", name + "@" + version, "--save");
         });
-
-    }
-
-    private String platform(String arch) {
-        if (arch.startsWith("Mac")) {
-            return "darwin-x64";
-        }
-        else {
-            return "win-x64";
-        }
-    }
-
-    Node downloadNode(Path destination, String nodeVersion, String platform, Path jsSource) throws IOException,
-            ArchiveException {
-        final String distName = "node-" + nodeVersion + "-" + platform;
-
-        File nodeTar = destination.toFile();
-        nodeTar.getParentFile().mkdirs();
-        final File nodeParent = nodeTar.getParentFile();
-        final File distDir = new File(nodeParent, distName);
-
-        if(!distDir.exists()) {
-            URL url = new URL("https://nodejs.org/dist/" + nodeVersion + "/" + distName + ".tar.gz");
-            ReadableByteChannel rbc = Channels.newChannel(url.openStream());
-            FileOutputStream fos = new FileOutputStream(nodeTar);
-            fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
-
-            TarGz.unTar(TarGz.unGzip(nodeTar, nodeTar.getParentFile()), nodeParent);
-        }
-
-        return new Node(
-                distDir.toPath().resolve("lib/node_modules/npm/bin/npm-cli.js").toFile(),
-                jsSource.toFile()
-        );
     }
 
     static class Node {

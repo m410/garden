@@ -6,7 +6,7 @@ import org.m410.fabricate.builder.Task;
 /**
  * @author Michael Fortin
  */
-public class WatchJavascriptTask implements Task {
+public final class WatchJavascriptTask implements Task {
     @Override
     public String getName() {
         return "javascript-watcher";
