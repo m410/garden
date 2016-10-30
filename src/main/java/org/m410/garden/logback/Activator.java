@@ -1,12 +1,14 @@
 package org.m410.garden.logback;
 
 import org.m410.fabricate.service.FabricateService;
-import org.osgi.framework.*;
+import org.osgi.framework.BundleActivator;
+import org.osgi.framework.BundleContext;
+import org.osgi.framework.ServiceReference;
 
 /**
  * @author Michael Fortin
  */
-public class Activator implements BundleActivator {
+public final class Activator implements BundleActivator {
 
     public void start(BundleContext context) throws Exception {
         ServiceReference fabricateServiceReference = context.getServiceReference(FabricateService.class.getName());
