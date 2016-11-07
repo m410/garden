@@ -1,0 +1,4 @@
+# modules
+
+build:
+  node_version: v7.0.0
