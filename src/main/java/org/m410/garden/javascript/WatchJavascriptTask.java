@@ -19,6 +19,7 @@ public final class WatchJavascriptTask implements Task {
 
     @Override
     public void execute(BuildContext buildContext) throws Exception {
+        buildContext.cli().debug("watch javascript");
         // launch file watcher thread for each watched file
         // on change rebuild to output directory
     }

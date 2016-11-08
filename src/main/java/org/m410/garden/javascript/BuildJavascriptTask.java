@@ -7,6 +7,7 @@ import org.m410.fabricate.builder.Task;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.Arrays;
 import java.util.EnumSet;
@@ -30,16 +31,22 @@ public final class BuildJavascriptTask implements Task {
 
     @Override
     public void execute(BuildContext buildContext) throws Exception {
-        final ImmutableHierarchicalConfiguration config = buildContext
+        buildContext.cli().debug("build javascript");
+        final ImmutableHierarchicalConfiguration moduleConfig = buildContext
                 .configAt("org.m410.garden", "garden-javascript")
                 .orElseThrow(() -> new RuntimeException("No configuration found"));
-        final File executable = null;
-        final File workingDir = null;
+
+        final ImmutableHierarchicalConfiguration config = buildContext.getConfiguration();
+
+        final File executable = Paths.get(moduleConfig.getString("node_base"))
+                .resolve(moduleConfig.getString("npm")).toFile();
+        final File workingDir = Paths.get(config.getString("build.webapp_dir")).toFile();
+        ;
         Node node = new Node(executable, workingDir).init();
 
-        IntStream.range(0, config.getMaxIndex("dependencies")).forEach(idx -> {
-            String name = config.getString("dependencies(" + idx + ").name");
-            String version = config.getString("dependencies(" + idx + ").version");
+        IntStream.range(0, moduleConfig.getMaxIndex("dependencies")).forEach(idx -> {
+            String name = moduleConfig.getString("dependencies(" + idx + ").name");
+            String version = moduleConfig.getString("dependencies(" + idx + ").version");
             node.exec("install", name + "@" + version, "--save");
         });
     }
