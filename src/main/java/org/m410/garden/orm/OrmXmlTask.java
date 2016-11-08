@@ -56,7 +56,7 @@ public final class OrmXmlTask implements Task {
 
     @Override
     public void execute(BuildContext context) throws Exception {
-
+        context.cli().debug("build orm xml");
         // have to check for config param to run it.
         Module jpa = context.getModules().stream().filter(m->m.getName().equals("garden-jpa")).findFirst().get();
         final ImmutableConfiguration configuration = jpa.getConfiguration();
@@ -72,9 +72,9 @@ public final class OrmXmlTask implements Task {
                     .map(File::new)
                     .collect(Collectors.toList());
 
-            classpath.add(Paths.get(context.getBuild().getSourceOutputDir()).toFile());
+            classpath.add(Paths.get(context.getConfiguration().getString("build.source_output_dir")).toFile());
 
-            final String sourceOut = context.getBuild().getSourceOutputDir();
+            final String sourceOut = context.getConfiguration().getString("build.source_output_dir");
             final Path outputPath = FileSystems.getDefault().getPath(sourceOut,"META-INF/orm.xml");
             final File file = FileSystems.getDefault().getPath(sourceOut,"META-INF").toFile();
 
