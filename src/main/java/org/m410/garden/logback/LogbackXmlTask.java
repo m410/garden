@@ -35,12 +35,13 @@ public final class LogbackXmlTask implements Task{
 
     @Override
     public void execute(BuildContext context) throws Exception {
+        context.cli().debug("create logback config");
         Collection<File> mavenProject = Arrays.stream(
                 context.getClasspath().get("compile").split(System.getProperty("path.separator")))
                 .map(File::new)
                 .collect(Collectors.toList());
 
-        final String sourceDir = context.getBuild().getSourceOutputDir();
+        final String sourceDir = context.getConfiguration().getString("build.source_output_dir");
         final Path outputPath = FileSystems.getDefault().getPath(sourceDir, "logback.xml");
 
         final Optional<ImmutableHierarchicalConfiguration> optCfg = context.configAt(org, name);
