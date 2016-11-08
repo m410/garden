@@ -126,7 +126,10 @@
                         <Import-Package>org.osgi.framework,
                             org.m410.fabricate.service,
                             org.m410.config,
-                            org.apache.commons,
+                            org.apache.commons.configuration2,
+                            org.apache.commons.beanutils,
+                            org.apache.commons.lang3,
+                            org.apache.commons.logging,
                             *;resolution:=optional
                         </Import-Package>
                         <Include-Resource>{maven-dependencies}</Include-Resource>
