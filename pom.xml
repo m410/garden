@@ -68,7 +68,9 @@
                     <execution>
                         <id>attach-sources</id>
                         <phase>deploy</phase>
-                        <goals><goal>jar-no-fork</goal></goals>
+                        <goals>
+                            <goal>jar-no-fork</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -80,7 +82,9 @@
                     <execution>
                         <id>attach-javadocs</id>
                         <phase>deploy</phase>
-                        <goals><goal>jar</goal></goals>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -93,7 +97,9 @@
                     <execution>
                         <id>deploy</id>
                         <phase>deploy</phase>
-                        <goals><goal>deploy</goal></goals>
+                        <goals>
+                            <goal>deploy</goal>
+                        </goals>
                     </execution>
                 </executions>
             </plugin>
@@ -109,13 +115,18 @@
                         <Bundle-Version>${project.version}</Bundle-Version>
                         <Private-Package>org.m410.garden.jpa.internal</Private-Package>
                         <Bundle-Activator>org.m410.garden.jpa.Activator</Bundle-Activator>
-                        <Import-Package>org.osgi.framework, org.m410.fabricate.service, *;resolution:=optional</Import-Package>
-                        <!--<Export-Package>org.m410.fab.loader</Export-Package>-->
+                        <Import-Package>
+                            org.osgi.framework,
+                            org.apache.commons.configuration2,
+                            org.apache.commons.beanutils,
+                            org.apache.commons.lang3,
+                            org.apache.commons.logging,
+                            org.m410.fabricate.service,
+                            *;resolution:=optional
+                        </Import-Package>
                     </instructions>
                 </configuration>
             </plugin>
         </plugins>
     </build>
-
-
 </project>

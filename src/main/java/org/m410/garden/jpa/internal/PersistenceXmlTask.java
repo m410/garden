@@ -53,6 +53,7 @@ public final class PersistenceXmlTask implements Task {
 
     @Override
     public void execute(BuildContext context) throws Exception {
+        context.cli().debug("build persistence xml");
         final String[] compiles = context.getClasspath().get("compile").split(System.getProperty("path.separator"));
         Collection<File> mavenProject = Arrays.stream(compiles).map(File::new).collect(Collectors.toList());
         final Optional<ImmutableHierarchicalConfiguration> optCfg = context.configAt(org, name);
@@ -62,7 +63,7 @@ public final class PersistenceXmlTask implements Task {
         }
 
         final ImmutableHierarchicalConfiguration c = optCfg.get();
-        final String sourceOut = context.getBuild().getSourceOutputDir();
+        final String sourceOut = context.getConfiguration().getString("build.source_output_dir");
         final Path outputPath = FileSystems.getDefault().getPath(sourceOut,"META-INF/persistence.xml");
         final File file = FileSystems.getDefault().getPath(sourceOut,"META-INF").toFile();
 

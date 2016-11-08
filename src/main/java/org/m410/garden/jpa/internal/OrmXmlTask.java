@@ -53,6 +53,7 @@ public final class OrmXmlTask implements Task {
 
     @Override
     public void execute(BuildContext context) throws Exception {
+        context.cli().debug("build orm xml");
         final String[] dependencies = context.getClasspath()
                 .get("compile")
                 .split(System.getProperty("path.separator"));
@@ -60,9 +61,9 @@ public final class OrmXmlTask implements Task {
         Collection<File> classpath = Arrays.stream(dependencies)
                 .map(File::new)
                 .collect(Collectors.toList());
-        classpath.add(Paths.get(context.getBuild().getSourceOutputDir()).toFile());
+        classpath.add(Paths.get(context.getConfiguration().getString("build.source_output_dir")).toFile());
 
-        final String sourceOut = context.getBuild().getSourceOutputDir();
+        final String sourceOut = context.getConfiguration().getString("build.source_output_dir");
         final Path outputPath = FileSystems.getDefault().getPath(sourceOut, "META-INF/orm.xml");
         final File file = FileSystems.getDefault().getPath(sourceOut, "META-INF").toFile();
 
