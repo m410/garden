@@ -26,6 +26,7 @@ public final class WatchStaticTask implements Task {
 
     @Override
     public void execute(BuildContext buildContext) throws Exception {
+        buildContext.cli().debug("watch static");
         String staticResource = buildContext.getConfiguration().getString("build.webappDir");
         String outputResources = buildContext.getConfiguration().getString("build.webappOutput");
         Watcher watcher = new Watcher(Paths.get(staticResource), Paths.get(outputResources), buildContext.cli());

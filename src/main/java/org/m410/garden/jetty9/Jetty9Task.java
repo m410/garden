@@ -36,15 +36,16 @@ public final class Jetty9Task implements Task {
 
     @Override
     public void execute(BuildContext context) throws Exception {
+        context.cli().debug("run jetty9");
         context.cli().debug("context:"+context);
         context.cli().debug("context.app:"+context.getApplication());
-        context.cli().debug("context.build:"+context.getBuild());
         context.cli().debug("context.classpath:"+context.getClasspath().get("compile"));
 
         applicationClass = context.getApplication().getApplicationClass();
         appLoaderClass = applicationClass + "Loader";
-        sourceDir = FileSystems.getDefault().getPath(context.getBuild().getSourceDir()).toFile();
-        classesDir = FileSystems.getDefault().getPath(context.getBuild().getSourceOutputDir()).toFile();
+        sourceDir = FileSystems.getDefault().getPath(context.getConfiguration().getString("build.source_dir")).toFile();
+        classesDir = FileSystems.getDefault().getPath(context.getConfiguration().getString("build.source_output_dir")
+                                                     ).toFile();
         classpath = toPath(context.getClasspath().get("compile"));
 
         final List<URL> jetty9Classpath = toPath(context.getClasspath().get("jetty9"));
