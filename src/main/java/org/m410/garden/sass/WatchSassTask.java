@@ -26,6 +26,7 @@ public final class WatchSassTask implements Task {
 
     @Override
     public void execute(final BuildContext buildContext) throws Exception {
+        buildContext.cli().debug("watch sass");
         final ImmutableHierarchicalConfiguration config = buildContext.configAt("org.m410.garden", "garden-sass")
                 .orElseThrow(()->new RuntimeException("Could not find configuration"));
 

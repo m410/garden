@@ -32,12 +32,14 @@ public final class BuildSassTask implements Task {
 
     @Override
     public void execute(BuildContext buildContext) throws Exception {
+        buildContext.cli().debug("build sass");
+        final ImmutableHierarchicalConfiguration buildConfig = buildContext.getConfiguration();
         final ImmutableHierarchicalConfiguration config = buildContext.configAt("org.m410.garden", "garden-sass")
                 .orElseThrow(()->new RuntimeException("Could not find configuration"));
 
         final Path sourceFile = Paths.get(config.getString("source"));
-        final File executable = null;
-        final File workingDir = null;
+        final File executable = Paths.get(config.getString("node_base")).resolve(config.getString("npm")).toFile();
+        final File workingDir = sourceFile.getParent().toFile();
         Node node = new Node(executable, workingDir).init();
 
         IntStream.range(0, config.getMaxIndex("dependencies")).forEach(idx -> {
@@ -46,7 +48,7 @@ public final class BuildSassTask implements Task {
             node.exec("install", name + "@" + version, "--save");
         });
 
-        Path output = Paths.get(buildContext.getConfiguration().getString("build.webappOutput"))
+        Path output = Paths.get(buildContext.getConfiguration().getString("build.webapp_output"))
                 .resolve(config.getString("output"));
         output.getParent().toFile().mkdirs();
 

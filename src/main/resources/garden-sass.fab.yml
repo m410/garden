@@ -1,5 +1,7 @@
 # modules
 modules(org.m410.garden:garden-sass:${project.version}):
+  node_base: .fab/node
+  npm: lib/node_modules/npm/bin/npm-cli.js
   watch:
 
 bundles:
