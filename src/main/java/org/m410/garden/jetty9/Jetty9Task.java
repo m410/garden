@@ -8,7 +8,7 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
-import java.nio.file.FileSystems;
+import java.nio.file.Paths;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -43,14 +43,13 @@ public final class Jetty9Task implements Task {
 
         applicationClass = context.getApplication().getApplicationClass();
         appLoaderClass = applicationClass + "Loader";
-        sourceDir = FileSystems.getDefault().getPath(context.getConfiguration().getString("build.source_dir")).toFile();
-        classesDir = FileSystems.getDefault().getPath(context.getConfiguration().getString("build.source_output_dir")
-                                                     ).toFile();
+        sourceDir = Paths.get(context.getConfiguration().getString("build.source_dir")).toFile();
+        classesDir = Paths.get(context.getConfiguration().getString("build.source_output_dir")).toFile();
         classpath = toPath(context.getClasspath().get("compile"));
 
         final List<URL> jetty9Classpath = toPath(context.getClasspath().get("jetty9"));
         context.cli().debug("jetty9.classpath:"+jetty9Classpath);
-        final String webDir = context.getConfiguration().getString("build.webappOutput");
+        final String webDir = context.getConfiguration().getString("build.webapp_output");
         new DeligateApp(jetty9Classpath, webDir, context.environment());
     }
 
