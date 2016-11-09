@@ -8,9 +8,6 @@ reflected in the running application.
 
 To configure it simply add this to the configuration
 
-    modules:
-      - name: garden-jetty9
-        organization: org.m410.garden
-        version: "0.1"
+    modules(org.m410.garden:garden-jetty9:0.3):
 
 
