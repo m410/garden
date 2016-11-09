@@ -1,4 +1,5 @@
-Programmatic persistence configuration module for garden project
+ORM module
 =================================
 
-todo
+This is experimental attempt doing orm mapping without using annotations.  I was working at one point but
+it have fallen into disrepair.
