@@ -1,4 +1,5 @@
-Programmatic persistence configuration module for garden project
+Node support for modules
 =================================
 
-todo
+For other modules that depend on NodeJS, like javascript and sass, this downloads it and makes 
+it available to them.
