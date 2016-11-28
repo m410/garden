@@ -12,103 +12,93 @@ reflection overkill, annotation overkill
 ### Prerequisites
 
   * Java 8 JDK installed and set as the default.
-  * Fab(ricate) installed and working.
+  * [Fab(ricate)](https://github.com/m410/fab) installed .
 
-There is not much functionality available beyond the what's in the demonstration app. So documentation is
-light for now.
+
+To bootstrap a new project call:
+
+    > fab create garden
+    
 
 
 ## Application Class
-See the application class documentation.
-[http://m410.org/javadoc/current/org/m410/j8/application/Application.html](http://m410.org/javadoc/current/org/m410/j8/application/Application.html)
+The application class is the main entry point to the application. 
+You must set the class name in application configuration so it can be initialized at runtime.  
 
-The action class is the central wiring and initialization point of the application.  It’s available in the servlet context if needed.  You must set the class name in application configuration so it can be initialized at runtime.  Also, by convention, for the application to be able to reload automatically in local development mode, you also must also declare the Application Loader class.  It should be created automatically when generating a project.  It has to be in the same class loader as the application class to able to reload the application.
+Also, by convention, for the application to be able to reload automatically in local development mode, you 
+also must also declare the Application Loader class.  It should be created automatically when generating a project.  
+It has to be in the same class loader as the application class to able to reload the application.
 
 A basic Application class looks like this
 
-    public final class MyApplication extends Application {
-        @Override public List<? extends HttpCtrl> makeControllers(ImmutableHierarchicalConfiguration c) {
-                   return ImmutableList.of(new HomeController());
-            }
+    public final class MyApplication extends GardenApplication implements OrmBuilderModule, JpaModule  {
+    
+        @Override
+        public ComponentSupplier componentProvider() {
+            return (config, zone) -> Components.of(new DefaultComponents());
+        }
+    
+        @Override
+        public ControllerSupplier controllerProvider() {
+            return (config,components) -> ImmutableList.of(
+                    new HomeController());
+        }
     }
+
+    public class MyApplicationLoader extends ApplicationLoader {}
 
 
 ### Service Providers
 An application can wire in service providers by implementing an interface with an annotated default
 method that follows a conventional signature.
 
-    public interface JpaModule extends ApplicationModule {  
-        @ThreadLocalComponent 
-        default List<? extends ThreadLocalSessionFactory<?>> makeJpaThreadLocal(ImmutableHierarchicalConfiguration c) { 
-            return ImmutableList.of( 
-                new HibernatePersistence(c) 
-            ); 
+    public interface JpaModule {
+        @ZoneProvider
+        default ZoneFactorySupplier makeJpaZone() {
+            return configuration -> ImmutableList.of(new HibernateZoneFactory(configuration));
         }
-     }
+    }
 
 This Service provider module can be wired to the application like this:
 
     public final class MyApplication extends Application implements JpaModule {}
 
-This will create a hibernate thread local manager and make it averrable to all requests.
+This will create a hibernate thread local manager and make it available to all requests.
 
-### Injecting Services
-Creating a service is as simple as declaring it and injecting it as a dependency on other classes.
+There are eight service providers annotations that can be used to wire in services:
 
-    public final class MyApplication extends Application implements JpaModule {
-        PersonDao personDao = new PersonDaoImpl();
-            PersonService personService = new PersonServiceImpl(personDao);
+ - ComponentProvider - Adds services that can be wired into the application. 
+ - ControllerProvider - Adds controllers to the application.
+ - FitlerProvider - Adds Servlet Filters to the application.
+ - ListenerProvider - Adds container listeners to the application.
+ - ServletProvider - Adds servlets to the container.
+ - ShutdownProvider - Adds a callback that will be called during application shutdown.
+ - StartupProvider - Adds a startup callback.
+ - ZoneProvider - Adds threadlocal zone factory to the zone manager.
+ 
+These annotations are generally reserved for adding services via a default method on interfaces.  For
+each the of service, there are methods on the GardenApplication class that can be overridden.
 
-    @Override public List<? extends HttpCtrl> makeControllers(ImmutableHierarchicalConfiguration c) {
-            return ImmutableList.of(
-                    new HomeController(),
-                    new PersonController(personService)
-            );
-        }
-    }
 
 
 ### Service Life cycle
-Services that need to have life cycle events called can be wrapped into the lifecycle interface.
+The GardenApplication class has an `init()` method that is called and initializes the application by calling:
 
-    public final class MyApplication extends Application implements JpaModule {
-        PersonDao personDao = new PersonDaoImpl();
-            PersonService personService = new PersonServiceImpl(personDao);
+ - init ZoneManager
+ - init Components
+ - init Servlets
+ - init Filters
+ - init Listeners
+ - init Controllers
+ - init Actions
 
-    @Override public List<LifeCycle> manageLifeCycle(ImmutableHierarchicalConfiguration c) {
-            return ImmutableList.of(
-                    new LifeCycle(){
-            public void initialize(){personService.init();}
-            public void destroy(){personService.shutdown();}
-            }
-            );
-        }
-    }
+### Zones
 
-### Transactions
-See controller transactions for a better description of transaction scopes.  But for an application
-you can add transaction to a service by using the transactional method proxy.
+TODO
 
-    public final class MyApplication extends Application implements JpaModule {
-        PersonDao personDao = new PersonDaoImpl();
-            PersonService personService = transactional(
-                PersonService.class,
-                new PersonServiceImpl(personDao));
+### Components
 
-    @Override public List<? extends HttpCtrl> makeControllers(ImmutableHierarchicalConfiguration c) {
-            return ImmutableList.of(
-                    new HomeController(),
-                    new PersonController(personService)
-            );
-        }
-    }
-
-
-This will wrap all calls to the PersonServiceImpl class with any threadLocal created by a
-ThreadLocalFactory in the Application class.  You can add your own threadLocals by overriding
-
-    List<? extends ThreadLocalSessionFactory> makeThreadLocalFactories(ImmutableHierarchicalConfiguration c)
-
+TODO
 
 ### Creating Controllers
 Just like in the very first example, you wire them into the `makeControllers` method of the application.  The

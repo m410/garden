@@ -223,10 +223,10 @@ abstract public class GardenApplication implements ApplicationModule {
      */
     public void init(final ImmutableHierarchicalConfiguration configuration) {
         initZoneManager(configuration);
+        initComponents(configuration);
         initServlets(configuration);
         initFilters(configuration);
         initListeners(configuration);
-        initComponents(configuration);
         initControllers(configuration);
         initActions();
         callDynamicStart(configuration, Startup.class);
