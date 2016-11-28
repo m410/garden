@@ -1,6 +1,6 @@
 package org.m410.garden.application;
 
-import org.m410.garden.configuration.Configuration;
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.m410.garden.configuration.ConfigurationFactory;
 
 import java.lang.reflect.Method;
@@ -26,18 +26,18 @@ public class ApplicationLoader {
      * @param env The environment name.
      */
     @SuppressWarnings("unchecked")
-    public Application load(String env) {
+    public GardenApplication load(String env) {
         ClassLoader appClassLoader = getClass().getClassLoader();
 
         try {
-            Configuration config = ConfigurationFactory.runtime(env);
-            String projectApplicationClass = config.getApplication().getApplicationClass();
+            ImmutableHierarchicalConfiguration config = ConfigurationFactory.runtime(env);
+            String projectApplicationClass = config.getString("application.applicationClass");
 
             Class appClass = appClassLoader.loadClass(projectApplicationClass);
             Object instance = appClass.newInstance();
-            Method initMethod = appClass.getMethod("init",Configuration.class);
+            Method initMethod = appClass.getMethod("init",ImmutableHierarchicalConfiguration.class);
             initMethod.invoke(instance, config);
-            return (Application) instance;
+            return (GardenApplication) instance;
         }
         catch (Throwable e) {
             System.out.println("---- ApplicationLoader error: " + e.getMessage());

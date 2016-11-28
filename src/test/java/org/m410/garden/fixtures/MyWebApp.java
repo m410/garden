@@ -2,33 +2,84 @@ package org.m410.garden.fixtures;
 
 
 import com.google.common.collect.ImmutableList;
-import org.m410.garden.application.Application;
-import org.m410.garden.configuration.Configuration;
-import org.m410.garden.controller.HttpCtrl;
-//import org.m410.garden.module.migration.MigrationModule;
-//import org.m410.garden.module.jms.JmsModule;
-//import org.m410.garden.module.mail.MailModule;
+import org.m410.garden.application.GardenApplication;
+import org.m410.garden.di.ComponentSupplier;
+import org.m410.garden.di.Components;
+import org.m410.garden.di.ControllerSupplier;
+import org.m410.garden.zone.*;
 
-import java.util.List;
-
+import static org.m410.garden.di.ComponentBuilder.builder;
 
 /**
  */
-public class MyWebApp extends Application {
-    MyServiceDao myServiceDao = new MyServiceDaoImpl();
-    MyService myService = new MyServiceImpl(myServiceDao);
-    // todo trxProxy
-    // todo jpaTrxProxy(MyService.class, new MyServiceImpl())
-    // todo componentService(MailService.class, "mailService")
+public class MyWebApp extends GardenApplication {
 
-    @Override public List<?> makeServices(Configuration c) {
-        return ImmutableList.of(ImmutableList.of(myService));
+    @Override
+    public ComponentSupplier componentProvider() {
+        return (zoneManager, configuration) -> Components.init()
+                .add(() -> ImmutableList.of(
+                        builder(MyServiceDao.class).factory((a, b) -> new MyServiceDaoImpl()),
+                        builder(MyService.class).dependsOn(MyServiceDao.class)
+                                .factory((a, b) -> new MyServiceImpl((MyServiceDao) b[0]))))
+                .with(zoneManager);
     }
 
-    @Override public List<? extends HttpCtrl> makeControllers(Configuration c) {
-        return ImmutableList.of(
-                new MyController(myService)
+    @Override
+    public ControllerSupplier controllerProvider() {
+        return (threadLocals, configuration) -> ImmutableList.of(
+                new MyController(configuration.typeOf(MyService.class))
         );
+    }
+
+    @Override
+    public ZoneFactorySupplier zoneFactoryProvider() {
+        return (config) -> ImmutableList.of(new MockZoneFactory());
+    }
+
+    static class MockZoneFactory implements ZoneFactory {
+        private ZoneManager zoneManager;
+
+        @Override
+        public void setZoneManager(ZoneManager zoneManager) {
+            this.zoneManager = zoneManager;
+        }
+
+        @Override
+        public String name() {
+            return "test";
+        }
+
+        @Override
+        public Zone makeZone() {
+            return new MockZone();
+        }
+
+        @Override
+        public void shutdown() {
+
+        }
+
+        @Override
+        public ZoneHandlerFactory zoneHandlerFactory() {
+            return new ZoneHandlerFactory() {
+                @Override
+                public <T> T proxy(Class<T> interfce, T instance) {
+                    return instance;
+                }
+            };
+        }
+
+        class MockZone implements Zone {
+            @Override
+            public void start() {
+                System.out.println("start zone");
+            }
+
+            @Override
+            public void stop() {
+                System.out.println("stop zone");
+            }
+        }
     }
 }
 

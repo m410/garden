@@ -1,32 +1,32 @@
 package org.m410.garden.di.app;
 
-import org.m410.garden.di.InvocationHandlerFactory;
+import org.m410.garden.zone.ZoneHandlerFactory;
 
 import java.lang.reflect.*;
 
 /**
  * @author Michael Fortin
  */
-public class LogInvocationHandlerFactory implements InvocationHandlerFactory {
-
+public class LogInvocationHandlerFactory implements ZoneHandlerFactory {
 
     @Override
-    public <T> T proxy(Class<T> interfce, Object instance) {
+    @SuppressWarnings("unchecked")
+    public <T> T proxy(Class<T> interfce, T instance) {
         Class proxyClass = Proxy.getProxyClass(interfce.getClassLoader(), interfce );
 
         try {
-            final Constructor constructor = proxyClass.getConstructor(new Class[]{InvocationHandler.class});
-            return (T) constructor.newInstance(new Object[] { new Handler(instance)});
+            final Constructor constructor = proxyClass.getConstructor(InvocationHandler.class);
+            return (T) constructor.newInstance(new Handler(instance));
         }
         catch (NoSuchMethodException | IllegalAccessException | InvocationTargetException | InstantiationException e) {
             throw new RuntimeException(e);
         }
     }
 
-    class Handler implements InvocationHandler {
+    private class Handler implements InvocationHandler {
         Object target;
 
-        public Handler(Object target) {
+        Handler(Object target) {
             this.target = target;
         }
 

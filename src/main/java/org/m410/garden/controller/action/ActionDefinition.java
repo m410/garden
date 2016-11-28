@@ -1,7 +1,7 @@
 package org.m410.garden.controller.action;
 
 import org.apache.commons.lang3.builder.CompareToBuilder;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
 import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.action.http.Action;
 
@@ -18,7 +18,7 @@ public interface ActionDefinition extends Comparable<ActionDefinition>{
         HTTP
     }
 
-    HttpCtrl getController();
+    HttpCtlr getController();
 
     Action getAction();
 

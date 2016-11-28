@@ -1,5 +1,6 @@
 package org.m410.garden.configuration;
 
+import org.apache.commons.configuration2.ImmutableHierarchicalConfiguration;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
@@ -21,14 +22,14 @@ public class ConfigurationFactoryTest {
     @Test
     public void readSampleConfigurationInDevelopment() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
-        Configuration configuration = ConfigurationFactory.fromInputStream(in, "development");
+        ImmutableHierarchicalConfiguration configuration = ConfigurationFactory.fromInputStream(in, "development");
         assertNotNull(configuration);
     }
 
     @Test
     public void readSampleConfigurationInProduction() {
         InputStream in = getClass().getClassLoader().getResourceAsStream(configFile);
-        Configuration configuration = ConfigurationFactory.fromInputStream(in, "production");
+        ImmutableHierarchicalConfiguration configuration = ConfigurationFactory.fromInputStream(in, "production");
         assertNotNull(configuration);
     }
 }

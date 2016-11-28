@@ -3,19 +3,18 @@ package org.m410.garden.controller;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.JUnit4;
-import org.m410.garden.controller.action.http.Action;
-
-import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
+import org.m410.garden.controller.action.http.Action;
+import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.http.HttpMethod;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.ZoneScope;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.m410.garden.controller.action.http.Response.respond;
 import static org.mockito.Mockito.*;
-import static org.m410.garden.controller.action.http.Response.*;
 
 
 /**
@@ -24,7 +23,7 @@ import static org.m410.garden.controller.action.http.Response.*;
 @RunWith(JUnit4.class)
 public class ControllerFileDownloadTest implements MockServletInput {
 
-    HttpCtrl controller = () -> { return null; };
+    HttpCtlr controller = () -> { return null; };
 
 
     @Test
@@ -40,7 +39,7 @@ public class ControllerFileDownloadTest implements MockServletInput {
                 .asStream((out) -> out.write("hi".getBytes()));
 
         HttpActionDefinition ad = new HttpActionDefinition(controller, a,new PathExpr(""), HttpMethod.GET,
-                Securable.Ssl.Optional, new String[]{},new String[]{}, TransactionScope.None);
+                Securable.Ssl.Optional, new String[]{}, new String[]{}, ZoneScope.None);
         ad.apply(request, response);
 
         verify(response).getOutputStream();

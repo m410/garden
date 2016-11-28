@@ -1,11 +1,11 @@
 package org.m410.garden.servlet;
 
+import org.m410.garden.application.GardenApplication;
 import org.m410.garden.controller.action.http.HttpActionDefinition;
 import org.m410.garden.controller.action.status.*;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.ZoneScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.m410.garden.application.Application;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
@@ -18,7 +18,7 @@ import java.util.Optional;
  *
  * @author Michael Fortin
  */
-public class M410Filter implements Filter {
+public final class M410Filter implements Filter {
     private static Logger log = LoggerFactory.getLogger(M410Filter.class);
 
     @Override
@@ -32,7 +32,7 @@ public class M410Filter implements Filter {
         final long startTimestamp = System.currentTimeMillis();
         final HttpServletRequest request = (HttpServletRequest) req;
         final HttpServletResponse response = (HttpServletResponse) res;
-        final Application webapp = (Application) request.getServletContext().getAttribute("application");
+        final GardenApplication webapp = (GardenApplication) request.getServletContext().getAttribute("application");
 
         final Optional<HttpActionDefinition> optionalAction = webapp.actionForRequest(request);
 
@@ -55,9 +55,9 @@ public class M410Filter implements Filter {
                 case ActionStatus.ACT_ON:
                     log.trace("ActOn({},{})", action, action.getTransactionScope());
 
-                    if(action.getTransactionScope() == TransactionScope.ActionAndView)
+                    if (action.getTransactionScope() == ZoneScope.ActionAndView)
                         try {
-                            webapp.doWithThreadLocals(() -> {
+                            webapp.getZoneManager().doInZone(() -> {
                                 wrapExceptions(() -> chain.doFilter(req, res));
                                 return null;
                             });

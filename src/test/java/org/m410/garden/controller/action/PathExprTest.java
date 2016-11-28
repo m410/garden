@@ -101,6 +101,6 @@ public class PathExprTest {
 
         final MockController controller = new MockController();
         final HttpActionDefinition action = controller.actions().get(0);
-        assertTrue(action.doesRequestMatchAction(request));
+        assertTrue(action.doesMatchRequest(request));
     }
 }

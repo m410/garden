@@ -5,15 +5,15 @@ import org.apache.commons.lang3.builder.CompareToBuilder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
-import org.m410.garden.controller.auth.Authorizable;
-import org.m410.garden.controller.HttpCtrl;
+import org.m410.garden.controller.HttpCtlr;
+import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.action.ActionDefinition;
 import org.m410.garden.controller.action.PathExpr;
 import org.m410.garden.controller.action.status.*;
-import org.m410.garden.controller.Securable;
 import org.m410.garden.controller.auth.AuthenticationProvider;
+import org.m410.garden.controller.auth.Authorizable;
 import org.m410.garden.servlet.ServletExtension;
-import org.m410.garden.transaction.TransactionScope;
+import org.m410.garden.zone.ZoneScope;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -44,7 +44,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private static final Logger log = LoggerFactory.getLogger(HttpActionDefinition.class);
     private static final ActionProtocol DEF_ACTION_PROTOCOL = ActionProtocol.HTTP;
 
-    private final HttpCtrl controller;
+    private final HttpCtlr controller;
     private final PathExpr pathExpr;
     private final Securable.Ssl useSsl;
     private final List<String> roles;
@@ -55,7 +55,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     private final HttpMethod httpMethod;
     private final List<String> contentTypes;
 
-    private final TransactionScope transactionScope;
+    private final ZoneScope transactionScope;
 
     /**
      * A full constructor setting all parameters of a action definition.  Generally there is no need to
@@ -73,9 +73,9 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      *          the Authentication interface.
      * @param transactionScope the transactional scope for the action request.
      */
-    public HttpActionDefinition(HttpCtrl controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
+    public HttpActionDefinition(HttpCtlr controller, Action action, PathExpr pathExpr, HttpMethod httpMethod,
                                 Securable.Ssl useSsl, String[] acceptTypes, String[] roles,
-                                TransactionScope transactionScope) {
+            ZoneScope transactionScope) {
         this.controller = controller;
         this.action = action;
         this.pathExpr = pathExpr;
@@ -125,7 +125,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
      * @param transactionScope the scope of the transaction
      * @return a new HttpActionDefinition
      */
-    public HttpActionDefinition transaction(TransactionScope transactionScope) {
+    public HttpActionDefinition transaction(ZoneScope transactionScope) {
         return new HttpActionDefinition(controller, action,pathExpr,httpMethod,useSsl,
                 contentTypes.toArray(new String[contentTypes.size()]), roles.toArray(new String[roles.size()]),
                 transactionScope);
@@ -138,7 +138,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         controller.intercept(actionRequest, action).handleResponse(request, response);
     }
 
-    public boolean doesRequestMatchAction(HttpServletRequest req) {
+    public boolean doesMatchRequest(HttpServletRequest req) {
         return pathExpr.doesPathMatch(req) &&
                 httpMethod.toString().equalsIgnoreCase(req.getMethod()) &&
                 (contentTypes.size() == 0 || contentTypes.contains(req.getContentType()));
@@ -175,7 +175,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
     }
 
     @Override
-    public HttpCtrl getController() {
+    public HttpCtlr getController() {
         return controller;
     }
 
@@ -209,7 +209,7 @@ public final class HttpActionDefinition implements ActionDefinition, ServletExte
         return DEF_ACTION_PROTOCOL;
     }
 
-    public TransactionScope getTransactionScope() {
+    public ZoneScope getTransactionScope() {
         return transactionScope;
     }
 
