@@ -21,7 +21,7 @@ To enable it, add this to the configuration.
 
 And add this to you Application class.
 
-    public final class MyApplication extends Application implements JpaModule {
+    public final class MyApplication extends GardenApplication implements JpaModule {
         // ...
     }
 
