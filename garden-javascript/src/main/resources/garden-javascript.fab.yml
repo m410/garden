@@ -1,0 +1,16 @@
+# modules
+modules(org.m410.garden:garden-javascript:${project.version}):
+  source: src/main/sass
+  output: css/style.css
+  compress: false
+  node_base: .fab/node
+  npm: lib/node_modules/npm/bin/npm-cli.js
+  packages:
+
+bundles:
+  - name: garden-javascript
+    org: org.m410.garden
+    version: "${project.version}"
+  - name: garden-node
+    org: org.m410.garden
+    version: "${garden-node.version}"
