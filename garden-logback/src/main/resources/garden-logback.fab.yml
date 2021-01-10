@@ -1,0 +1,23 @@
+# modules
+logging(org.m410.garden:garden-logback:${project.version}):
+  factory_class: org.m410.garden.configuration.ConfigurationFactory
+  builder_class: org.m410.garden.module.logback.LogbackXmlBuilder
+  appenders:
+    - name: STDOUT
+      appender class: ch.qos.logback.core.ConsoleAppender
+      layout: ch.qos.logback.classic.encoder.PatternLayoutEncoder
+      pattern: "%-4relative [%thread] %-5level %class - %msg%n"
+  root:
+    level: DEBUG
+    ref: [STDOUT]
+
+bundles:
+  - name: garden-logback
+    org: org.m410.garden
+    version: "${project.version}"
+
+dependencies:
+  - { scope: compile, org: org.m410.garden, name: garden-jpa-lib, rev: "${garden-jpa-lib.version}" }
+  - { scope: compile, org: ch.qos.logback, name: logback-classic, rev: 1.1.2, transitive: true }
+  - { scope: compile, org: ch.qos.logback, name: logback-core, rev: 1.1.2, transitive: true }
+  - { scope: compile, org: org.slf4j, name: slf4j-api, rev: 1.7.7}
