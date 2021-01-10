@@ -1,0 +1,17 @@
+archetype:
+  name: java-lib
+  organization: org.m410.fabricate
+  version: "0.2"
+
+application:
+  name: demo-lib
+  org: org.m410.demo
+  version: "0.2"
+  description: Sample java library
+
+dependencies:
+- { scope: compile, org: org.apache.commons, name: commons-lang3, rev: 3.3.2 }
+
+testing(org.m410.fabricate:fab-junit:0.2):
+  placeholder: placeholder
+        
