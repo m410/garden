@@ -1,0 +1,15 @@
+modules(org.m410.garden:garden-jetty9:${project.version}):
+  context_configuration: <fixme>
+  classpath: <fixme>
+
+dependencies:
+- {scope: jetty9, org: org.eclipse.jetty.aggregate, name: jetty-all, rev: 9.2.3.v20140905 }
+- {scope: jetty9, org: javax.websocket, name: javax.websocket-api, rev: "1.1" }
+- {scope: jetty9, org: javax.servlet, name: javax.servlet-api, rev: 3.1.0 }
+- {scope: jetty9, org: org.m410.garden, name: garden-jetty9, rev: "${project.version}" }
+
+
+bundles:
+  - name: garden-jetty9
+    org: org.m410.garden
+    version: "${project.version}"
