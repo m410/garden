@@ -1,0 +1,36 @@
+version: 0.1.0
+application:
+  name: &name demo-jpa
+  organization: org.m410.garden.demo
+  version: "1.0"
+  author: Michael Fortin
+  description: &desc A simple  JPA Scala demo  based website.
+build:
+  packageSource: true
+
+persistence(org.m410.garden:garden-jpa:0.3-SNAPSHOT):
+  properties:
+    hibernate.dialect: org.hibernate.dialect.H2Dialect
+    hibernate.connection.driver_class: org.h2.Driver
+    hibernate.connection.username: sa
+    hibernate.connection.password: ""
+    hibernate.connection.url: "jdbc:h2:demo"
+    hibernate.hbm2ddl.auto: update
+
+
+logging:
+  appenders:
+    - name: STDOUT
+      appender class: ch.qos.logback.core.ConsoleAppender
+      layout: ch.qos.logback.classic.encoder.PatternLayoutEncoder
+      pattern: "%-4relative [%thread] %-5level %class - %msg%n"
+  root:
+    level: INFO
+    ref: [STDOUT]
+web_xml:
+  - description: *desc
+  - display-name: *name
+environment overrides:
+  - environment: developement
+  - environment: test
+  - environment: production
